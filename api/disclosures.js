@@ -19,10 +19,17 @@ function fmtDate(d) {
   return d.toISOString().slice(0, 10).replace(/-/g, '');
 }
 
-// YYYYMMDD → YYYY-MM-DD
-function dashDate(yyyymmdd) {
-  if (!yyyymmdd || yyyymmdd.length < 8) return yyyymmdd;
-  return `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4, 6)}-${yyyymmdd.slice(6, 8)}`;
+// YYYYMMDD 또는 YYYY-MM-DD → YYYY-MM-DD (정규화)
+function dashDate(s) {
+  if (!s) return s;
+  const clean = String(s).replace(/-/g, '');
+  if (clean.length < 8) return s;
+  return `${clean.slice(0, 4)}-${clean.slice(4, 6)}-${clean.slice(6, 8)}`;
+}
+
+// 어떤 형식이든 YYYYMMDD로 (날짜 비교용)
+function compactDate(s) {
+  return (s || '').toString().replace(/-/g, '');
 }
 
 // 안전한 숫자 파싱
@@ -129,7 +136,7 @@ export default async function handler(req, res) {
     }
 
     const disclosures = Array.from(dedup.values())
-      .filter((x) => (x.rcept_dt || '') >= bgnDe)
+      .filter((x) => compactDate(x.rcept_dt) >= bgnDe)
       .map((x) => {
         const after = num(x.stkrt);
         const delta = num(x.stkrt_irds);
