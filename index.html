@@ -954,7 +954,8 @@
     setStatus('실시간 데이터 불러오는 중…');
     showSkeleton();
     try {
-      const r = await fetch('/api/disclosures?days=180', { cache: 'no-store' });
+      // OpenDART 제약상 corp_code 없이는 최대 3개월까지만 검색 가능
+      const r = await fetch('/api/disclosures?days=89', { cache: 'no-store' });
       if (!r.ok) {
         const errBody = await r.json().catch(() => ({}));
         throw new Error(errBody.error || ('HTTP ' + r.status));
