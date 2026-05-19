@@ -1,0 +1,14 @@
+{
+  "name": "nps-watch",
+  "version": "1.0.0",
+  "description": "국민연금공단 5% 대량보유 공시 모니터 (지인 공유용)",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  }
+}
