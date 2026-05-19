@@ -43,7 +43,8 @@ export default async function handler(req, res) {
     });
   }
 
-  const days = Math.min(parseInt(req.query.days || '90', 10), 365);
+  // OpenDART 정책: corp_code 없이는 최대 3개월(~89일)까지만 검색 가능
+  const days = Math.min(parseInt(req.query.days || '60', 10), 89);
 
   const today = new Date();
   const startDate = new Date(today.getTime() - days * 24 * 60 * 60 * 1000);
