@@ -2,7 +2,12 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=1024" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<meta name="description" content="국민연금공단 5% 대량보유 공시 실시간 모니터" />
+<meta property="og:title" content="NPS Watch · 국민연금 5% 공시 모니터" />
+<meta property="og:description" content="국민연금의 5% 이상 보유 종목 변동을 실시간으로 확인하세요." />
+<meta property="og:type" content="website" />
 <title>국민연금 포트폴리오 모니터</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -338,75 +343,111 @@
   }
   .filter-pill:active { transform: scale(0.95); }
 
+  /* ===== Disclosure List (반응형 컴팩트 리스트) ===== */
   .disclosure-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   .disclosure-card {
     background: var(--canvas);
     border: 1px solid var(--hairline);
-    border-radius: 18px;
-    padding: 24px;
-    transition: border-color 0.2s, transform 0.1s;
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 16px;
+    row-gap: 6px;
+    align-items: center;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
   }
-  .disclosure-card.up { border-left: 3px solid var(--up); }
-  .disclosure-card.down { border-left: 3px solid var(--down); }
+  .disclosure-card.up    { border-left: 3px solid var(--up); }
+  .disclosure-card.down  { border-left: 3px solid var(--down); }
+  .disclosure-card:hover { background: var(--surface-pearl); }
+  .disclosure-card:active { transform: scale(0.99); }
+
+  .disclosure-card .left {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .disclosure-card .name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
   .disclosure-card .name {
     font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
-    font-size: 21px;
+    font-size: 17px;
     font-weight: 600;
-    letter-spacing: 0.231px;
-    margin-bottom: 16px;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  .disclosure-card .date {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+    white-space: nowrap;
   }
   .disclosure-card .stake-row {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 17px;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 14px;
     color: var(--ink-muted-80);
-    margin-bottom: 12px;
     font-variant-numeric: tabular-nums;
+    letter-spacing: -0.224px;
   }
   .disclosure-card .stake-row .before {
     color: var(--ink-muted-48);
-    text-decoration: line-through;
   }
   .disclosure-card .stake-row .after {
     color: var(--ink);
     font-weight: 600;
-    font-size: 21px;
   }
-  .disclosure-card .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.224px;
-    padding: 4px 10px;
-    border-radius: 9999px;
-  }
-  .disclosure-card.up .badge { background: rgba(29, 158, 117, 0.1); color: var(--up); }
-  .disclosure-card.down .badge { background: rgba(226, 75, 74, 0.1); color: var(--down); }
-  .disclosure-card .footer-meta {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--divider-soft);
-    font-size: 14px;
-    color: var(--ink-muted-48);
-    letter-spacing: -0.224px;
+
+  .disclosure-card .right {
+    text-align: right;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    white-space: nowrap;
   }
+  .disclosure-card .delta {
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.374px;
+    line-height: 1.1;
+  }
+  .disclosure-card.up   .delta { color: var(--up); }
+  .disclosure-card.down .delta { color: var(--down); }
   .disclosure-card .dart-link {
     color: var(--primary);
     text-decoration: none;
-    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: -0.12px;
   }
   .disclosure-card .dart-link:hover { text-decoration: underline; }
+
+  /* 모바일 */
+  @media (max-width: 640px) {
+    .disclosure-card {
+      padding: 12px 14px;
+      column-gap: 10px;
+    }
+    .disclosure-card .name { font-size: 16px; }
+    .disclosure-card .delta { font-size: 16px; }
+    .disclosure-card .stake-row { font-size: 13px; }
+  }
 
   /* Loading skeleton */
   .skeleton {
@@ -455,11 +496,74 @@
     letter-spacing: -0.374px;
   }
 
-  /* ===== Responsive (1024+ desktop only per spec) ===== */
+  /* ===== Responsive ===== */
   @media (max-width: 1200px) {
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     .chart-grid { grid-template-columns: 1fr; }
-    .disclosure-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .page { padding: 24px 16px 64px; }
+    .hero { padding: 16px 0 20px; }
+    .hero h1 { font-size: 28px; line-height: 1.15; }
+    .hero p { font-size: 16px; margin-top: 8px; }
+
+    .section { padding: 20px 16px; border-radius: 14px; }
+    .section.light { padding: 20px 16px; }
+    .section-header { margin-bottom: 16px; }
+    .section-header h2 { font-size: 22px; }
+    .section-header .meta { font-size: 12px; }
+
+    .kpi-grid { gap: 8px; margin-bottom: 24px; }
+    .kpi-card { padding: 14px 16px; border-radius: 12px; }
+    .kpi-card .label { margin-bottom: 6px; font-size: 12px; }
+    .kpi-card .value { font-size: 24px; }
+    .kpi-card .unit  { font-size: 14px; }
+    .kpi-card .delta { font-size: 12px; }
+
+    .sub-nav { height: auto; }
+    .sub-nav .inner {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 8px 16px;
+      gap: 4px;
+    }
+    .sub-nav .category { font-size: 14px; padding-top: 4px; }
+    .sub-nav .tabs {
+      margin-left: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 6px;
+      padding-bottom: 6px;
+    }
+    .sub-nav .tabs::-webkit-scrollbar { display: none; }
+    .sub-nav .tab {
+      padding: 7px 14px;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .global-nav .links { display: none; }
+    .global-nav .inner { padding: 0 16px; }
+    .global-nav .right { font-size: 11px; }
+
+    .filter-row {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .filter-pill { flex-shrink: 0; }
+
+    .search-input { width: 100%; }
+
+    .page-footer { padding: 24px 16px 48px; text-align: left; }
+  }
+  @media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .kpi-card .value { font-size: 22px; }
   }
 </style>
 </head>
@@ -598,17 +702,38 @@
         </div>
       </div>
 
-      <div class="filter-row">
-        <span class="filter-label">기간</span>
-        <button class="filter-pill" data-filter="all">전체</button>
-        <button class="filter-pill active" data-filter="3m">최근 3개월</button>
-        <button class="filter-pill" data-filter="up">증가만</button>
-        <button class="filter-pill" data-filter="down">감소만</button>
+      <div class="filter-row" style="margin-bottom: 10px;">
+        <button class="filter-pill active" data-filter="all">전체</button>
+        <button class="filter-pill" data-filter="up">▲ 증가</button>
+        <button class="filter-pill" data-filter="down">▼ 감소</button>
+        <button class="filter-pill" data-filter="new">신규 5%↑</button>
+        <select id="disclosure-sort" class="filter-pill" style="appearance: none; -webkit-appearance: none; padding-right: 24px; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%2210%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%237a7a7a%22 stroke-width=%223%22><polyline points=%226 9 12 15 18 9%22/></svg>'); background-repeat: no-repeat; background-position: right 10px center; min-width: 90px;">
+          <option value="date-desc">최신순</option>
+          <option value="date-asc">오래된순</option>
+          <option value="delta-desc">변동 큰순</option>
+          <option value="stake-desc">지분율 ↓</option>
+        </select>
       </div>
 
-      <div class="disclosure-grid" id="disclosure-grid"></div>
+      <div style="margin-bottom: 4px;">
+        <input
+          type="search"
+          class="search-input"
+          id="disclosure-search"
+          placeholder="종목명으로 검색"
+          aria-label="종목명 검색"
+          style="width: 100%; max-width: 100%; height: 40px; font-size: 15px;"
+        />
+      </div>
+
+      <div class="disclosure-grid" id="disclosure-grid" style="margin-top: 16px;"></div>
       <div class="empty-state" id="disclosure-empty" style="display:none;">
-        해당 기간에 공시가 없습니다.
+        해당 조건에 맞는 공시가 없습니다.
+      </div>
+
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--divider-soft); font-size: 12px; color: var(--ink-muted-48); line-height: 1.6;">
+        ※ 본 정보는 금융감독원 전자공시시스템(DART) 공시 자료를 가공한 것이며, 투자 권유가 아닙니다.<br />
+        ※ 5% 대량보유 보고는 변동일 +5영업일 이내 보고 의무가 있어 실제 거래와 시점이 다를 수 있습니다.
       </div>
     </div>
   </section>
@@ -869,8 +994,12 @@
   const disclosureEmpty = document.getElementById('disclosure-empty');
   const disclosureStatus = document.getElementById('disclosure-status');
   const refreshLink = document.getElementById('refresh-link');
-  const filterPills = document.querySelectorAll('.filter-pill');
-  let currentFilter = '3m';
+  const filterPills = document.querySelectorAll('.filter-pill[data-filter]');
+  const searchInputDisc = document.getElementById('disclosure-search');
+  const sortSelect = document.getElementById('disclosure-sort');
+  let currentFilter = 'all';
+  let currentSearch = '';
+  let currentSort = 'date-desc';
 
   // HTML 이스케이프 (XSS 방지)
   function esc(s) {
@@ -892,18 +1021,47 @@
     disclosureGrid.innerHTML = '';
     for (let i = 0; i < 6; i += 1) {
       const sk = document.createElement('div');
-      sk.className = 'disclosure-card skeleton skeleton-card';
+      sk.className = 'disclosure-card skeleton';
+      sk.style.height = '64px';
       disclosureGrid.appendChild(sk);
     }
   }
 
+  // 날짜 표시 포맷 (모바일 친화적)
+  function shortDate(s) {
+    if (!s) return '';
+    const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) return s;
+    const todayY = String(new Date().getFullYear());
+    if (m[1] === todayY) return `${parseInt(m[2], 10)}월 ${parseInt(m[3], 10)}일`;
+    return `${m[1].slice(2)}.${m[2]}.${m[3]}`;
+  }
+
+  function applyFilter(d) {
+    // 검색
+    if (currentSearch && !d.name.toLowerCase().includes(currentSearch.toLowerCase())) return false;
+    // 카테고리
+    if (currentFilter === 'up')   return d.type === '증가';
+    if (currentFilter === 'down') return d.type === '감소';
+    if (currentFilter === 'new') {
+      // 신규 5%↑: 이전 < 5 AND 이후 >= 5 (또는 신규보고)
+      return (d.before != null && d.before < 5 && d.after >= 5) ||
+             (d.reportResn && d.reportResn.includes('신규'));
+    }
+    return true;
+  }
+
+  function applySort(list) {
+    const sorted = list.slice();
+    if (currentSort === 'date-desc')  sorted.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    if (currentSort === 'date-asc')   sorted.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    if (currentSort === 'delta-desc') sorted.sort((a, b) => Math.abs(b.change || 0) - Math.abs(a.change || 0));
+    if (currentSort === 'stake-desc') sorted.sort((a, b) => (b.after || 0) - (a.after || 0));
+    return sorted;
+  }
+
   function renderDisclosures() {
-    const list = disclosures.filter(d => {
-      if (currentFilter === '3m')   return monthsAgo(d.date, 3);
-      if (currentFilter === 'up')   return d.type === '증가';
-      if (currentFilter === 'down') return d.type === '감소';
-      return true;
-    });
+    const list = applySort(disclosures.filter(applyFilter));
 
     disclosureGrid.innerHTML = '';
     if (list.length === 0) {
@@ -917,26 +1075,31 @@
       const before = d.before != null ? d.before.toFixed(2) : '–';
       const after  = d.after  != null ? d.after.toFixed(2)  : '–';
       const delta  = d.change != null ? Math.abs(d.change).toFixed(2) : '–';
+      const arrow  = isUp ? '▲' : '▼';
 
-      const card = document.createElement('div');
-      card.className = 'disclosure-card ' + (isUp ? 'up' : 'down');
+      const item = document.createElement('div');
+      item.className = 'disclosure-card ' + (isUp ? 'up' : 'down');
       const dartHtml = d.dartUrl
         ? `<a class="dart-link" href="${esc(d.dartUrl)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`
         : '';
-      card.innerHTML = `
-        <div class="name">${esc(d.name)}</div>
-        <div class="stake-row">
-          <span class="before">${before}%</span>
-          <span>→</span>
-          <span class="after">${after}%</span>
-          <span class="badge">${isUp ? '▲' : '▼'} ${delta}%p</span>
+      item.innerHTML = `
+        <div class="left">
+          <div class="name-row">
+            <span class="name">${esc(d.name)}</span>
+            <span class="date">${esc(shortDate(d.date))}</span>
+          </div>
+          <div class="stake-row">
+            <span class="before">${before}%</span>
+            <span>→</span>
+            <span class="after">${after}%</span>
+          </div>
         </div>
-        <div class="footer-meta">
-          <span>공시일 · ${esc(d.date)}</span>
+        <div class="right">
+          <div class="delta">${arrow} ${delta}%p</div>
           ${dartHtml}
         </div>
       `;
-      disclosureGrid.appendChild(card);
+      disclosureGrid.appendChild(item);
     });
   }
 
@@ -988,6 +1151,23 @@
       renderDisclosures();
     });
   });
+
+  // 검색 (디바운스)
+  let searchTimer = null;
+  searchInputDisc.addEventListener('input', (e) => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      currentSearch = e.target.value.trim();
+      renderDisclosures();
+    }, 150);
+  });
+
+  // 정렬
+  sortSelect.addEventListener('change', (e) => {
+    currentSort = e.target.value;
+    renderDisclosures();
+  });
+
   refreshLink.addEventListener('click', (e) => {
     e.preventDefault();
     loadDisclosures();
