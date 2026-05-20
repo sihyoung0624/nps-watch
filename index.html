@@ -404,6 +404,7 @@
     color: var(--ink-muted-80);
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.224px;
+    flex-wrap: wrap;
   }
   .disclosure-card .stake-row .before {
     color: var(--ink-muted-48);
@@ -411,6 +412,33 @@
   .disclosure-card .stake-row .after {
     color: var(--ink);
     font-weight: 600;
+  }
+  .disclosure-card .shares-change {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    letter-spacing: -0.12px;
+    margin-left: 4px;
+  }
+  .disclosure-card .shares-change.up   { background: rgba(29, 158, 117, 0.1); color: var(--up); }
+  .disclosure-card .shares-change.down { background: rgba(226, 75, 74, 0.1); color: var(--down); }
+  .disclosure-card .shares-row {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .disclosure-card .shares-hold { color: var(--ink-muted-48); }
+  /* 평가액 (Phase 2 - 추후) */
+  .disclosure-card .value-amount {
+    font-size: 13px;
+    color: var(--ink-muted-80);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
   }
 
   .disclosure-card .right {
@@ -1037,6 +1065,34 @@
     return `${m[1].slice(2)}.${m[2]}.${m[3]}`;
   }
 
+  // 한국식 큰 수 표기 (만/억 단위, 천 단위 콤마 병행)
+  // 예: 12345678 → "1,234만 5,678주" 형태가 아닌 더 자연스러운: "1,234만주" (천 단위 절삭)
+  function fmtShares(n) {
+    if (n == null || isNaN(n)) return '–';
+    const abs = Math.abs(n);
+    const sign = n < 0 ? '-' : '+';
+    if (abs >= 1_0000_0000) {
+      // 1억주 이상
+      const eok = abs / 1_0000_0000;
+      return `${sign}${eok.toFixed(2)}억주`;
+    }
+    if (abs >= 1_0000) {
+      // 1만주 이상
+      const man = Math.round(abs / 1_0000);
+      return `${sign}${man.toLocaleString('ko-KR')}만주`;
+    }
+    return `${sign}${abs.toLocaleString('ko-KR')}주`;
+  }
+
+  // 보유주식수 (절대값) 표시 - 부호 없이
+  function fmtSharesAbs(n) {
+    if (n == null || isNaN(n)) return '–';
+    const abs = Math.abs(n);
+    if (abs >= 1_0000_0000) return `${(abs / 1_0000_0000).toFixed(2)}억주`;
+    if (abs >= 1_0000)      return `${Math.round(abs / 1_0000).toLocaleString('ko-KR')}만주`;
+    return `${abs.toLocaleString('ko-KR')}주`;
+  }
+
   function applyFilter(d) {
     // 검색
     if (currentSearch && !d.name.toLowerCase().includes(currentSearch.toLowerCase())) return false;
@@ -1082,6 +1138,16 @@
       const dartHtml = d.dartUrl
         ? `<a class="dart-link" href="${esc(d.dartUrl)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`
         : '';
+      // 주식 수 변동 표시 (Phase 1)
+      const sharesChange = d.stockQtyChange != null ? fmtShares(d.stockQtyChange) : null;
+      const sharesHold   = d.stockQty       != null ? fmtSharesAbs(d.stockQty)    : null;
+      const sharesHtml = sharesChange
+        ? `<span class="shares-change ${isUp ? 'up' : 'down'}">${esc(sharesChange)}</span>`
+        : '';
+      const holdHtml = sharesHold
+        ? `<span class="shares-hold">보유 ${esc(sharesHold)}</span>`
+        : '';
+
       item.innerHTML = `
         <div class="left">
           <div class="name-row">
@@ -1092,7 +1158,9 @@
             <span class="before">${before}%</span>
             <span>→</span>
             <span class="after">${after}%</span>
+            ${sharesHtml}
           </div>
+          ${holdHtml ? `<div class="shares-row">${holdHtml}</div>` : ''}
         </div>
         <div class="right">
           <div class="delta">${arrow} ${delta}%p</div>
