@@ -163,6 +163,9 @@ export default async function handler(req, res) {
           reportResn: x.report_resn || null,
           receiptNo: x.rcept_no,
           dartUrl: `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${x.rcept_no}`,
+          // 주식 수량 정보 (Phase 1)
+          stockQty: num(x.stkqy),                  // 보고 시점 보유주식수
+          stockQtyChange: num(x.stkqy_irds),       // 변동 수량 (+/-)
         };
       })
       .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
