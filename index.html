@@ -24,9 +24,12 @@
     --hairline: #e0e0e0;
     --divider-soft: #f0f0f0;
     --surface-black: #000000;
-    --up: #1D9E75;
-    --down: #E24B4A;
+    /* 한국 증권 시장 관행: 상승(증가) 빨강 · 하락(감소) 파랑 */
+    --up: #E24B4A;             /* 한국식 상승: 빨강 */
+    --down: #1565C0;           /* 한국식 하락: 파랑 (Apple primary와 톤 차별) */
     --neutral: #888780;
+    --up-bg: rgba(226, 75, 74, 0.1);     /* 상승 배경 (10% alpha) */
+    --down-bg: rgba(21, 101, 192, 0.1);  /* 하락 배경 (10% alpha) */
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -422,8 +425,8 @@
     letter-spacing: -0.12px;
     margin-left: 4px;
   }
-  .disclosure-card .shares-change.up   { background: rgba(29, 158, 117, 0.1); color: var(--up); }
-  .disclosure-card .shares-change.down { background: rgba(226, 75, 74, 0.1); color: var(--down); }
+  .disclosure-card .shares-change.up   { background: var(--up-bg);   color: var(--up); }
+  .disclosure-card .shares-change.down { background: var(--down-bg); color: var(--down); }
   .disclosure-card .shares-row {
     margin-top: 2px;
     font-size: 12px;
