@@ -14,6 +14,75 @@
 const OPENDART_BASE = 'https://opendart.fss.or.kr/api';
 const NPS_KEYWORDS = ['국민연금공단', '국민연금기금']; // 보고자 매칭 키워드
 
+// 함수 인스턴스 내 in-memory 캐시 (동일 인스턴스 재사용 시 야후 호출 절감)
+const priceCache = new Map();
+
+/**
+ * 야후 파이낸스 chart API로 보고일 부근 종가 조회
+ * @param {string} stockCode 6자리 단축코드 (예: '005930')
+ * @param {string} corpCls 'Y'=KOSPI, 'K'=KOSDAQ
+ * @param {string} dateYYYYMMDD 보고일 YYYYMMDD
+ * @returns {Promise<number|null>} 종가 (원) 또는 null
+ */
+async function fetchClosePrice(stockCode, corpCls, dateYYYYMMDD) {
+  if (!stockCode || stockCode.length !== 6 || !/^\d+$/.test(stockCode)) return null;
+
+  const cacheKey = `${stockCode}_${dateYYYYMMDD}`;
+  if (priceCache.has(cacheKey)) return priceCache.get(cacheKey);
+
+  // 코넥스(N), 기타(E)는 야후에 없을 가능성 높음 → KOSPI로 기본 시도
+  const suffix = corpCls === 'K' ? '.KQ' : '.KS';
+  const symbol = stockCode + suffix;
+
+  const y = parseInt(dateYYYYMMDD.slice(0, 4), 10);
+  const m = parseInt(dateYYYYMMDD.slice(4, 6), 10);
+  const d = parseInt(dateYYYYMMDD.slice(6, 8), 10);
+  const target = new Date(Date.UTC(y, m - 1, d, 6)); // KST 자정 ≈ UTC 15시 전일, 안전하게 06시 UTC
+  const targetTs = Math.floor(target.getTime() / 1000);
+
+  // 보고일 ±7일 (휴장일 보정)
+  const start = targetTs - 7 * 86400;
+  const end = targetTs + 7 * 86400;
+
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${start}&period2=${end}&interval=1d`;
+
+  try {
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; nps-watch/1.0)' },
+    });
+    if (!r.ok) {
+      priceCache.set(cacheKey, null);
+      return null;
+    }
+    const j = await r.json();
+    const result = j?.chart?.result?.[0];
+    if (!result) {
+      priceCache.set(cacheKey, null);
+      return null;
+    }
+    const ts = result.timestamp || [];
+    const closes = result.indicators?.quote?.[0]?.close || [];
+
+    // 보고일에 가장 가까운 거래일 종가
+    let best = -1;
+    let bestDiff = Infinity;
+    for (let i = 0; i < ts.length; i += 1) {
+      if (closes[i] == null) continue;
+      const diff = Math.abs(ts[i] - targetTs);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        best = i;
+      }
+    }
+    const price = best >= 0 ? closes[best] : null;
+    priceCache.set(cacheKey, price);
+    return price;
+  } catch (e) {
+    priceCache.set(cacheKey, null);
+    return null;
+  }
+}
+
 // 날짜를 YYYYMMDD 형식으로
 function fmtDate(d) {
   return d.toISOString().slice(0, 10).replace(/-/g, '');
@@ -99,6 +168,17 @@ export default async function handler(req, res) {
     }
 
     // -----------------------------
+    // STEP 1.5: corp_code → corp_cls 매핑 (코스피 Y / 코스닥 K)
+    // 야후 종목 심볼(.KS / .KQ) 결정에 사용
+    // -----------------------------
+    const corpClsMap = new Map();
+    for (const item of allList) {
+      if (item.corp_code && item.corp_cls) {
+        corpClsMap.set(item.corp_code, item.corp_cls);
+      }
+    }
+
+    // -----------------------------
     // STEP 2: 회사별 majorstock 병렬 조회
     // -----------------------------
     const uniqueCorps = Array.from(new Set(allList.map((x) => x.corp_code))).filter(Boolean);
@@ -135,40 +215,70 @@ export default async function handler(req, res) {
       if (!dedup.has(key)) dedup.set(key, x);
     }
 
-    const disclosures = Array.from(dedup.values())
-      .filter((x) => compactDate(x.rcept_dt) >= bgnDe)
-      .map((x) => {
-        const after = num(x.stkrt);
-        const delta = num(x.stkrt_irds);
-        const before = after != null && delta != null ? +(after - delta).toFixed(2) : null;
+    // 1차 가공 (지분율·주식수)
+    const filtered = Array.from(dedup.values()).filter(
+      (x) => compactDate(x.rcept_dt) >= bgnDe
+    );
 
-        const type =
-          delta == null
-            ? '변동'
-            : delta > 0
-            ? '증가'
-            : delta < 0
-            ? '감소'
-            : '변동없음';
+    const baseList = filtered.map((x) => {
+      const after = num(x.stkrt);
+      const delta = num(x.stkrt_irds);
+      const before = after != null && delta != null ? +(after - delta).toFixed(2) : null;
 
+      const type =
+        delta == null
+          ? '변동'
+          : delta > 0
+          ? '증가'
+          : delta < 0
+          ? '감소'
+          : '변동없음';
+
+      return {
+        _corp_code: x.corp_code,
+        name: x.corp_name,
+        stockCode: x.stock_code || null,
+        corpCls: corpClsMap.get(x.corp_code) || null, // 'Y' or 'K'
+        before,
+        after,
+        change: delta,
+        type,
+        date: dashDate(x.rcept_dt),
+        reportor: x.repror,
+        reportResn: x.report_resn || null,
+        receiptNo: x.rcept_no,
+        dartUrl: `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${x.rcept_no}`,
+        stockQty: num(x.stkqy),
+        stockQtyChange: num(x.stkqy_irds),
+        rcept_dt_compact: compactDate(x.rcept_dt),
+      };
+    });
+
+    // 2차 가공: 종가 조회 + 평가액 계산 (Phase 2, 야후 파이낸스)
+    const enriched = await Promise.all(
+      baseList.map(async (d) => {
+        const close = await fetchClosePrice(d.stockCode, d.corpCls, d.rcept_dt_compact);
+        const valueHold =
+          close != null && d.stockQty != null ? Math.round(close * d.stockQty) : null;
+        const valueChange =
+          close != null && d.stockQtyChange != null
+            ? Math.round(close * d.stockQtyChange)
+            : null;
+        // 내부용 필드 제거 후 반환
+        const { _corp_code, rcept_dt_compact, ...rest } = d;
         return {
-          name: x.corp_name,
-          stockCode: x.stock_code || null,
-          before,
-          after,
-          change: delta,
-          type,
-          date: dashDate(x.rcept_dt),
-          reportor: x.repror,
-          reportResn: x.report_resn || null,
-          receiptNo: x.rcept_no,
-          dartUrl: `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${x.rcept_no}`,
-          // 주식 수량 정보 (Phase 1)
-          stockQty: num(x.stkqy),                  // 보고 시점 보유주식수
-          stockQtyChange: num(x.stkqy_irds),       // 변동 수량 (+/-)
+          ...rest,
+          closePrice: close,
+          valueHold,
+          valueChange,
+          priceSource: close != null ? 'yahoo' : null,
         };
       })
-      .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    );
+
+    const disclosures = enriched.sort((a, b) =>
+      (b.date || '').localeCompare(a.date || '')
+    );
 
     // Vercel CDN 캐시 (10분) + stale-while-revalidate (30분)
     res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=1800');
