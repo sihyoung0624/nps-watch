@@ -168,14 +168,16 @@ export default async function handler(req, res) {
     }
 
     // -----------------------------
-    // STEP 1.5: corp_code → corp_cls 매핑 (코스피 Y / 코스닥 K)
-    // 야후 종목 심볼(.KS / .KQ) 결정에 사용
+    // STEP 1.5: corp_code 부가정보 매핑 (list.json 결과에서 추출)
+    //   - corp_cls: 'Y'=KOSPI, 'K'=KOSDAQ, 'N'=KONEX
+    //   - stock_code: 6자리 단축코드 (majorstock 응답에는 없으므로 별도 매핑 필요)
     // -----------------------------
     const corpClsMap = new Map();
+    const stockCodeMap = new Map();
     for (const item of allList) {
-      if (item.corp_code && item.corp_cls) {
-        corpClsMap.set(item.corp_code, item.corp_cls);
-      }
+      if (!item.corp_code) continue;
+      if (item.corp_cls)   corpClsMap.set(item.corp_code, item.corp_cls);
+      if (item.stock_code) stockCodeMap.set(item.corp_code, item.stock_code);
     }
 
     // -----------------------------
@@ -237,7 +239,7 @@ export default async function handler(req, res) {
       return {
         _corp_code: x.corp_code,
         name: x.corp_name,
-        stockCode: x.stock_code || null,
+        stockCode: x.stock_code || stockCodeMap.get(x.corp_code) || null,
         corpCls: corpClsMap.get(x.corp_code) || null, // 'Y' or 'K'
         before,
         after,
