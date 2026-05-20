@@ -761,7 +761,8 @@
 
       <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--divider-soft); font-size: 12px; color: var(--ink-muted-48); line-height: 1.6;">
         ※ 본 정보는 금융감독원 전자공시시스템(DART) 공시 자료를 가공한 것이며, 투자 권유가 아닙니다.<br />
-        ※ 5% 대량보유 보고는 변동일 +5영업일 이내 보고 의무가 있어 실제 거래와 시점이 다를 수 있습니다.
+        ※ 5% 대량보유 보고는 변동일 +5영업일 이내 보고 의무가 있어 실제 거래와 시점이 다를 수 있습니다.<br />
+        ※ 평가액은 <b>보고일 종가 × 주식수</b>로 산출한 <b>추정치</b>이며 실제 평균거래단가와 다를 수 있습니다. 종가 출처: Yahoo Finance.
       </div>
     </div>
   </section>
@@ -1093,6 +1094,27 @@
     return `${abs.toLocaleString('ko-KR')}주`;
   }
 
+  // 원화 금액 단축 표기 (조/억/만 단위)
+  function fmtKrw(amount) {
+    if (amount == null || isNaN(amount)) return null;
+    const abs = Math.abs(amount);
+    const sign = amount > 0 ? '+' : amount < 0 ? '-' : '';
+    if (abs >= 1_0000_0000_0000) return `${sign}${(abs / 1_0000_0000_0000).toFixed(2)}조원`;
+    if (abs >= 1_0000_0000)      return `${sign}${(abs / 1_0000_0000).toFixed(1)}억원`;
+    if (abs >= 1_0000)           return `${sign}${Math.round(abs / 1_0000).toLocaleString('ko-KR')}만원`;
+    return `${sign}${Math.round(abs).toLocaleString('ko-KR')}원`;
+  }
+
+  // 보유 평가액 (부호 없이)
+  function fmtKrwAbs(amount) {
+    if (amount == null || isNaN(amount)) return null;
+    const abs = Math.abs(amount);
+    if (abs >= 1_0000_0000_0000) return `${(abs / 1_0000_0000_0000).toFixed(2)}조원`;
+    if (abs >= 1_0000_0000)      return `${(abs / 1_0000_0000).toFixed(1)}억원`;
+    if (abs >= 1_0000)           return `${Math.round(abs / 1_0000).toLocaleString('ko-KR')}만원`;
+    return `${Math.round(abs).toLocaleString('ko-KR')}원`;
+  }
+
   function applyFilter(d) {
     // 검색
     if (currentSearch && !d.name.toLowerCase().includes(currentSearch.toLowerCase())) return false;
@@ -1138,14 +1160,25 @@
       const dartHtml = d.dartUrl
         ? `<a class="dart-link" href="${esc(d.dartUrl)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`
         : '';
-      // 주식 수 변동 표시 (Phase 1)
+      // 주식 수 변동 (Phase 1)
       const sharesChange = d.stockQtyChange != null ? fmtShares(d.stockQtyChange) : null;
       const sharesHold   = d.stockQty       != null ? fmtSharesAbs(d.stockQty)    : null;
+
+      // 평가액 (Phase 2)
+      const valueChange = d.valueChange != null ? fmtKrw(d.valueChange) : null;
+      const valueHold   = d.valueHold   != null ? fmtKrwAbs(d.valueHold) : null;
+
       const sharesHtml = sharesChange
-        ? `<span class="shares-change ${isUp ? 'up' : 'down'}">${esc(sharesChange)}</span>`
+        ? `<span class="shares-change ${isUp ? 'up' : 'down'}">${esc(sharesChange)}${
+            valueChange ? ` · 약 ${esc(valueChange.replace(/^[+-]/, ''))}` : ''
+          }</span>`
         : '';
-      const holdHtml = sharesHold
-        ? `<span class="shares-hold">보유 ${esc(sharesHold)}</span>`
+
+      const holdParts = [];
+      if (sharesHold) holdParts.push(`보유 ${esc(sharesHold)}`);
+      if (valueHold)  holdParts.push(`<span class="value-amount">≈ ${esc(valueHold)}</span>`);
+      const holdHtml = holdParts.length
+        ? `<div class="shares-row">${holdParts.join(' · ')}</div>`
         : '';
 
       item.innerHTML = `
@@ -1160,7 +1193,7 @@
             <span class="after">${after}%</span>
             ${sharesHtml}
           </div>
-          ${holdHtml ? `<div class="shares-row">${holdHtml}</div>` : ''}
+          ${holdHtml}
         </div>
         <div class="right">
           <div class="delta">${arrow} ${delta}%p</div>
