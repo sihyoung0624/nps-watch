@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "public": true,
   "functions": {
     "api/disclosures.js": { "maxDuration": 60 }
   },
