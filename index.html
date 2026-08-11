@@ -596,6 +596,271 @@
     .kpi-grid { grid-template-columns: 1fr 1fr; }
     .kpi-card .value { font-size: 22px; }
   }
+
+  /* ===== Portfolio Simulator ===== */
+  .sim-hero {
+    background: var(--parchment);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .sim-label {
+    font-size: 14px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.224px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .sim-amount-input {
+    display: flex;
+    align-items: center;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 6px 18px;
+    margin-bottom: 12px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .sim-amount-input:focus-within {
+    border-color: var(--primary-focus);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+  }
+  .sim-amount-input input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.28px;
+    color: var(--ink);
+    min-width: 0;
+    padding: 10px 0;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .sim-amount-input .unit {
+    color: var(--ink-muted-48);
+    font-size: 18px;
+    font-weight: 400;
+    padding-left: 8px;
+  }
+  .preset-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .preset {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    color: var(--ink-muted-80);
+    font-size: 13px;
+    letter-spacing: -0.224px;
+    border-radius: 9999px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .preset:hover { background: var(--surface-pearl); }
+  .preset:active { transform: scale(0.95); }
+
+  .mode-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .mode-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .mode-card:hover { background: var(--surface-pearl); }
+  .mode-card input[type="radio"] {
+    margin-top: 3px;
+    accent-color: var(--primary);
+    flex-shrink: 0;
+  }
+  .mode-card.selected {
+    border-color: var(--primary);
+    background: rgba(0, 102, 204, 0.04);
+  }
+  .mode-card .m-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.374px;
+    margin-bottom: 4px;
+  }
+  .mode-card .m-desc {
+    font-size: 13px;
+    color: var(--ink-muted-48);
+    line-height: 1.45;
+    letter-spacing: -0.224px;
+  }
+
+  .mode-options {
+    padding: 16px 18px;
+    background: var(--surface-pearl);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .mode-options.visible { display: block; }
+  .mode-options .subtitle {
+    font-size: 13px;
+    color: var(--ink-muted-48);
+    margin-bottom: 10px;
+    letter-spacing: -0.224px;
+  }
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .checkbox-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: -0.224px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .checkbox-chip input { margin: 0; accent-color: var(--primary); }
+  .checkbox-chip.checked {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+
+  .sim-calc-btn {
+    width: 100%;
+    background: var(--primary);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    border-radius: 9999px;
+    padding: 14px 24px;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.15s;
+    margin-top: 8px;
+  }
+  .sim-calc-btn:hover { opacity: 0.92; }
+  .sim-calc-btn:active { transform: scale(0.98); }
+
+  .sim-result {
+    display: none;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--divider-soft);
+  }
+  .sim-result.visible { display: block; }
+  .sim-result-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .sim-result-header h3 {
+    font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.28px;
+  }
+  .sim-result-summary {
+    font-size: 13px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.224px;
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-result-summary .cash {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .sim-chart-wrap {
+    position: relative;
+    height: 320px;
+    margin-bottom: 24px;
+  }
+  .sim-allocations {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sim-alloc-row {
+    display: grid;
+    grid-template-columns: 12px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+  }
+  .sim-alloc-row .swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+  .sim-alloc-row .name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+  }
+  .sim-alloc-row .detail {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.12px;
+  }
+  .sim-alloc-row .amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-alloc-row .amount .krw {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.374px;
+  }
+  .sim-alloc-row .amount .pct {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    margin-top: 2px;
+  }
+  .sim-alloc-row.cash-row {
+    background: var(--parchment);
+    border-style: dashed;
+  }
+
+  @media (max-width: 640px) {
+    .sim-hero { padding: 18px 14px; }
+    .sim-amount-input input { font-size: 22px; }
+    .mode-card { padding: 12px 14px; }
+    .mode-card .m-title { font-size: 15px; }
+    .mode-card .m-desc { font-size: 12px; }
+    .sim-chart-wrap { height: 280px; }
+    .sim-alloc-row { padding: 10px 12px; }
+    .sim-alloc-row .name { font-size: 14px; }
+    .sim-alloc-row .amount .krw { font-size: 15px; }
+  }
 </style>
 </head>
 <body>
@@ -625,6 +890,7 @@
       <button class="tab active" role="tab" data-tab="disclosures">5% 공시 알림 · 실시간</button>
       <button class="tab" role="tab" data-tab="allocation">자산 배분</button>
       <button class="tab" role="tab" data-tab="holdings">국내주식 종목</button>
+      <button class="tab" role="tab" data-tab="simulator">내 포트폴리오 시뮬레이션</button>
     </div>
   </div>
 </div>
@@ -768,6 +1034,95 @@
         ※ 본 정보는 금융감독원 전자공시시스템(DART) 공시 자료를 가공한 것이며, 투자 권유가 아닙니다.<br />
         ※ 5% 대량보유 보고는 변동일 +5영업일 이내 보고 의무가 있어 실제 거래와 시점이 다를 수 있습니다.<br />
         ※ 평가액은 <b>보고일 종가 × 주식수</b>로 산출한 <b>추정치</b>이며 실제 평균거래단가와 다를 수 있습니다. 종가 출처: Yahoo Finance.
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: Portfolio Simulator -->
+  <section class="panel" id="panel-simulator" role="tabpanel">
+    <div class="section light">
+      <div class="section-header">
+        <h2>내 포트폴리오 시뮬레이션</h2>
+        <div class="meta">국민연금의 배분 비율을 참고해 내 자산을 배분해봅니다</div>
+      </div>
+
+      <!-- 입력 -->
+      <div class="sim-hero">
+        <label class="sim-label" for="sim-amount">총 투자 가능 금액</label>
+        <div class="sim-amount-input">
+          <input type="text" id="sim-amount" placeholder="0" inputmode="numeric" autocomplete="off" />
+          <span class="unit">원</span>
+        </div>
+        <div class="preset-row">
+          <button class="preset" data-amount="1000000">100만</button>
+          <button class="preset" data-amount="5000000">500만</button>
+          <button class="preset" data-amount="10000000">1,000만</button>
+          <button class="preset" data-amount="50000000">5,000만</button>
+          <button class="preset" data-amount="100000000">1억</button>
+        </div>
+      </div>
+
+      <!-- 모드 선택 -->
+      <div class="mode-group" role="radiogroup" aria-label="배분 방식">
+        <label class="mode-card selected" data-mode-card="A">
+          <input type="radio" name="sim-mode" value="A" checked />
+          <div>
+            <div class="m-title">A. 국민연금 자산군 전체 배분</div>
+            <div class="m-desc">해외주식 38.2% · 국내채권 28.1% · 대체투자 17.8% · 국내주식 13.0% · 해외채권 2.4% · 단기자금 0.5% (국민연금 비율 그대로)</div>
+          </div>
+        </label>
+        <label class="mode-card" data-mode-card="B">
+          <input type="radio" name="sim-mode" value="B" />
+          <div>
+            <div class="m-title">B. 자산군 일부만 선택</div>
+            <div class="m-desc">체크한 자산군만 비율을 100%로 재정규화해 배분 (예: 국내주식+국내채권만 선택 시 두 개로 100%)</div>
+          </div>
+        </label>
+        <label class="mode-card" data-mode-card="C">
+          <input type="radio" name="sim-mode" value="C" />
+          <div>
+            <div class="m-title">C. 국내주식 종목별 배분</div>
+            <div class="m-desc">5% 공시된 종목들의 <b>국민연금 지분율(%)을 가중치</b>로 종목에 배분 · 실 종가 기반 매수 수량과 잔여 현금까지 계산</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- 모드별 추가 옵션 -->
+      <div class="mode-options" id="options-B">
+        <div class="subtitle">포함할 자산군 (체크 해제 시 재정규화됨)</div>
+        <div class="checkbox-group" id="asset-checks"></div>
+      </div>
+      <div class="mode-options" id="options-C">
+        <div class="subtitle">종목 필터</div>
+        <div class="checkbox-group">
+          <label class="checkbox-chip checked" data-filter-chip="all"><input type="radio" name="sim-filter" value="all" checked /> 전체</label>
+          <label class="checkbox-chip" data-filter-chip="up"><input type="radio" name="sim-filter" value="up" /> ▲ 증가만</label>
+          <label class="checkbox-chip" data-filter-chip="down"><input type="radio" name="sim-filter" value="down" /> ▼ 감소만</label>
+          <label class="checkbox-chip" data-filter-chip="new"><input type="radio" name="sim-filter" value="new" /> 신규 5%↑</label>
+        </div>
+      </div>
+
+      <!-- 계산 버튼 -->
+      <button class="sim-calc-btn" id="sim-calc-btn">포트폴리오 계산</button>
+
+      <!-- 결과 -->
+      <div class="sim-result" id="sim-result">
+        <div class="sim-result-header">
+          <h3 id="sim-result-title">배분 결과</h3>
+          <div class="sim-result-summary">
+            총 배분 <span id="sim-total-alloc">-</span> · 잔여 현금 <span class="cash" id="sim-cash">-</span>
+          </div>
+        </div>
+        <div class="sim-chart-wrap">
+          <canvas id="sim-donut"></canvas>
+        </div>
+        <div class="sim-allocations" id="sim-allocations"></div>
+
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--divider-soft); font-size: 12px; color: var(--ink-muted-48); line-height: 1.6;">
+          ※ 본 시뮬레이션은 국민연금의 공개된 배분 비율/공시 지분율을 참고한 <b>참고 배분</b>이며, 투자 자문·권유가 아닙니다.<br />
+          ※ 실제 매수 시 세금·수수료·주가 변동·매수 가능 여부(액면분할·거래정지 등) 별도 확인 필요합니다.<br />
+          ※ 채권·대체투자·해외 자산은 개인이 직접 매수하기 어려운 경우가 많으며 ETF/펀드로 접근이 필요할 수 있습니다.
+        </div>
       </div>
     </div>
   </section>
@@ -1287,6 +1642,322 @@
   });
 
   loadDisclosures();
+
+  /* ========================================================
+   * Portfolio Simulator (TAB 4)
+   * 완전 클라이언트 사이드 계산 · 로드된 데이터만 활용
+   * ======================================================== */
+
+  const simAmount        = document.getElementById('sim-amount');
+  const simModeRadios    = document.querySelectorAll('input[name="sim-mode"]');
+  const simFilterRadios  = document.querySelectorAll('input[name="sim-filter"]');
+  const simCalcBtn       = document.getElementById('sim-calc-btn');
+  const simResult        = document.getElementById('sim-result');
+  const simAllocations   = document.getElementById('sim-allocations');
+  const simDonutCanvas   = document.getElementById('sim-donut');
+  const optionsB         = document.getElementById('options-B');
+  const optionsC         = document.getElementById('options-C');
+  const assetChecksEl    = document.getElementById('asset-checks');
+  const presetBtns       = document.querySelectorAll('.preset');
+
+  let simDonutChart  = null;
+  let currentSimMode = 'A';
+  let currentSimFilter = 'all';
+
+  // 종목용 색상 팔레트 (40색, 색상환 회전)
+  const STOCK_PALETTE = [
+    '#0066cc', '#E24B4A', '#1D9E75', '#BA7517', '#7B1FA2', '#00838F',
+    '#F57C00', '#546E7A', '#1565C0', '#5D4037', '#8E24AA', '#00695C',
+    '#EF6C00', '#4E342E', '#6A1B9A', '#0288D1', '#43A047', '#C62828',
+    '#AD1457', '#4527A0', '#283593', '#01579B', '#004D40', '#33691E',
+    '#827717', '#F9A825', '#FF6F00', '#E65100', '#BF360C', '#3E2723',
+    '#212121', '#37474F', '#263238', '#455A64', '#4A148C', '#B71C1C',
+    '#1B5E20', '#F17400', '#01579B', '#3F51B5',
+  ];
+
+  function fmtWon(n) {
+    if (n == null || isNaN(n)) return '0';
+    return Math.round(n).toLocaleString('ko-KR');
+  }
+  function parseWon(s) {
+    if (!s) return 0;
+    return parseInt(String(s).replace(/[^0-9]/g, ''), 10) || 0;
+  }
+
+  // 금액 입력 자동 콤마
+  simAmount.addEventListener('input', (e) => {
+    const v = parseWon(e.target.value);
+    e.target.value = v ? fmtWon(v) : '';
+  });
+
+  // 프리셋
+  presetBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const amt = parseInt(btn.dataset.amount, 10);
+      simAmount.value = fmtWon(amt);
+      simAmount.focus();
+    });
+  });
+
+  // 자산군 체크박스 렌더 (모드 B)
+  function renderAssetChecks() {
+    assetChecksEl.innerHTML = '';
+    assetAllocation.items.forEach((item) => {
+      const label = document.createElement('label');
+      label.className = 'checkbox-chip checked';
+      label.innerHTML =
+        `<input type="checkbox" data-asset="${esc(item.name)}" checked />` +
+        `<span style="display:inline-block;width:8px;height:8px;background:${esc(item.color)};border-radius:2px;margin-right:2px;"></span>` +
+        `${esc(item.name)} <span style="opacity:0.7;">${item.ratio.toFixed(1)}%</span>`;
+      const input = label.querySelector('input');
+      input.addEventListener('change', () => {
+        label.classList.toggle('checked', input.checked);
+      });
+      assetChecksEl.appendChild(label);
+    });
+  }
+  renderAssetChecks();
+
+  // 모드 라디오 → 옵션 영역 토글 + 카드 selected 스타일
+  simModeRadios.forEach((r) => {
+    r.addEventListener('change', () => {
+      currentSimMode = r.value;
+      document.querySelectorAll('.mode-card').forEach((c) => c.classList.remove('selected'));
+      const card = document.querySelector(`[data-mode-card="${currentSimMode}"]`);
+      if (card) card.classList.add('selected');
+      optionsB.classList.toggle('visible', currentSimMode === 'B');
+      optionsC.classList.toggle('visible', currentSimMode === 'C');
+    });
+  });
+
+  // 필터 라디오
+  simFilterRadios.forEach((r) => {
+    r.addEventListener('change', () => {
+      currentSimFilter = r.value;
+      document.querySelectorAll('[data-filter-chip]').forEach((c) => c.classList.remove('checked'));
+      const chip = document.querySelector(`[data-filter-chip="${currentSimFilter}"]`);
+      if (chip) chip.classList.add('checked');
+    });
+  });
+
+  /* ---------- 계산 로직 ---------- */
+
+  function calcModeA(total) {
+    return assetAllocation.items.map((item) => ({
+      label: item.name,
+      color: item.color,
+      weight: item.ratio / 100,
+      amount: Math.round((total * item.ratio) / 100),
+      detail: `국민연금 비율 ${item.ratio.toFixed(1)}%`,
+    }));
+  }
+
+  function calcModeB(total) {
+    const selected = [];
+    assetChecksEl.querySelectorAll('input[type="checkbox"]:checked').forEach((cb) => {
+      const item = assetAllocation.items.find((x) => x.name === cb.dataset.asset);
+      if (item) selected.push(item);
+    });
+    if (selected.length === 0) return [];
+    const sumRatio = selected.reduce((s, x) => s + x.ratio, 0);
+    return selected.map((item) => {
+      const w = item.ratio / sumRatio;
+      return {
+        label: item.name,
+        color: item.color,
+        weight: w,
+        amount: Math.round(total * w),
+        detail: `국민연금 ${item.ratio.toFixed(1)}% → 재정규화 ${(w * 100).toFixed(1)}%`,
+      };
+    });
+  }
+
+  function calcModeC(total) {
+    if (!disclosures || disclosures.length === 0) return [];
+
+    // 필터
+    let filtered = disclosures.slice();
+    if (currentSimFilter === 'up')   filtered = filtered.filter((d) => d.type === '증가');
+    if (currentSimFilter === 'down') filtered = filtered.filter((d) => d.type === '감소');
+    if (currentSimFilter === 'new')  filtered = filtered.filter((d) =>
+      (d.before != null && d.before < 5 && d.after >= 5) ||
+      (d.reportResn && d.reportResn.includes('신규'))
+    );
+
+    // 같은 종목 여러 건 → 가장 최신만
+    const sorted = filtered.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const bySymbol = new Map();
+    for (const d of sorted) {
+      const key = d.stockCode || d.name;
+      if (!bySymbol.has(key)) bySymbol.set(key, d);
+    }
+    const unique = Array.from(bySymbol.values()).filter((d) => d.after != null && d.after > 0);
+    if (unique.length === 0) return [];
+
+    const sumStake = unique.reduce((s, d) => s + d.after, 0);
+
+    const rows = unique.map((d, i) => {
+      const w = d.after / sumStake;
+      const target = total * w;
+      const price = d.closePrice;
+      const shares = price ? Math.floor(target / price) : 0;
+      const amount = shares * (price || 0);
+      const priceStr = price
+        ? `${Math.round(price).toLocaleString('ko-KR')}원`
+        : '종가조회실패';
+      return {
+        label: d.name,
+        color: STOCK_PALETTE[i % STOCK_PALETTE.length],
+        weight: amount / total, // 실 배분 비중(잔여 반영)
+        targetWeight: w,       // 이론 가중치(지분율 기반)
+        amount,
+        target,
+        shares,
+        price,
+        stockCode: d.stockCode,
+        detail: price
+          ? `${shares.toLocaleString('ko-KR')}주 × ${priceStr} · 지분율 ${d.after.toFixed(2)}%`
+          : `지분율 ${d.after.toFixed(2)}% · 종가 조회 실패`,
+      };
+    });
+
+    return rows.sort((a, b) => b.amount - a.amount);
+  }
+
+  /* ---------- 렌더링 ---------- */
+
+  function renderSimResult(total, allocations, title) {
+    document.getElementById('sim-result-title').textContent = title;
+
+    const totalAlloc = allocations.reduce((s, a) => s + a.amount, 0);
+    const cash = Math.max(0, total - totalAlloc);
+
+    document.getElementById('sim-total-alloc').textContent = fmtWon(totalAlloc) + '원';
+    document.getElementById('sim-cash').textContent = fmtWon(cash) + '원';
+
+    // 리스트
+    simAllocations.innerHTML = '';
+    allocations.forEach((a) => {
+      const row = document.createElement('div');
+      row.className = 'sim-alloc-row';
+      row.innerHTML = `
+        <div class="swatch" style="background:${esc(a.color)};"></div>
+        <div>
+          <div class="name">${esc(a.label)}</div>
+          <div class="detail">${esc(a.detail)}</div>
+        </div>
+        <div class="amount">
+          <div class="krw">${fmtWon(a.amount)}원</div>
+          <div class="pct">${(a.weight * 100).toFixed(2)}%</div>
+        </div>
+      `;
+      simAllocations.appendChild(row);
+    });
+
+    // 잔여 현금 행
+    if (cash > 0) {
+      const row = document.createElement('div');
+      row.className = 'sim-alloc-row cash-row';
+      row.innerHTML = `
+        <div class="swatch" style="background:#c8c8ca;"></div>
+        <div>
+          <div class="name">잔여 현금</div>
+          <div class="detail">1주 단위 매수 후 남는 금액</div>
+        </div>
+        <div class="amount">
+          <div class="krw">${fmtWon(cash)}원</div>
+          <div class="pct">${((cash / total) * 100).toFixed(2)}%</div>
+        </div>
+      `;
+      simAllocations.appendChild(row);
+    }
+
+    // 도넛 차트
+    if (simDonutChart) simDonutChart.destroy();
+    const chartRows = allocations.slice();
+    if (cash > 0) chartRows.push({ label: '잔여 현금', color: '#c8c8ca', amount: cash });
+
+    simDonutChart = new Chart(simDonutCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: chartRows.map((a) => a.label),
+        datasets: [{
+          data: chartRows.map((a) => a.amount),
+          backgroundColor: chartRows.map((a) => a.color),
+          borderColor: '#fff',
+          borderWidth: 2,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: chartRows.length <= 8 ? 'right' : 'bottom',
+            labels: {
+              color: '#1d1d1f',
+              font: { size: 12 },
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 10,
+              boxWidth: 10,
+            },
+          },
+          tooltip: {
+            backgroundColor: '#1d1d1f',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            padding: 12,
+            cornerRadius: 8,
+            callbacks: {
+              label: (ctx) => {
+                const val = ctx.parsed;
+                const pct = ((val / total) * 100).toFixed(1);
+                return `${ctx.label}: ${fmtWon(val)}원 (${pct}%)`;
+              },
+            },
+          },
+        },
+        cutout: '58%',
+      },
+    });
+
+    simResult.classList.add('visible');
+    simResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ---------- 계산 실행 ---------- */
+
+  simCalcBtn.addEventListener('click', () => {
+    const total = parseWon(simAmount.value);
+    if (total < 10000) {
+      alert('총 투자금액을 1만원 이상 입력해주세요.');
+      simAmount.focus();
+      return;
+    }
+
+    if (currentSimMode === 'C' && (!disclosures || disclosures.length === 0)) {
+      alert('종목 데이터를 불러오는 중입니다. 5% 공시 알림 탭에서 데이터 로드 확인 후 다시 시도해주세요.');
+      return;
+    }
+
+    let allocations = [];
+    let title = '';
+    if (currentSimMode === 'A') {
+      allocations = calcModeA(total);
+      title = 'A. 국민연금 자산군 전체 배분';
+    } else if (currentSimMode === 'B') {
+      allocations = calcModeB(total);
+      title = 'B. 자산군 일부 재정규화 배분';
+      if (allocations.length === 0) { alert('하나 이상의 자산군을 선택해주세요.'); return; }
+    } else {
+      allocations = calcModeC(total);
+      title = 'C. 국내주식 종목별 배분';
+      if (allocations.length === 0) { alert('선택한 조건에 맞는 종목이 없습니다. 필터를 완화해보세요.'); return; }
+    }
+
+    renderSimResult(total, allocations, title);
+  });
 </script>
 
 </body>
