@@ -850,6 +850,183 @@
     border-style: dashed;
   }
 
+  /* 내 포트폴리오 입력 */
+  .my-portfolio {
+    background: var(--parchment);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .my-portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .my-portfolio-header .title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+  }
+  .my-portfolio-header .hint {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+  }
+  .my-holdings {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .holding-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1.2fr auto;
+    gap: 8px;
+    align-items: center;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 8px 10px;
+  }
+  .holding-row input {
+    background: transparent;
+    border: 0;
+    outline: 0;
+    font-size: 15px;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+    padding: 6px 8px;
+    min-width: 0;
+    width: 100%;
+  }
+  .holding-row .amount-input {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  .holding-row .amount-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--surface-pearl);
+    border-radius: 6px;
+    padding: 0 6px;
+  }
+  .holding-row .amount-wrap .unit {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    padding-left: 2px;
+  }
+  .holding-row .del-btn {
+    background: transparent;
+    border: 0;
+    color: var(--ink-muted-48);
+    font-size: 18px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .holding-row .del-btn:hover { color: var(--down); background: rgba(21, 101, 192, 0.06); }
+
+  .add-holding-btn {
+    background: var(--canvas);
+    border: 1px dashed var(--hairline);
+    color: var(--primary);
+    font-size: 14px;
+    letter-spacing: -0.224px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .add-holding-btn:hover { background: var(--surface-pearl); border-color: var(--primary); }
+
+  /* 비교 결과 */
+  .compare-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--divider-soft);
+  }
+  .compare-summary {
+    background: var(--surface-pearl);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .compare-summary .metric .label {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+    margin-bottom: 4px;
+  }
+  .compare-summary .metric .value {
+    font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.28px;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .compare-summary .metric .value.similarity {
+    color: var(--primary);
+  }
+  .compare-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.2fr auto auto auto;
+    gap: 10px;
+    align-items: center;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    letter-spacing: -0.224px;
+  }
+  .compare-row .cname {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .compare-row .col {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .compare-row .col .k { color: var(--ink); font-weight: 500; }
+  .compare-row .col .sublabel { display: block; font-size: 11px; color: var(--ink-muted-48); margin-top: 1px; }
+  .compare-row .diff.over  { color: var(--up);   font-weight: 600; }
+  .compare-row .diff.under { color: var(--down); font-weight: 600; }
+  .compare-row.header {
+    background: transparent;
+    border: 0;
+    padding: 2px 14px 4px;
+    color: var(--ink-muted-48);
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+  .compare-row.header .col { font-weight: 400; }
+
+  @media (max-width: 640px) {
+    .holding-row { grid-template-columns: 1fr; gap: 6px; padding: 8px; }
+    .holding-row .del-btn { justify-self: flex-end; }
+    .compare-summary { grid-template-columns: 1fr; gap: 10px; padding: 14px 16px; }
+    .compare-summary .metric .value { font-size: 18px; }
+    .compare-row { grid-template-columns: 1fr auto auto; }
+    .compare-row .my-col { display: none; }
+    .compare-row.header .my-col { display: none; }
+  }
+
   @media (max-width: 640px) {
     .sim-hero { padding: 18px 14px; }
     .sim-amount-input input { font-size: 22px; }
@@ -1093,6 +1270,11 @@
         <div class="checkbox-group" id="asset-checks"></div>
       </div>
       <div class="mode-options" id="options-C">
+        <div class="subtitle">가중치 방식</div>
+        <div class="checkbox-group" style="margin-bottom: 14px;">
+          <label class="checkbox-chip checked" data-weight-chip="stake"><input type="radio" name="sim-weight" value="stake" checked /> 국민연금 지분율 기준</label>
+          <label class="checkbox-chip" data-weight-chip="marketcap"><input type="radio" name="sim-weight" value="marketcap" /> 시가총액 기준 (근사)</label>
+        </div>
         <div class="subtitle">종목 필터</div>
         <div class="checkbox-group">
           <label class="checkbox-chip checked" data-filter-chip="all"><input type="radio" name="sim-filter" value="all" checked /> 전체</label>
@@ -1100,6 +1282,19 @@
           <label class="checkbox-chip" data-filter-chip="down"><input type="radio" name="sim-filter" value="down" /> ▼ 감소만</label>
           <label class="checkbox-chip" data-filter-chip="new"><input type="radio" name="sim-filter" value="new" /> 신규 5%↑</label>
         </div>
+        <div style="margin-top: 10px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;">
+          ※ 시가총액은 <b>NPS 보유 평가액 ÷ NPS 지분율</b>로 계산한 <b>근사치</b>입니다 (별도 시세 API 미사용).
+        </div>
+      </div>
+
+      <!-- 내 실제 포트폴리오 (선택) -->
+      <div class="my-portfolio">
+        <div class="my-portfolio-header">
+          <span class="title">📥 내 실제 포트폴리오 (선택)</span>
+          <span class="hint">입력 시 시뮬레이션 결과와 자동 비교 · 모드 C에서만 종목별 비교 지원</span>
+        </div>
+        <div class="my-holdings" id="my-holdings"></div>
+        <button class="add-holding-btn" id="add-holding-btn">+ 종목 추가</button>
       </div>
 
       <!-- 계산 버튼 -->
@@ -1117,6 +1312,16 @@
           <canvas id="sim-donut"></canvas>
         </div>
         <div class="sim-allocations" id="sim-allocations"></div>
+
+        <!-- 비교 결과 (내 포트폴리오 입력한 경우만 표시) -->
+        <div class="compare-section" id="compare-section" style="display:none;">
+          <div class="section-header" style="margin-bottom: 12px;">
+            <h3 style="font-family: 'SF Pro Display', system-ui, sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.28px;">📊 내 포트폴리오 vs 시뮬 추천</h3>
+          </div>
+          <div class="compare-summary" id="compare-summary"></div>
+          <div class="compare-list" id="compare-list"></div>
+          <div id="compare-hint" style="margin-top: 10px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;"></div>
+        </div>
 
         <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--divider-soft); font-size: 12px; color: var(--ink-muted-48); line-height: 1.6;">
           ※ 본 시뮬레이션은 국민연금의 공개된 배분 비율/공시 지분율을 참고한 <b>참고 배분</b>이며, 투자 자문·권유가 아닙니다.<br />
@@ -1661,8 +1866,12 @@
   const presetBtns       = document.querySelectorAll('.preset');
 
   let simDonutChart  = null;
-  let currentSimMode = 'A';
+  let currentSimMode   = 'A';
   let currentSimFilter = 'all';
+  let currentSimWeight = 'stake'; // 'stake' | 'marketcap'
+  let lastSimAllocations = [];    // 최근 시뮬 결과 (비교에 사용)
+  let lastSimMode = null;
+  let lastSimTotal = 0;
 
   // 종목용 색상 팔레트 (40색, 색상환 회전)
   const STOCK_PALETTE = [
@@ -1740,6 +1949,54 @@
     });
   });
 
+  // 가중치 라디오 (지분율 vs 시총)
+  document.querySelectorAll('input[name="sim-weight"]').forEach((r) => {
+    r.addEventListener('change', () => {
+      currentSimWeight = r.value;
+      document.querySelectorAll('[data-weight-chip]').forEach((c) => c.classList.remove('checked'));
+      const chip = document.querySelector(`[data-weight-chip="${currentSimWeight}"]`);
+      if (chip) chip.classList.add('checked');
+    });
+  });
+
+  /* ---------- 내 포트폴리오 입력 관리 ---------- */
+  const myHoldingsEl = document.getElementById('my-holdings');
+  const addHoldingBtn = document.getElementById('add-holding-btn');
+
+  function addHoldingRow(name = '', amount = '') {
+    const row = document.createElement('div');
+    row.className = 'holding-row';
+    row.innerHTML = `
+      <input type="text" class="name-input" placeholder="종목명 (예: 삼성전자)" value="${esc(name)}" autocomplete="off" />
+      <div class="amount-wrap">
+        <input type="text" class="amount-input" placeholder="0" inputmode="numeric" value="${amount ? fmtWon(amount) : ''}" />
+        <span class="unit">원</span>
+      </div>
+      <button class="del-btn" title="삭제" aria-label="이 종목 삭제">×</button>
+    `;
+    const amtInput = row.querySelector('.amount-input');
+    amtInput.addEventListener('input', (e) => {
+      const v = parseWon(e.target.value);
+      e.target.value = v ? fmtWon(v) : '';
+    });
+    row.querySelector('.del-btn').addEventListener('click', () => {
+      row.remove();
+    });
+    myHoldingsEl.appendChild(row);
+  }
+  addHoldingBtn.addEventListener('click', () => addHoldingRow());
+
+  function readMyHoldings() {
+    const rows = myHoldingsEl.querySelectorAll('.holding-row');
+    const out = [];
+    rows.forEach((r) => {
+      const name = r.querySelector('.name-input').value.trim();
+      const amount = parseWon(r.querySelector('.amount-input').value);
+      if (name && amount > 0) out.push({ name, amount });
+    });
+    return out;
+  }
+
   /* ---------- 계산 로직 ---------- */
 
   function calcModeA(total) {
@@ -1772,6 +2029,13 @@
     });
   }
 
+  // 시가총액 근사치: NPS 보유 평가액 ÷ NPS 지분율(비율)
+  //   marketCap ≈ valueHold / (after/100) = valueHold * 100 / after
+  function approxMarketCap(d) {
+    if (d.valueHold == null || d.after == null || d.after <= 0) return null;
+    return d.valueHold * 100 / d.after;
+  }
+
   function calcModeC(total) {
     if (!disclosures || disclosures.length === 0) return [];
 
@@ -1794,34 +2058,211 @@
     const unique = Array.from(bySymbol.values()).filter((d) => d.after != null && d.after > 0);
     if (unique.length === 0) return [];
 
-    const sumStake = unique.reduce((s, d) => s + d.after, 0);
+    // 가중치 기반값 결정
+    const useMarketCap = (currentSimWeight === 'marketcap');
+    const weightOf = (d) => {
+      if (useMarketCap) {
+        const mc = approxMarketCap(d);
+        return mc != null ? mc : 0;
+      }
+      return d.after;
+    };
 
-    const rows = unique.map((d, i) => {
-      const w = d.after / sumStake;
-      const target = total * w;
+    // 시총 옵션인데 marketCap 계산 불가한 종목 제외
+    const withWeight = unique.map((d) => ({ d, w: weightOf(d) })).filter((x) => x.w > 0);
+    if (withWeight.length === 0) return [];
+
+    const sumWeight = withWeight.reduce((s, x) => s + x.w, 0);
+
+    const rows = withWeight.map(({ d, w }, i) => {
+      const share = w / sumWeight;
+      const target = total * share;
       const price = d.closePrice;
       const shares = price ? Math.floor(target / price) : 0;
       const amount = shares * (price || 0);
       const priceStr = price
         ? `${Math.round(price).toLocaleString('ko-KR')}원`
         : '종가조회실패';
+
+      let detail;
+      if (useMarketCap) {
+        const mc = approxMarketCap(d);
+        const mcStr = mc >= 1e12
+          ? `${(mc / 1e12).toFixed(2)}조원`
+          : mc >= 1e8
+          ? `${Math.round(mc / 1e8).toLocaleString('ko-KR')}억원`
+          : `${Math.round(mc).toLocaleString('ko-KR')}원`;
+        detail = price
+          ? `${shares.toLocaleString('ko-KR')}주 × ${priceStr} · 시총 ≈ ${mcStr}`
+          : `시총 ≈ ${mcStr} · 종가 조회 실패`;
+      } else {
+        detail = price
+          ? `${shares.toLocaleString('ko-KR')}주 × ${priceStr} · 지분율 ${d.after.toFixed(2)}%`
+          : `지분율 ${d.after.toFixed(2)}% · 종가 조회 실패`;
+      }
+
       return {
         label: d.name,
         color: STOCK_PALETTE[i % STOCK_PALETTE.length],
-        weight: amount / total, // 실 배분 비중(잔여 반영)
-        targetWeight: w,       // 이론 가중치(지분율 기반)
+        weight: amount / total,
+        targetWeight: share,
         amount,
         target,
         shares,
         price,
         stockCode: d.stockCode,
-        detail: price
-          ? `${shares.toLocaleString('ko-KR')}주 × ${priceStr} · 지분율 ${d.after.toFixed(2)}%`
-          : `지분율 ${d.after.toFixed(2)}% · 종가 조회 실패`,
+        detail,
       };
     });
 
     return rows.sort((a, b) => b.amount - a.amount);
+  }
+
+  /* ---------- 비교: 내 포트폴리오 vs 시뮬 ---------- */
+
+  // 종목명 정규화 (비교 매칭용)
+  function normName(s) {
+    return (s || '').replace(/\s+/g, '').replace(/[()（）]/g, '').toLowerCase();
+  }
+
+  function computeCompare(myHoldings, simAllocations, mode) {
+    const myTotal = myHoldings.reduce((s, h) => s + h.amount, 0);
+    const simTotal = simAllocations.reduce((s, a) => s + a.amount, 0);
+    if (myTotal <= 0 || simTotal <= 0) return null;
+
+    // 종목명 → 시뮬 배분액 매핑
+    const simByName = new Map();
+    simAllocations.forEach((a) => simByName.set(normName(a.label), a));
+
+    // 사용자 → 정규화 → 매칭
+    const rows = [];
+    const seenSimNames = new Set();
+
+    myHoldings.forEach((h) => {
+      const key = normName(h.name);
+      const sim = simByName.get(key);
+      const myWeight = h.amount / myTotal;
+      if (sim) {
+        seenSimNames.add(key);
+        rows.push({
+          name: h.name,
+          simAmount: sim.amount,
+          simWeight: sim.amount / simTotal,
+          myAmount: h.amount,
+          myWeight,
+          matched: true,
+        });
+      } else {
+        rows.push({
+          name: h.name,
+          simAmount: 0,
+          simWeight: 0,
+          myAmount: h.amount,
+          myWeight,
+          matched: false,
+          note: '시뮬 배분에 없음',
+        });
+      }
+    });
+
+    // 시뮬에는 있는데 내가 안 가진 종목
+    simAllocations.forEach((a) => {
+      if (!seenSimNames.has(normName(a.label))) {
+        rows.push({
+          name: a.label,
+          simAmount: a.amount,
+          simWeight: a.amount / simTotal,
+          myAmount: 0,
+          myWeight: 0,
+          matched: false,
+          note: '내 보유에 없음',
+        });
+      }
+    });
+
+    // 배분 유사도 (L1 norm 기반, 0~1)
+    // similarity = 1 - Σ|myWeight - simWeight| / 2
+    const l1 = rows.reduce((s, r) => s + Math.abs(r.myWeight - r.simWeight), 0);
+    const similarity = Math.max(0, Math.min(1, 1 - l1 / 2));
+
+    // 정렬: |차이 금액| 큰 순
+    rows.sort((a, b) => Math.abs(b.myAmount - b.simAmount) - Math.abs(a.myAmount - a.simAmount));
+
+    return { rows, myTotal, simTotal, similarity, mode };
+  }
+
+  function renderCompare(cmp) {
+    const section = document.getElementById('compare-section');
+    const summaryEl = document.getElementById('compare-summary');
+    const listEl = document.getElementById('compare-list');
+    const hintEl = document.getElementById('compare-hint');
+
+    if (!cmp) {
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = 'block';
+
+    // 요약
+    const simTot = cmp.simTotal;
+    const myTot = cmp.myTotal;
+    const gap = myTot - simTot;
+    const gapStr = (gap >= 0 ? '+' : '-') + fmtWon(Math.abs(gap));
+    summaryEl.innerHTML = `
+      <div class="metric">
+        <div class="label">배분 유사도 (100%에 가까울수록 국민연금과 일치)</div>
+        <div class="value similarity">${(cmp.similarity * 100).toFixed(1)}%</div>
+      </div>
+      <div class="metric">
+        <div class="label">총액 비교</div>
+        <div class="value">${fmtWon(myTot)}원 <span style="font-size:12px;color:var(--ink-muted-48);font-weight:400;">(내) · 시뮬 ${fmtWon(simTot)}원 · 차 ${gapStr}원</span></div>
+      </div>
+    `;
+
+    // 리스트 (헤더 + 행)
+    listEl.innerHTML = '';
+    const header = document.createElement('div');
+    header.className = 'compare-row header';
+    header.innerHTML = `
+      <div class="cname">종목</div>
+      <div class="col">시뮬 추천</div>
+      <div class="col my-col">내 실제</div>
+      <div class="col">차이</div>
+    `;
+    listEl.appendChild(header);
+
+    cmp.rows.forEach((r) => {
+      const diff = r.myAmount - r.simAmount;
+      const diffCls = diff > 0 ? 'over' : diff < 0 ? 'under' : '';
+      const diffSign = diff > 0 ? '+' : '';
+      const noteHtml = r.note ? `<span style="font-size:11px;color:var(--ink-muted-48);margin-left:6px;">(${esc(r.note)})</span>` : '';
+
+      const row = document.createElement('div');
+      row.className = 'compare-row';
+      row.innerHTML = `
+        <div class="cname">${esc(r.name)}${noteHtml}</div>
+        <div class="col">
+          <span class="k">${fmtWon(r.simAmount)}원</span>
+          <span class="sublabel">${(r.simWeight * 100).toFixed(1)}%</span>
+        </div>
+        <div class="col my-col">
+          <span class="k">${fmtWon(r.myAmount)}원</span>
+          <span class="sublabel">${(r.myWeight * 100).toFixed(1)}%</span>
+        </div>
+        <div class="col diff ${diffCls}">
+          ${diffSign}${fmtWon(Math.abs(diff))}원
+          <span class="sublabel">${diff > 0 ? '초과' : diff < 0 ? '부족' : '동일'}</span>
+        </div>
+      `;
+      listEl.appendChild(row);
+    });
+
+    // 힌트
+    if (cmp.mode !== 'C') {
+      hintEl.innerHTML = '※ 자산군 모드(A/B)에서는 종목명 매칭이 안 되므로 <b>총액 비교와 유사도</b>만 표시됩니다. 종목별 비교를 원하시면 <b>모드 C</b>로 계산해주세요.';
+    } else {
+      hintEl.innerHTML = '※ 종목명은 완전 일치가 아니어도 공백/괄호 무시 후 매칭됩니다. 매칭 안 되면 "시뮬 배분에 없음" 또는 "내 보유에 없음"으로 표시됩니다.';
+    }
   }
 
   /* ---------- 렌더링 ---------- */
@@ -1952,11 +2393,25 @@
       if (allocations.length === 0) { alert('하나 이상의 자산군을 선택해주세요.'); return; }
     } else {
       allocations = calcModeC(total);
-      title = 'C. 국내주식 종목별 배분';
+      const weightLabel = currentSimWeight === 'marketcap' ? '시가총액 가중' : '국민연금 지분율 가중';
+      title = `C. 국내주식 종목별 배분 (${weightLabel})`;
       if (allocations.length === 0) { alert('선택한 조건에 맞는 종목이 없습니다. 필터를 완화해보세요.'); return; }
     }
 
     renderSimResult(total, allocations, title);
+    lastSimAllocations = allocations;
+    lastSimMode = currentSimMode;
+    lastSimTotal = total;
+
+    // 내 포트폴리오 비교 (입력이 있을 때만)
+    const myHoldings = readMyHoldings();
+    if (myHoldings.length > 0) {
+      const cmp = computeCompare(myHoldings, allocations, currentSimMode);
+      renderCompare(cmp);
+    } else {
+      const section = document.getElementById('compare-section');
+      if (section) section.style.display = 'none';
+    }
   });
 </script>
 
