@@ -1630,9 +1630,34 @@
     letter-spacing: -0.12px;
     vertical-align: middle;
   }
-  .data-badge.sample { background: rgba(249, 168, 37, 0.14); color: #9A6C00; border: 1px solid rgba(249, 168, 37, 0.35); }
-  .data-badge.live   { background: rgba(29, 158, 117, 0.1); color: #147a5a; border: 1px solid rgba(29, 158, 117, 0.3); }
-  .data-badge.stale  { background: rgba(198, 40, 40, 0.08); color: #C62828; border: 1px solid rgba(198, 40, 40, 0.25); }
+  .data-badge.sample   { background: rgba(249, 168, 37, 0.14); color: #9A6C00; border: 1px solid rgba(249, 168, 37, 0.35); }
+  .data-badge.live     { background: rgba(29, 158, 117, 0.1); color: #147a5a; border: 1px solid rgba(29, 158, 117, 0.3); }
+  .data-badge.stale    { background: rgba(198, 40, 40, 0.08); color: #C62828; border: 1px solid rgba(198, 40, 40, 0.25); }
+  /* 기관 공식 발표 수치 (단, 확정 전 잠정치일 수 있음) */
+  .data-badge.official { background: rgba(0, 102, 204, 0.09); color: #0A4E9B; border: 1px solid rgba(0, 102, 204, 0.28); }
+
+  /* 차트 대체 텍스트 — 그래프를 못 보는 환경에서도 수치 확인 가능 */
+  .chart-alt-text {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .chart-alt-text .alt-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    background: var(--surface-pearl);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 12px;
+    letter-spacing: -0.12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .chart-alt-text .alt-item .an { color: var(--ink-muted-80); }
+  .chart-alt-text .alt-item .av { font-weight: 600; color: var(--ink); }
+  .chart-alt-text .alt-item .aa { color: var(--ink-muted-48); font-size: 11px; }
 
   /* 시뮬레이터 카드 강조 뱃지 */
   .highlight-badge {
@@ -1772,28 +1797,28 @@
       </div>
 
       <div class="data-meta">
-        <span class="data-badge sample">샘플 데이터</span>
-        <span class="dm-item"><span class="dm-label">기준일</span> <span class="dm-value">2026년 3월 말 (예시 수치)</span></span>
-        <span class="dm-item"><span class="dm-label">출처(실데이터 연동 예정)</span> <a href="https://fund.nps.or.kr" target="_blank" rel="noopener noreferrer">기금운용본부 fund.nps.or.kr ↗</a></span>
-        <span class="dm-item"><span class="dm-label">비고</span> <span class="dm-value">아래 자산배분·연도별 수치는 화면 구성용 샘플이며 실제 공시 수치가 아닙니다</span></span>
+        <span class="data-badge official" id="alloc-badge">공식 발표</span>
+        <span class="dm-item"><span class="dm-label">기준일</span> <span class="dm-value" id="alloc-basedate">–</span></span>
+        <span class="dm-item"><span class="dm-label">출처</span> <a href="https://fund.nps.or.kr/oprtprcn/otln/getOHED0013M0.do" target="_blank" rel="noopener noreferrer">기금운용본부 운용현황 개요 ↗</a></span>
+        <span class="dm-item"><span class="dm-label">비고</span> <span class="dm-value">기금운용본부 고지에 따라 당해·직전 연도 수치는 운용성과 확정 전까지 <b>잠정치</b>입니다</span></span>
       </div>
 
       <!-- KPI Cards -->
       <section class="kpi-grid" aria-label="주요 지표">
         <div class="kpi-card">
-          <div class="label">총 운용 자산 <span class="data-badge sample">샘플</span></div>
-          <div class="value" id="kpi-total">1,180<span class="unit">조원</span></div>
-          <div class="delta">예시 수치 · 실제 아님</div>
+          <div class="label">총 운용 자산 <span class="data-badge official">공식</span></div>
+          <div class="value" id="kpi-total">–<span class="unit">조원</span></div>
+          <div class="delta" id="kpi-total-delta">–</div>
         </div>
         <div class="kpi-card">
-          <div class="label">국내주식 비중 <span class="data-badge sample">샘플</span></div>
-          <div class="value" id="kpi-domestic">13.0<span class="unit">%</span></div>
-          <div class="delta">예시 수치 · 실제 아님</div>
+          <div class="label">국내주식 비중 <span class="data-badge official">공식</span></div>
+          <div class="value" id="kpi-domestic">–<span class="unit">%</span></div>
+          <div class="delta" id="kpi-domestic-delta">–</div>
         </div>
         <div class="kpi-card">
-          <div class="label">해외주식 비중 <span class="data-badge sample">샘플</span></div>
-          <div class="value" id="kpi-overseas">38.2<span class="unit">%</span></div>
-          <div class="delta">예시 수치 · 실제 아님</div>
+          <div class="label">해외주식 비중 <span class="data-badge official">공식</span></div>
+          <div class="value" id="kpi-overseas">–<span class="unit">%</span></div>
+          <div class="delta" id="kpi-overseas-delta">–</div>
         </div>
         <div class="kpi-card">
           <div class="label">이달 5% 공시 <span class="data-badge live">공시 기준</span></div>
@@ -1805,7 +1830,7 @@
       <!-- 다이제스트: 자산배분 mini + 최근 공시 -->
       <div class="digest-grid">
         <div class="digest-card">
-          <h4>자산군 배분 요약 <span class="data-badge sample">샘플</span> <a class="link" href="#allocation-detail">상세 ↓</a></h4>
+          <h4>자산군 배분 요약 <span class="data-badge official">공식</span> <a class="link" href="#allocation-detail">상세 ↓</a></h4>
           <div class="digest-chart-mini">
             <canvas id="overview-donut"></canvas>
           </div>
@@ -1820,14 +1845,17 @@
     <!-- 자산 배분 상세 (자산배분 탭에서 이동) -->
     <div class="section light" id="allocation-detail">
       <div class="section-header">
-        <h2>자산군별 배분 <span class="data-badge sample">샘플</span></h2>
-        <div class="meta">예시 기준일 · <span id="base-date-1">2026년 3월 말</span> (실제 공시 수치 아님)</div>
+        <h2>자산군별 배분 <span class="data-badge official">공식 발표</span></h2>
+        <div class="meta">기준일 · <span id="base-date-1">–</span></div>
       </div>
       <div class="chart-wrap tall">
         <canvas id="chart-allocation"></canvas>
       </div>
+      <div id="alloc-table-text" class="chart-alt-text"></div>
       <div style="margin-top: 12px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;">
-        ※ 화면 구성용 샘플입니다. 실데이터 연동 시 출처: 국민연금기금운용본부(fund.nps.or.kr) 월간 운용현황.
+        ※ 출처: <a href="https://fund.nps.or.kr/oprtprcn/otln/getOHED0013M0.do" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">국민연금기금운용본부 운용현황 개요 ↗</a>
+        · 기금운용본부 고지에 따라 당해·직전 연도 수치는 운용성과 확정 전까지 <b>잠정치</b>로 제공됩니다.<br />
+        ※ 반올림으로 각 자산군 비중의 합이 100%와 소수점 단위로 다를 수 있습니다.
       </div>
     </div>
 
@@ -1840,7 +1868,9 @@
         <canvas id="chart-trend"></canvas>
       </div>
       <div style="margin-top: 12px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;">
-        ※ 화면 구성용 샘플입니다. 실데이터 연동 시 출처: 국민연금기금운용본부(fund.nps.or.kr) 연차보고서.
+        ※ 이 그래프는 <b>화면 구성용 샘플</b>이며 위의 공식 자산배분 수치와 <b>다릅니다</b>.
+        기금운용본부가 연도별 자산군 비중 추이를 표 형태 데이터로 제공하지 않아 실데이터 미연동 상태입니다.
+        연도별 확정 수치는 <a href="https://fund.nps.or.kr" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">기금운용본부 연차보고서 ↗</a>에서 확인할 수 있습니다.
       </div>
     </div>
   </section>
@@ -2097,14 +2127,14 @@
           <input type="radio" name="sim-mode" value="A" checked />
           <div>
             <div class="m-title">A. 국민연금 자산군 전체 배분</div>
-            <div class="m-desc">해외주식 38.2% · 국내채권 28.1% · 대체투자 17.8% · 국내주식 13.0% · 해외채권 2.4% · 단기자금 0.5% (국민연금 비율 그대로)</div>
+            <div class="m-desc" id="mode-a-desc">–</div>
           </div>
         </label>
         <label class="mode-card" data-mode-card="B">
           <input type="radio" name="sim-mode" value="B" />
           <div>
             <div class="m-title">B. 자산군 일부만 선택</div>
-            <div class="m-desc">체크한 자산군만 골라 그 비율의 합을 100%로 다시 맞춰(재정규화) 배분 — 예: 국내주식 13%+국내채권 28%만 선택하면 두 비율을 합쳐 100%가 되도록 각각 32% : 68%로 환산</div>
+            <div class="m-desc" id="mode-b-desc">체크한 자산군만 골라 그 비율의 합을 100%로 다시 맞춰(재정규화) 배분합니다.</div>
           </div>
         </label>
         <label class="mode-card" data-mode-card="C">
@@ -2195,7 +2225,7 @@
 </main>
 
 <footer class="page-footer">
-  ※ 샘플 데이터 기준 · 실제 데이터: fund.nps.or.kr + dart.fss.or.kr
+  ※ 출처: 국민연금기금운용본부(fund.nps.or.kr) 자산배분 · 금융감독원 전자공시시스템(dart.fss.or.kr) 5% 공시
 </footer>
 
 <script>
@@ -2206,25 +2236,43 @@
    * 출처: 공공데이터포털 data.go.kr (국민연금 대량보유 API)
    * ========================================================= */
 
+  /* 국민연금 자산배분 — 실데이터
+   * 출처: 국민연금기금운용본부 운용현황 개요
+   *   https://fund.nps.or.kr/oprtprcn/otln/getOHED0013M0.do
+   * 기준일: 2026년 5월 말 (기금운용본부 표기 기준)
+   * 주의: 기금운용본부 고지에 따라 당해연도·직전연도 수치는
+   *       운용성과 확정 전까지 "잠정치"로 제공됨. isProvisional 참조.
+   * 갱신 방법: 매월 위 페이지에서 자산군별 금액/비중을 확인해
+   *            baseDate / totalAsset / items[].amount / items[].ratio 갱신.
+   * investable: 시뮬레이터(모드 A·B) 배분 대상 여부.
+   *             '복지·기타 부문'은 투자 자산군이 아니므로 false. */
   const assetAllocation = {
-    baseDate: "2026년 3월 말",
-    totalAsset: 1180,
+    baseDate: "2026년 5월 말",
+    isProvisional: true,
+    sourceName: "국민연금기금운용본부",
+    sourceUrl: "https://fund.nps.or.kr/oprtprcn/otln/getOHED0013M0.do",
+    totalAsset: 1848.7,
     items: [
-      { name: "해외주식", ratio: 38.2, color: "#378ADD" },
-      { name: "국내채권", ratio: 28.1, color: "#639922" },
-      { name: "대체투자", ratio: 17.8, color: "#BA7517" },
-      { name: "국내주식", ratio: 13.0, color: "#1D9E75" },
-      { name: "해외채권", ratio: 2.4,  color: "#888780" },
-      { name: "단기자금", ratio: 0.5,  color: "#B4B2A9" }
+      { name: "해외주식",      amount: 650.7, ratio: 35.2, color: "#378ADD", investable: true },
+      { name: "국내주식",      amount: 543.6, ratio: 29.4, color: "#1D9E75", investable: true },
+      { name: "국내채권",      amount: 289.6, ratio: 15.7, color: "#639922", investable: true },
+      { name: "대체투자",      amount: 254.5, ratio: 13.8, color: "#BA7517", investable: true },
+      { name: "해외채권",      amount: 107.0, ratio:  5.8, color: "#888780", investable: true },
+      { name: "단기자금",      amount:   4.2, ratio:  0.2, color: "#B4B2A9", investable: true },
+      { name: "복지·기타 부문", amount:   1.0, ratio:  0.1, color: "#D6D4CC", investable: false }
     ]
   };
 
+  /* ⚠️ 연도별 추이 — 화면 구성용 샘플 (실데이터 아님)
+   * 기금운용본부가 연도별 자산군 비중 추이를 표 데이터로 제공하지 않아 미연동.
+   * 위 assetAllocation(공식)과 수치가 다르며, UI에도 "샘플" 뱃지로 구분 표시됨.
+   * 실데이터 확보 경로: 기금운용본부 연차보고서(연 1회 발간) 수치를 수동 입력 */
   const yearlyTrend = [
-    { year: "2022",      domestic: 18.2, overseas: 29.1 },
-    { year: "2023",      domestic: 16.8, overseas: 32.4 },
-    { year: "2024",      domestic: 15.1, overseas: 34.9 },
-    { year: "2025",      domestic: 14.2, overseas: 36.8 },
-    { year: "2026 (3월)", domestic: 13.0, overseas: 38.2 }
+    { year: "2022 (예시)", domestic: 18.2, overseas: 29.1 },
+    { year: "2023 (예시)", domestic: 16.8, overseas: 32.4 },
+    { year: "2024 (예시)", domestic: 15.1, overseas: 34.9 },
+    { year: "2025 (예시)", domestic: 14.2, overseas: 36.8 },
+    { year: "2026 (예시)", domestic: 13.0, overseas: 38.2 }
   ];
 
   /* [실데이터 연동 시] 교체 대상
@@ -2291,6 +2339,82 @@
   /* ========== Chart 1: Allocation (Horizontal Bar) ==========
    * 홈 탭이 기본 활성이라 이 캔버스는 숨김 상태로 시작 →
    * 숨김 상태에서 Chart 생성 시 높이 0으로 고정되는 문제가 있어 lazy 초기화 */
+  /* 자산배분 실데이터를 화면 곳곳에 반영
+   *  - 기준일 / 잠정치 뱃지
+   *  - KPI 3종 (총 운용자산, 국내주식 비중, 해외주식 비중)
+   *  - 차트 대체 텍스트 (접근성)
+   *  - 시뮬레이터 모드 A·B 설명
+   * 값은 assetAllocation 한 곳만 갱신하면 전부 따라옵니다.
+   * 주의: 차트 lazy 초기화 블록 바깥에 두어야 페이지 로드 시점에 호출 가능 */
+  function renderAllocationMeta() {
+    const a = assetAllocation;
+    const suffix = a.isProvisional ? ' (잠정치)' : '';
+
+    // 기준일
+    const bd = a.baseDate + suffix;
+    const el1 = document.getElementById('alloc-basedate');
+    const el2 = document.getElementById('base-date-1');
+    if (el1) el1.textContent = bd;
+    if (el2) el2.textContent = bd;
+
+    const badge = document.getElementById('alloc-badge');
+    if (badge) badge.textContent = a.isProvisional ? '공식 발표 (잠정치)' : '공식 발표';
+
+    // KPI
+    const find = (n) => a.items.find((x) => x.name === n);
+    const dom = find('국내주식');
+    const ovs = find('해외주식');
+
+    const kTotal = document.getElementById('kpi-total');
+    if (kTotal) kTotal.innerHTML = `${a.totalAsset.toLocaleString('ko-KR', {maximumFractionDigits: 1})}<span class="unit">조원</span>`;
+    const kTotalD = document.getElementById('kpi-total-delta');
+    if (kTotalD) kTotalD.textContent = `${a.baseDate} 기준${suffix}`;
+
+    if (dom) {
+      const k = document.getElementById('kpi-domestic');
+      if (k) k.innerHTML = `${dom.ratio.toFixed(1)}<span class="unit">%</span>`;
+      const kd = document.getElementById('kpi-domestic-delta');
+      if (kd) kd.textContent = `${dom.amount.toLocaleString('ko-KR')}조원`;
+    }
+    if (ovs) {
+      const k = document.getElementById('kpi-overseas');
+      if (k) k.innerHTML = `${ovs.ratio.toFixed(1)}<span class="unit">%</span>`;
+      const kd = document.getElementById('kpi-overseas-delta');
+      if (kd) kd.textContent = `${ovs.amount.toLocaleString('ko-KR')}조원`;
+    }
+
+    // 차트 대체 텍스트 (그래프를 못 보는 환경 대비)
+    const altEl = document.getElementById('alloc-table-text');
+    if (altEl) {
+      altEl.innerHTML = a.items.map((i) =>
+        `<span class="alt-item"><span class="an">${esc(i.name)}</span>` +
+        `<span class="av">${i.ratio.toFixed(1)}%</span>` +
+        `<span class="aa">${i.amount.toLocaleString('ko-KR')}조원</span></span>`
+      ).join('');
+    }
+
+    // 시뮬레이터 모드 A·B 설명도 실데이터 기준으로 생성
+    const inv = a.items.filter((i) => i.investable !== false);
+    const descA = document.getElementById('mode-a-desc');
+    if (descA) {
+      descA.textContent =
+        inv.map((i) => `${i.name} ${i.ratio.toFixed(1)}%`).join(' · ') +
+        ` — ${a.baseDate} 기준${suffix}, 국민연금 비율대로 배분`;
+    }
+    const descB = document.getElementById('mode-b-desc');
+    if (descB && inv.length >= 2) {
+      // 실제 데이터로 재정규화 예시 생성 (상위 2개 자산군)
+      const [x, y] = inv;
+      const sum = x.ratio + y.ratio;
+      descB.textContent =
+        `체크한 자산군만 골라 그 비율의 합을 100%로 다시 맞춰(재정규화) 배분 — ` +
+        `예: ${x.name} ${x.ratio.toFixed(1)}% + ${y.name} ${y.ratio.toFixed(1)}%만 선택하면 ` +
+        `두 비율을 합쳐 100%가 되도록 각각 ${(x.ratio / sum * 100).toFixed(0)}% : ${(y.ratio / sum * 100).toFixed(0)}%로 환산`;
+    }
+  }
+
+  /* 홈 탭이 기본 활성이라 이 캔버스는 숨김 상태로 시작 →
+   * 숨김 상태에서 Chart 생성 시 높이 0으로 고정되는 문제가 있어 lazy 초기화 */
   let allocationChart = null;
   function initAllocationChart() {
   if (allocationChart) return;
@@ -2321,7 +2445,13 @@
           padding: 12,
           cornerRadius: 8,
           displayColors: false,
-          callbacks: { label: (ctx) => ctx.parsed.x.toFixed(1) + '%' }
+          callbacks: {
+            label: (ctx) => {
+              const item = assetAllocation.items[ctx.dataIndex];
+              const amt = item ? ` · ${item.amount.toLocaleString('ko-KR')}조원` : '';
+              return ctx.parsed.x.toFixed(1) + '%' + amt;
+            }
+          }
         }
       },
       scales: {
@@ -3396,6 +3526,9 @@
     loadDisclosures();
   });
 
+  // 자산배분 실데이터를 KPI·기준일·대체텍스트에 즉시 반영
+  renderAllocationMeta();
+
   loadDisclosures();
 
   /* ========================================================
@@ -3463,7 +3596,7 @@
   // 자산군 체크박스 렌더 (모드 B)
   function renderAssetChecks() {
     assetChecksEl.innerHTML = '';
-    assetAllocation.items.forEach((item) => {
+    investableItems().forEach((item) => {
       const label = document.createElement('label');
       label.className = 'checkbox-chip checked';
       label.innerHTML =
@@ -3653,14 +3786,26 @@
 
   /* ---------- 계산 로직 ---------- */
 
+  /* 투자 자산군만 추출 ('복지·기타 부문'은 운용 자산군이 아니므로 제외) */
+  function investableItems() {
+    return assetAllocation.items.filter((i) => i.investable !== false);
+  }
+
   function calcModeA(total) {
-    return assetAllocation.items.map((item) => ({
-      label: item.name,
-      color: item.color,
-      weight: item.ratio / 100,
-      amount: Math.round((total * item.ratio) / 100),
-      detail: `국민연금 비율 ${item.ratio.toFixed(1)}%`,
-    }));
+    const items = investableItems();
+    // 복지·기타 제외로 합이 100%에 못 미치므로 투자 자산군 기준 재정규화
+    const sumRatio = items.reduce((s, x) => s + x.ratio, 0);
+    return items.map((item) => {
+      const w = item.ratio / sumRatio;
+      return {
+        label: item.name,
+        color: item.color,
+        weight: w,
+        // floor: 반올림 합계가 총액을 초과하지 않도록 (잔여는 '잔여 현금'으로 표시됨)
+        amount: Math.floor(total * w),
+        detail: `국민연금 ${item.ratio.toFixed(1)}% → 투자 자산군 기준 ${(w * 100).toFixed(1)}%`,
+      };
+    });
   }
 
   function calcModeB(total) {
@@ -3677,7 +3822,8 @@
         label: item.name,
         color: item.color,
         weight: w,
-        amount: Math.round(total * w),
+        // floor: 반올림 합계가 총액을 초과하지 않도록
+        amount: Math.floor(total * w),
         detail: `국민연금 ${item.ratio.toFixed(1)}% → 재정규화 ${(w * 100).toFixed(1)}%`,
       };
     });
@@ -4131,10 +4277,10 @@
     let title = '';
     if (currentSimMode === 'A') {
       allocations = calcModeA(total);
-      title = 'A. 국민연금 자산군 배분 참고 (샘플 비율 기준)';
+      title = `A. 국민연금 자산군 배분 참고 (${assetAllocation.baseDate} 기준)`;
     } else if (currentSimMode === 'B') {
       allocations = calcModeB(total);
-      title = 'B. 자산군 일부 재정규화 참고 (샘플 비율 기준)';
+      title = `B. 자산군 일부 재정규화 참고 (${assetAllocation.baseDate} 기준)`;
       if (allocations.length === 0) { alert('하나 이상의 자산군을 선택해주세요.'); return; }
     } else {
       allocations = calcModeC(total);
