@@ -1343,6 +1343,118 @@
     .digest-chart-mini { height: 220px; }
   }
 
+  /* ===== 관심 종목 (★) ===== */
+  .fav-btn {
+    background: transparent;
+    border: 0;
+    padding: 4px 6px;
+    cursor: pointer;
+    color: var(--ink-muted-48);
+    font-size: 16px;
+    line-height: 1;
+    border-radius: 6px;
+    transition: color 0.15s, transform 0.1s;
+  }
+  .fav-btn:hover { color: #F9A825; background: rgba(249, 168, 37, 0.08); }
+  .fav-btn.faved { color: #F9A825; }
+  .fav-btn:active { transform: scale(0.9); }
+
+  /* 홈 알림 배너 */
+  .notif-banner {
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.06), rgba(249, 168, 37, 0.08));
+    border: 1px solid rgba(0, 102, 204, 0.2);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .notif-banner .icon { font-size: 22px; line-height: 1.2; }
+  .notif-banner .body { flex: 1; }
+  .notif-banner .b-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.374px;
+    margin-bottom: 4px;
+  }
+  .notif-banner .b-desc {
+    font-size: 13px;
+    color: var(--ink-muted-80);
+    line-height: 1.4;
+    letter-spacing: -0.224px;
+  }
+  .notif-banner .b-desc b { color: var(--primary); }
+  .notif-banner .b-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .notif-banner .b-btn {
+    background: var(--primary);
+    color: #fff;
+    border: 0;
+    border-radius: 9999px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .notif-banner .b-btn:hover { opacity: 0.9; }
+  .notif-banner .b-btn.ghost {
+    background: transparent;
+    color: var(--ink-muted-80);
+    border: 1px solid var(--hairline);
+  }
+  .notif-banner .b-btn.ghost:hover { background: var(--surface-pearl); }
+
+  /* 섹터 뱃지 */
+  .sector-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    letter-spacing: -0.12px;
+    color: var(--ink-muted-80);
+    background: var(--surface-pearl);
+    border: 1px solid var(--hairline);
+    margin-left: 4px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .sector-badge.반도체        { background: rgba(0, 102, 204, 0.08);   color: #0066cc; border-color: rgba(0, 102, 204, 0.2); }
+  .sector-badge.금융          { background: rgba(29, 158, 117, 0.08);  color: #1D9E75; border-color: rgba(29, 158, 117, 0.2); }
+  .sector-badge.바이오제약    { background: rgba(186, 117, 23, 0.08);  color: #BA7517; border-color: rgba(186, 117, 23, 0.2); }
+  .sector-badge.자동차부품    { background: rgba(69, 90, 100, 0.08);   color: #455A64; border-color: rgba(69, 90, 100, 0.2); }
+  .sector-badge.IT플랫폼      { background: rgba(123, 31, 162, 0.08);  color: #7B1FA2; border-color: rgba(123, 31, 162, 0.2); }
+  .sector-badge.배터리소재    { background: rgba(21, 101, 192, 0.08);  color: #1565C0; border-color: rgba(21, 101, 192, 0.2); }
+  .sector-badge.유통소비재    { background: rgba(198, 40, 40, 0.08);   color: #C62828; border-color: rgba(198, 40, 40, 0.2); }
+  .sector-badge.조선해운      { background: rgba(2, 136, 209, 0.08);   color: #0288D1; border-color: rgba(2, 136, 209, 0.2); }
+  .sector-badge.에너지화학    { background: rgba(239, 108, 0, 0.08);   color: #EF6C00; border-color: rgba(239, 108, 0, 0.2); }
+  .sector-badge.건설부동산    { background: rgba(93, 64, 55, 0.08);    color: #5D4037; border-color: rgba(93, 64, 55, 0.2); }
+  .sector-badge.통신          { background: rgba(0, 131, 143, 0.08);   color: #00838F; border-color: rgba(0, 131, 143, 0.2); }
+  .sector-badge.미디어엔터    { background: rgba(173, 20, 87, 0.08);   color: #AD1457; border-color: rgba(173, 20, 87, 0.2); }
+  .sector-badge.기계장비      { background: rgba(51, 105, 30, 0.08);   color: #33691E; border-color: rgba(51, 105, 30, 0.2); }
+  .sector-badge.운송물류      { background: rgba(2, 119, 189, 0.08);   color: #0277BD; border-color: rgba(2, 119, 189, 0.2); }
+  .sector-badge.기타          { background: var(--surface-pearl);      color: var(--ink-muted-48); }
+
+  /* 시뮬레이터 카드 강조 뱃지 */
+  .highlight-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--up), #FF6F00);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    letter-spacing: -0.12px;
+    margin-left: 4px;
+  }
+
   @media (max-width: 640px) {
     .holding-row { grid-template-columns: 1fr; gap: 6px; padding: 8px; }
     .holding-row .del-btn { justify-self: flex-end; }
@@ -1396,6 +1508,7 @@
 <main class="page">
   <!-- TAB: HOME (기본 활성) -->
   <section class="panel active" id="panel-home" role="tabpanel">
+    <div class="notif-banner" id="home-notif-banner" style="display:none;"></div>
     <div class="home-hero">
       <h1>국민연금 투자 포트폴리오 모니터</h1>
       <p>실시간 5% 대량보유 공시 · 자산 배분 · 포트폴리오 시뮬레이션</p>
@@ -1442,13 +1555,13 @@
 
       <button class="home-card" data-goto="simulator" type="button">
         <div class="card-icon">🎯</div>
-        <div class="card-title">국민연금 따라 투자하기</div>
-        <div class="card-desc">내 자금으로 국민연금 배분을 따라 하면 어떻게 배분될지 시뮬레이션</div>
+        <div class="card-title">국민연금 따라 투자하기 <span class="highlight-badge">🔄 리밸런싱 액션</span></div>
+        <div class="card-desc">내 자금으로 국민연금 배분을 따라 하면 어떻게 배분될지 시뮬레이션 · <b style="color:var(--primary);">내 포트폴리오 입력 시 매수/매도 지침 자동 산출</b></div>
         <div class="card-sub">
           <span class="sub-item">자산군 배분</span>
           <span class="sub-item">종목별 배분</span>
           <span class="sub-item">내 포트폴리오 비교</span>
-          <span class="sub-item">리밸런싱 액션</span>
+          <span class="sub-item" style="color:var(--up);font-weight:600;">🔄 리밸런싱 액션</span>
         </div>
         <div class="card-cta"><span>바로가기</span><span>→</span></div>
       </button>
@@ -1599,6 +1712,7 @@
         <button class="filter-pill" data-filter="up">▲ 증가</button>
         <button class="filter-pill" data-filter="down">▼ 감소</button>
         <button class="filter-pill" data-filter="new">신규 5%↑</button>
+        <button class="filter-pill" data-filter="fav">★ 관심 <span id="fav-count-badge" style="opacity:0.7;font-size:11px;"></span></button>
         <select id="disclosure-sort" class="filter-pill" style="appearance: none; -webkit-appearance: none; padding-right: 24px; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%2210%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%237a7a7a%22 stroke-width=%223%22><polyline points=%226 9 12 15 18 9%22/></svg>'); background-repeat: no-repeat; background-position: right 10px center; min-width: 110px;">
           <option value="value-desc" selected>변동 금액순 ↓</option>
           <option value="hold-desc">보유 금액순 ↓</option>
@@ -1607,6 +1721,26 @@
           <option value="delta-desc">변동률 큰순</option>
           <option value="stake-desc">지분율 ↓</option>
         </select>
+      </div>
+
+      <div class="filter-row" style="margin-bottom: 10px;">
+        <span class="filter-label" style="margin-right:4px;">섹터</span>
+        <button class="filter-pill active" data-sector="all">전체</button>
+        <button class="filter-pill" data-sector="반도체">반도체</button>
+        <button class="filter-pill" data-sector="금융">금융</button>
+        <button class="filter-pill" data-sector="바이오제약">바이오제약</button>
+        <button class="filter-pill" data-sector="IT플랫폼">IT/플랫폼</button>
+        <button class="filter-pill" data-sector="배터리소재">배터리·소재</button>
+        <button class="filter-pill" data-sector="자동차부품">자동차</button>
+        <button class="filter-pill" data-sector="유통소비재">유통·소비재</button>
+        <button class="filter-pill" data-sector="조선해운">조선·해운</button>
+        <button class="filter-pill" data-sector="운송물류">운송·물류</button>
+        <button class="filter-pill" data-sector="에너지화학">에너지·화학</button>
+        <button class="filter-pill" data-sector="건설부동산">건설·부동산</button>
+        <button class="filter-pill" data-sector="기계장비">기계·장비</button>
+        <button class="filter-pill" data-sector="통신">통신</button>
+        <button class="filter-pill" data-sector="미디어엔터">미디어·엔터</button>
+        <button class="filter-pill" data-sector="기타">기타</button>
       </div>
 
       <div style="margin-bottom: 4px;">
@@ -1639,6 +1773,21 @@
       <div class="section-header">
         <h2>내 포트폴리오 시뮬레이션</h2>
         <div class="meta">국민연금의 배분 비율을 참고해 내 자산을 배분해봅니다</div>
+      </div>
+
+      <!-- 리밸런싱 기능 안내 -->
+      <div style="background: linear-gradient(135deg, rgba(29, 158, 117, 0.06), rgba(255, 111, 0, 0.06)); border: 1px solid rgba(29, 158, 117, 0.2); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
+        <div style="font-size: 22px;">💡</div>
+        <div style="flex: 1;">
+          <div style="font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -0.374px; margin-bottom: 4px;">
+            🔄 리밸런싱 액션 자동 산출 기능이 있습니다
+          </div>
+          <div style="font-size: 12px; color: var(--ink-muted-80); line-height: 1.5; letter-spacing: -0.224px;">
+            아래에서 <b>총액 입력 → 내 실제 포트폴리오 종목 입력 → 계산</b>을 실행하면,
+            결과 하단에 <b style="color: var(--up);">매수해야 할 종목</b>과 <b style="color: var(--down);">매도해야 할 종목</b>이
+            수량·금액과 함께 자동으로 계산됩니다.
+          </div>
+        </div>
       </div>
 
       <!-- 입력 -->
@@ -2006,6 +2155,138 @@
   renderHoldings();
   searchInput.addEventListener('input', (e) => renderHoldings(e.target.value));
 
+  /* ========================================================
+   * 섹터/업종 매핑 (하드코딩)
+   * NPS 5% 공시에 자주 등장하는 종목 위주로 정리
+   * 매칭 없으면 '기타'로 fallback
+   * ======================================================== */
+  const SECTOR_MAP = {
+    // 반도체
+    '삼성전자': '반도체', 'SK하이닉스': '반도체', '한미반도체': '반도체',
+    '원익IPS': '반도체', '유진테크': '반도체', '피에스케이홀딩스': '반도체',
+    '티씨케이': '반도체', '하나머티리얼즈': '반도체', '한솔케미칼': '반도체',
+    '한솔아이원스': '반도체', 'SK오션플랜트': '반도체', '파인엠텍': '반도체',
+    'DB하이텍': '반도체', '솔브레인': '반도체',
+    // 배터리·소재
+    'LG에너지솔루션': '배터리소재', '삼성SDI': '배터리소재', 'SK이노베이션': '배터리소재',
+    'POSCO홀딩스': '배터리소재', '에코프로': '배터리소재', '에코프로비엠': '배터리소재',
+    '엘앤에프': '배터리소재', 'SKC': '배터리소재', '포스코퓨처엠': '배터리소재',
+    // 금융
+    'KB금융': '금융', '신한지주': '금융', '하나금융': '금융', '하나금융지주': '금융',
+    '우리금융': '금융', '우리금융지주': '금융', '메리츠금융지주': '금융',
+    '카카오뱅크': '금융', '삼성증권': '금융', '미래에셋증권': '금융',
+    '한국금융지주': '금융', 'BNK금융지주': '금융', 'DGB금융지주': '금융',
+    '삼성생명': '금융', '한화생명': '금융', 'DB손해보험': '금융', '현대해상': '금융',
+    'DB금융투자': '금융', '키움증권': '금융',
+    // 바이오·제약
+    '삼성바이오로직스': '바이오제약', '셀트리온': '바이오제약', 'SK바이오사이언스': '바이오제약',
+    '유한양행': '바이오제약', '녹십자': '바이오제약', '한미약품': '바이오제약',
+    '보령': '바이오제약', '종근당': '바이오제약', '대웅제약': '바이오제약',
+    '메디톡스': '바이오제약', '휴젤': '바이오제약', '알테오젠': '바이오제약',
+    '에스티팜': '바이오제약', 'HK이노엔': '바이오제약', '동아에스티': '바이오제약',
+    // IT·플랫폼
+    '카카오': 'IT플랫폼', '네이버': 'IT플랫폼', 'NAVER': 'IT플랫폼',
+    '엔씨소프트': 'IT플랫폼', '크래프톤': 'IT플랫폼', '넷마블': 'IT플랫폼',
+    '카카오게임즈': 'IT플랫폼', '펄어비스': 'IT플랫폼', '더존비즈온': 'IT플랫폼',
+    '에스투더블유': 'IT플랫폼',
+    // 자동차·부품
+    '현대차': '자동차부품', '현대자동차': '자동차부품', '기아': '자동차부품',
+    '현대모비스': '자동차부품', '한온시스템': '자동차부품', '만도': '자동차부품',
+    '에스엘': '자동차부품', 'HL만도': '자동차부품', 'SNT다이내믹스': '자동차부품',
+    // 유통·소비재
+    '롯데쇼핑': '유통소비재', '이마트': '유통소비재', '신세계': '유통소비재',
+    '현대백화점': '유통소비재', 'BGF리테일': '유통소비재', 'GS리테일': '유통소비재',
+    '코웨이': '유통소비재', '오리온': '유통소비재', 'CJ제일제당': '유통소비재',
+    '하이트진로': '유통소비재', '농심': '유통소비재', '아모레퍼시픽': '유통소비재',
+    'LG생활건강': '유통소비재', 'F&F': '유통소비재', '휠라홀딩스': '유통소비재',
+    '달바글로벌': '유통소비재',
+    // 조선·해운
+    'HD한국조선해양': '조선해운', '삼성중공업': '조선해운', '한화오션': '조선해운',
+    '팬오션': '조선해운', 'HMM': '조선해운', '대한해운': '조선해운',
+    // 운송·물류
+    'CJ대한통운': '운송물류', '한진': '운송물류', '대한항공': '운송물류',
+    '아시아나항공': '운송물류', '롯데관광개발': '운송물류',
+    // 에너지·화학
+    'S-Oil': '에너지화학', 'GS': '에너지화학', 'LG화학': '에너지화학',
+    '롯데케미칼': '에너지화학', '금호석유': '에너지화학', '한화솔루션': '에너지화학',
+    '한국전력': '에너지화학', '한국가스공사': '에너지화학', 'OCI': '에너지화학',
+    // 건설·부동산·기계
+    '현대건설': '건설부동산', '대우건설': '건설부동산', 'GS건설': '건설부동산',
+    'HDC현대산업개발': '건설부동산', '삼성물산': '건설부동산',
+    '두산에너빌리티': '기계장비', '두산': '기계장비', '한화에어로스페이스': '기계장비',
+    '한국항공우주': '기계장비', 'LIG넥스원': '기계장비', '현대로템': '기계장비',
+    // 통신
+    'SK텔레콤': '통신', 'KT': '통신', 'LG유플러스': '통신',
+    // 미디어·엔터
+    '하이브': '미디어엔터', 'SM': '미디어엔터', 'JYP Ent.': '미디어엔터',
+    'YG엔터테인먼트': '미디어엔터', 'CJ ENM': '미디어엔터', '스튜디오드래곤': '미디어엔터',
+    // 기타 소재·부품
+    '풍산': '에너지화학', '고려아연': '에너지화학', '롯데렌탈': '운송물류',
+    '동국제강': '에너지화학', '하이록코리아': '기계장비', '성광벤드': '기계장비',
+    '솔루엠': '반도체',
+  };
+
+  const SECTOR_LIST = [
+    '반도체', '배터리소재', '금융', '바이오제약', 'IT플랫폼',
+    '자동차부품', '유통소비재', '조선해운', '운송물류', '에너지화학',
+    '건설부동산', '기계장비', '통신', '미디어엔터', '기타'
+  ];
+
+  function getSector(name) {
+    if (!name) return '기타';
+    if (SECTOR_MAP[name]) return SECTOR_MAP[name];
+    // 부분 매치 (예: "삼성바이오로직스(우)")
+    for (const key in SECTOR_MAP) {
+      if (name.includes(key)) return SECTOR_MAP[key];
+    }
+    return '기타';
+  }
+
+  /* ========================================================
+   * 관심 종목 관리 (localStorage)
+   * ======================================================== */
+  const FAV_STORAGE_KEY = 'nps-watch-favorites-v1';
+  const FAV_SEEN_KEY = 'nps-watch-fav-seen-v1';
+  const MAX_FAVORITES = 20;
+
+  function loadFavorites() {
+    try {
+      const raw = localStorage.getItem(FAV_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+  function saveFavorites(list) {
+    try { localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+  function isFavorite(name) {
+    return loadFavorites().some((f) => f.name === name);
+  }
+  function toggleFavorite(name) {
+    const list = loadFavorites();
+    const idx = list.findIndex((f) => f.name === name);
+    if (idx >= 0) {
+      list.splice(idx, 1);
+      saveFavorites(list);
+      return false;
+    }
+    if (list.length >= MAX_FAVORITES) {
+      alert(`관심 종목은 최대 ${MAX_FAVORITES}개까지 등록 가능합니다.`);
+      return isFavorite(name);
+    }
+    list.push({ name, addedAt: new Date().toISOString() });
+    saveFavorites(list);
+    return true;
+  }
+  function loadSeenReceipts() {
+    try {
+      const raw = localStorage.getItem(FAV_SEEN_KEY);
+      return raw ? new Set(JSON.parse(raw)) : new Set();
+    } catch (e) { return new Set(); }
+  }
+  function saveSeenReceipts(set) {
+    try { localStorage.setItem(FAV_SEEN_KEY, JSON.stringify(Array.from(set))); } catch (e) {}
+  }
+
   /* ========== Disclosures (실시간 OpenDART 연동) ========== */
   const disclosureGrid = document.getElementById('disclosure-grid');
   const disclosureEmpty = document.getElementById('disclosure-empty');
@@ -2016,7 +2297,8 @@
   const sortSelect = document.getElementById('disclosure-sort');
   let currentFilter = 'all';
   let currentSearch = '';
-  let currentSort = 'value-desc'; // 디폴트: 변동 금액 큰순 (절댓값)
+  let currentSort = 'value-desc';
+  let currentSector = 'all'; // 디폴트: 변동 금액 큰순 (절댓값)
 
   // HTML 이스케이프 (XSS 방지)
   function esc(s) {
@@ -2106,6 +2388,8 @@
   function applyFilter(d) {
     // 검색
     if (currentSearch && !d.name.toLowerCase().includes(currentSearch.toLowerCase())) return false;
+    // 섹터
+    if (currentSector !== 'all' && getSector(d.name) !== currentSector) return false;
     // 카테고리
     if (currentFilter === 'up')   return d.type === '증가';
     if (currentFilter === 'down') return d.type === '감소';
@@ -2114,7 +2398,17 @@
       return (d.before != null && d.before < 5 && d.after >= 5) ||
              (d.reportResn && d.reportResn.includes('신규'));
     }
+    if (currentFilter === 'fav') {
+      return isFavorite(d.name);
+    }
     return true;
+  }
+
+  function updateFavCountBadge() {
+    const el = document.getElementById('fav-count-badge');
+    if (!el) return;
+    const n = loadFavorites().length;
+    el.textContent = n > 0 ? `(${n})` : '';
   }
 
   function applySort(list) {
@@ -2176,10 +2470,18 @@
         ? `<div class="shares-row">${holdParts.join(' · ')}</div>`
         : '';
 
+      // 섹터 뱃지 + 관심 종목 별
+      const sector = getSector(d.name);
+      const sectorHtml = `<span class="sector-badge ${esc(sector.replace(/[^가-힣A-Za-z]/g, ''))}">${esc(sector)}</span>`;
+      const faved = isFavorite(d.name);
+      const favHtml = `<button class="fav-btn ${faved ? 'faved' : ''}" data-fav-name="${esc(d.name)}" title="관심 종목 ${faved ? '해제' : '등록'}" aria-label="관심 종목 토글">${faved ? '★' : '☆'}</button>`;
+
       item.innerHTML = `
         <div class="left">
           <div class="name-row">
+            ${favHtml}
             <span class="name">${esc(d.name)}</span>
+            ${sectorHtml}
             <span class="date">${esc(shortDate(d.date))}</span>
           </div>
           <div class="stake-row">
@@ -2195,8 +2497,77 @@
           ${dartHtml}
         </div>
       `;
+      // 별 버튼 클릭 이벤트 (카드 클릭 방지)
+      const favBtn = item.querySelector('.fav-btn');
+      if (favBtn) {
+        favBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const nowFaved = toggleFavorite(d.name);
+          favBtn.classList.toggle('faved', nowFaved);
+          favBtn.textContent = nowFaved ? '★' : '☆';
+          favBtn.title = `관심 종목 ${nowFaved ? '해제' : '등록'}`;
+          updateFavCountBadge();
+          // 관심 필터가 활성화 상태였다면 리렌더
+          if (currentFilter === 'fav') renderDisclosures();
+        });
+      }
       disclosureGrid.appendChild(item);
     });
+  }
+
+  // 홈 화면 상단 관심 종목 알림 배너
+  function renderHomeNotifBanner() {
+    const el = document.getElementById('home-notif-banner');
+    if (!el) return;
+    const favs = loadFavorites();
+    if (favs.length === 0 || !disclosures || disclosures.length === 0) {
+      el.style.display = 'none';
+      return;
+    }
+    const favNames = new Set(favs.map((f) => f.name));
+    const seen = loadSeenReceipts();
+    const news = disclosures.filter((d) => favNames.has(d.name) && !seen.has(d.receiptNo));
+
+    if (news.length === 0) {
+      el.style.display = 'none';
+      return;
+    }
+
+    // 미리보기 (앞 3개)
+    const preview = news.slice(0, 3).map((d) => {
+      const arrow = d.type === '증가' ? '▲' : '▼';
+      const cls = d.type === '증가' ? 'up' : 'down';
+      return `<b style="color:var(--${cls});">${arrow} ${esc(d.name)}</b>`;
+    }).join(', ');
+    const more = news.length > 3 ? ` <span style="color:var(--ink-muted-48);">외 ${news.length - 3}건</span>` : '';
+
+    el.innerHTML = `
+      <div class="icon">🔔</div>
+      <div class="body">
+        <div class="b-title">관심 종목에 새 국민연금 공시 ${news.length}건</div>
+        <div class="b-desc">${preview}${more}</div>
+        <div class="b-actions">
+          <button class="b-btn" id="notif-view-btn">공시 보기</button>
+          <button class="b-btn ghost" id="notif-close-btn">확인 (알림 끄기)</button>
+        </div>
+      </div>
+    `;
+    el.style.display = 'flex';
+
+    const markSeen = () => {
+      news.forEach((d) => { if (d.receiptNo) seen.add(d.receiptNo); });
+      saveSeenReceipts(seen);
+      el.style.display = 'none';
+    };
+
+    document.getElementById('notif-view-btn').addEventListener('click', () => {
+      // 관심 필터 활성화 → 5% 공시 탭 이동
+      const favPill = document.querySelector('.filter-pill[data-filter="fav"]');
+      if (favPill) favPill.click();
+      switchTab('disclosures');
+      markSeen();
+    });
+    document.getElementById('notif-close-btn').addEventListener('click', markSeen);
   }
 
   // 최근 매수/매도 TOP 5 랭킹 (valueChange 절댓값 큰 순)
@@ -2306,6 +2677,7 @@
       renderDisclosures();
       updateMonthlyKpi();
       renderRanking();
+      renderHomeNotifBanner();
     } catch (err) {
       // 폴백: 샘플 데이터
       disclosures = fallbackDisclosures.map(d => ({
@@ -2316,6 +2688,7 @@
       renderDisclosures();
       updateMonthlyKpi();
       renderRanking();
+      renderHomeNotifBanner();
     }
   }
 
@@ -2327,6 +2700,20 @@
       renderDisclosures();
     });
   });
+
+  // 섹터 필터
+  const sectorPills = document.querySelectorAll('.filter-pill[data-sector]');
+  sectorPills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      sectorPills.forEach((p) => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentSector = pill.dataset.sector;
+      renderDisclosures();
+    });
+  });
+
+  // 관심 종목 카운트 뱃지 초기화
+  updateFavCountBadge();
 
   // 검색 (디바운스)
   let searchTimer = null;
