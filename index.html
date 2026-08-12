@@ -1442,6 +1442,124 @@
   .sector-badge.운송물류      { background: rgba(2, 119, 189, 0.08);   color: #0277BD; border-color: rgba(2, 119, 189, 0.2); }
   .sector-badge.기타          { background: var(--surface-pearl);      color: var(--ink-muted-48); }
 
+  /* 섹터 통계표 */
+  .sector-stats {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .sector-stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 18px;
+    background: var(--surface-pearl);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .sector-stats-header .st-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: var(--ink);
+  }
+  .sector-stats-header .st-sub {
+    font-size: 11px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+  }
+  .sector-stats table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .sector-stats th, .sector-stats td {
+    padding: 10px 14px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.224px;
+  }
+  .sector-stats th {
+    background: var(--canvas);
+    color: var(--ink-muted-48);
+    font-weight: 400;
+    font-size: 11px;
+    border-bottom: 1px solid var(--hairline);
+    letter-spacing: -0.12px;
+  }
+  .sector-stats th.left, .sector-stats td.left { text-align: left; }
+  .sector-stats tbody tr {
+    border-bottom: 1px solid var(--divider-soft);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .sector-stats tbody tr:hover { background: var(--surface-pearl); }
+  .sector-stats tbody tr:last-child { border-bottom: 0; }
+  .sector-stats .st-sector { font-weight: 600; color: var(--ink); }
+  .sector-stats .st-count-buy  { color: var(--up); font-weight: 600; }
+  .sector-stats .st-count-sell { color: var(--down); font-weight: 600; }
+  .sector-stats .st-count-neutral { color: var(--ink-muted-48); }
+  .sector-stats .st-net.pos { color: var(--up); font-weight: 600; }
+  .sector-stats .st-net.neg { color: var(--down); font-weight: 600; }
+  .sector-stats .st-net.zero { color: var(--ink-muted-48); }
+
+  @media (max-width: 640px) {
+    .sector-stats th, .sector-stats td { padding: 8px 8px; font-size: 12px; }
+    .sector-stats th.hide-mobile, .sector-stats td.hide-mobile { display: none; }
+  }
+
+  /* 미니 스파크라인 */
+  .spark {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  /* 국내주식 상세 테이블 확장 */
+  .holdings-toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .holdings-toolbar .search-input { width: 260px; }
+
+  .holdings-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .holdings-table {
+    min-width: 720px;
+  }
+  .holdings-table td .name-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+  .holdings-table td .name-cell .n {
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.374px;
+  }
+  .holdings-table td .spark-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .holdings-table td .spark-cell .trend-num {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.12px;
+  }
+  .holdings-empty {
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--ink-muted-48);
+    font-size: 14px;
+    letter-spacing: -0.224px;
+  }
+
   /* 시뮬레이터 카드 강조 뱃지 */
   .highlight-badge {
     display: inline-block;
@@ -1644,10 +1762,10 @@
     <div class="section light">
       <div class="section-header">
         <h2>국내주식 종목별 지분</h2>
-        <div class="meta">기준일 · 2026년 3월 말 / 최근 변동 공시 반영</div>
+        <div class="meta">국민연금 5% 공시 등록 종목 · 최근 89일 변동 추이 반영</div>
       </div>
 
-      <div style="margin-bottom: 24px;">
+      <div class="holdings-toolbar">
         <input
           type="text"
           class="search-input"
@@ -1655,24 +1773,45 @@
           placeholder="종목명으로 검색"
           aria-label="종목명 검색"
         />
+        <div class="filter-row" style="margin: 0; flex: 1;">
+          <span class="filter-label" style="margin-right:4px;">섹터</span>
+          <button class="filter-pill active" data-holdings-sector="all">전체</button>
+          <button class="filter-pill" data-holdings-sector="반도체">반도체</button>
+          <button class="filter-pill" data-holdings-sector="금융">금융</button>
+          <button class="filter-pill" data-holdings-sector="바이오제약">바이오제약</button>
+          <button class="filter-pill" data-holdings-sector="IT플랫폼">IT/플랫폼</button>
+          <button class="filter-pill" data-holdings-sector="배터리소재">배터리·소재</button>
+          <button class="filter-pill" data-holdings-sector="자동차부품">자동차</button>
+          <button class="filter-pill" data-holdings-sector="유통소비재">유통·소비재</button>
+          <button class="filter-pill" data-holdings-sector="조선해운">조선·해운</button>
+          <button class="filter-pill" data-holdings-sector="운송물류">운송·물류</button>
+          <button class="filter-pill" data-holdings-sector="에너지화학">에너지·화학</button>
+          <button class="filter-pill" data-holdings-sector="기계장비">기계·장비</button>
+          <button class="filter-pill" data-holdings-sector="기타">기타</button>
+        </div>
       </div>
 
-      <div class="table-wrap">
-        <table>
+      <div class="table-wrap holdings-table-wrap">
+        <table class="holdings-table">
           <thead>
             <tr>
               <th>종목명</th>
-              <th class="num">지분율</th>
-              <th class="num">포트폴리오 비중</th>
+              <th class="num">현재 지분율</th>
               <th class="num">최근 변동</th>
+              <th class="num">최근 89일 추이</th>
               <th>공시일</th>
             </tr>
           </thead>
           <tbody id="stock-tbody"></tbody>
         </table>
-        <div class="empty-state" id="stock-empty" style="display:none;">
-          검색 결과가 없습니다.
+        <div class="holdings-empty" id="stock-empty" style="display:none;">
+          해당 조건에 맞는 종목이 없습니다.
         </div>
+      </div>
+
+      <div style="margin-top: 20px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.6;">
+        ※ 5% 공시로 확인된 종목만 표시됩니다 (국민연금 실제 보유 종목은 400개 이상이지만 5% 미만은 공시 대상 아님).<br />
+        ※ <b>추이</b>는 최근 89일간 여러 차례 공시된 지분율 변화를 스파크라인으로 시각화합니다. OpenDART API 정책상 3개월 초과 데이터는 제공되지 않습니다.
       </div>
     </div>
   </section>
@@ -1705,6 +1844,27 @@
           </div>
           <div id="ranking-sell"></div>
         </div>
+      </div>
+
+      <!-- 섹터별 매매 현황 -->
+      <div class="sector-stats" id="sector-stats" style="display:none;">
+        <div class="sector-stats-header">
+          <span class="st-title">🏷 섹터별 매매 현황</span>
+          <span class="st-sub">최근 89일 · 클릭 시 해당 섹터로 필터</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th class="left">섹터</th>
+              <th>보유 종목</th>
+              <th>▲ 매수</th>
+              <th>▼ 매도</th>
+              <th class="hide-mobile">신규 5%↑</th>
+              <th>순 매매액</th>
+            </tr>
+          </thead>
+          <tbody id="sector-stats-body"></tbody>
+        </table>
       </div>
 
       <div class="filter-row" style="margin-bottom: 10px;">
@@ -2124,36 +2284,173 @@
   const emptyMsg = document.getElementById('stock-empty');
   const searchInput = document.getElementById('stock-search');
 
-  function renderHoldings(filter = '') {
-    const q = filter.trim().toLowerCase();
-    const rows = stockHoldings.filter(s => !q || s.name.toLowerCase().includes(q));
+  let currentHoldingsSector = 'all';
+  let currentHoldingsSearch = '';
+
+  // 미니 스파크라인 (SVG)
+  function makeSparkline(values, opts = {}) {
+    const w = opts.width || 80;
+    const h = opts.height || 24;
+    if (!values || values.length === 0) return '';
+    if (values.length === 1) {
+      // 점 하나만
+      return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><circle cx="${w/2}" cy="${h/2}" r="2" fill="var(--ink-muted-48)"/></svg>`;
+    }
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+    const stepX = w / (values.length - 1);
+    const pts = values.map((v, i) => {
+      const x = i * stepX;
+      const y = h - ((v - min) / range) * (h - 4) - 2;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    const last = values[values.length - 1];
+    const first = values[0];
+    const cls = last >= first ? 'up' : 'down';
+    const color = cls === 'up' ? 'var(--up)' : 'var(--down)';
+    const lastX = (values.length - 1) * stepX;
+    const lastY = h - ((last - min) / range) * (h - 4) - 2;
+    return `
+      <svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+        <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="2" fill="${color}"/>
+      </svg>
+    `;
+  }
+
+  // disclosures 데이터로부터 종목별 통합 정보 구성
+  function buildHoldingsFromDisclosures() {
+    if (!disclosures || disclosures.length === 0) return [];
+
+    // 종목별로 disclosure 배열 그룹핑
+    const groups = new Map(); // key(stockCode||name) → { name, code, records: [...] }
+    for (const d of disclosures) {
+      const key = d.stockCode || d.name;
+      if (!groups.has(key)) {
+        groups.set(key, { name: d.name, stockCode: d.stockCode, records: [] });
+      }
+      groups.get(key).records.push(d);
+    }
+
+    // 각 종목별로 시간순 정렬 + 최신 지분율 + 총 변동
+    const result = [];
+    for (const g of groups.values()) {
+      const sorted = g.records.slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+      const latest = sorted[sorted.length - 1];
+      const earliest = sorted[0];
+
+      // 89일간 순변동 (마지막 - 첫)
+      const netChange = (latest.after != null && earliest.before != null)
+        ? +(latest.after - earliest.before).toFixed(2)
+        : latest.change;
+
+      // 스파크라인 값 (각 공시 시점의 after)
+      const trend = sorted.map((d) => d.after).filter((v) => v != null);
+
+      result.push({
+        name: g.name,
+        stockCode: g.stockCode,
+        sector: getSector(g.name),
+        currentStake: latest.after,
+        latestChange: latest.change,
+        latestType: latest.type,
+        latestDate: latest.date,
+        totalNetChange: netChange,
+        reportCount: sorted.length,
+        trend,
+      });
+    }
+    return result;
+  }
+
+  function renderHoldings() {
+    if (!tbody || !emptyMsg) return;
+
+    // 데이터 없으면 안내
+    if (!disclosures || disclosures.length === 0) {
+      tbody.innerHTML = '';
+      emptyMsg.textContent = '5% 공시 데이터를 불러오는 중…';
+      emptyMsg.style.display = 'block';
+      return;
+    }
+
+    const q = currentHoldingsSearch.trim().toLowerCase();
+    const rows = buildHoldingsFromDisclosures()
+      .filter((s) => !q || s.name.toLowerCase().includes(q))
+      .filter((s) => currentHoldingsSector === 'all' || s.sector === currentHoldingsSector)
+      .sort((a, b) => (b.currentStake || 0) - (a.currentStake || 0));
 
     tbody.innerHTML = '';
     if (rows.length === 0) {
+      emptyMsg.textContent = '해당 조건에 맞는 종목이 없습니다.';
       emptyMsg.style.display = 'block';
       return;
     }
     emptyMsg.style.display = 'none';
 
-    rows.forEach(s => {
-      const c = fmtChange(s.change);
+    rows.forEach((s) => {
+      const chStake = s.currentStake != null ? s.currentStake.toFixed(2) + '%' : '–';
+      // 최근 변동
+      let ch = { cls: 'change-flat', arrow: '—', text: '변동없음' };
+      if (s.latestChange != null && s.latestChange !== 0) {
+        if (s.latestChange > 0)  ch = { cls: 'change-up',   arrow: '▲', text: '+' + s.latestChange.toFixed(2) + '%p' };
+        else                      ch = { cls: 'change-down', arrow: '▼', text: s.latestChange.toFixed(2) + '%p' };
+      }
+      // 89일 순변동
+      let netCls = 'change-flat', netStr = '변화 없음';
+      if (s.totalNetChange != null && s.totalNetChange !== 0) {
+        if (s.totalNetChange > 0)  { netCls = 'change-up';   netStr = '+' + s.totalNetChange.toFixed(2) + '%p'; }
+        else                        { netCls = 'change-down'; netStr = s.totalNetChange.toFixed(2) + '%p'; }
+      }
+
+      const spark = makeSparkline(s.trend);
+      const sectorCls = s.sector.replace(/[^가-힣A-Za-z]/g, '');
+
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><div class="stock-name">${s.name}</div></td>
-        <td class="num">${s.stake.toFixed(1)}%</td>
-        <td class="num">${s.weight.toFixed(1)}%</td>
-        <td class="num"><span class="change-cell ${c.cls}"><span class="arrow">${c.arrow}</span>${c.text}</span></td>
-        <td><span class="date">${s.changeDate}</span></td>
+        <td>
+          <div class="name-cell">
+            <span class="n">${esc(s.name)}</span>
+            <span class="sector-badge ${esc(sectorCls)}">${esc(s.sector)}</span>
+          </div>
+        </td>
+        <td class="num">${chStake}</td>
+        <td class="num"><span class="change-cell ${ch.cls}"><span class="arrow">${ch.arrow}</span>${ch.text}</span></td>
+        <td class="num">
+          <div class="spark-cell">
+            ${spark}
+            <span class="${netCls}" style="font-size:12px;font-weight:600;">${netStr}</span>
+          </div>
+        </td>
+        <td><span class="date">${esc(s.latestDate || '')}${s.reportCount > 1 ? ` <span style="color:var(--ink-muted-48);font-size:11px;">(${s.reportCount}건)</span>` : ''}</span></td>
       `;
       tr.addEventListener('click', () => {
-        document.querySelectorAll('#stock-tbody tr').forEach(r => r.classList.remove('selected'));
+        document.querySelectorAll('#stock-tbody tr').forEach((r) => r.classList.remove('selected'));
         tr.classList.add('selected');
       });
       tbody.appendChild(tr);
     });
   }
+
+  // 검색
+  searchInput.addEventListener('input', (e) => {
+    currentHoldingsSearch = e.target.value;
+    renderHoldings();
+  });
+
+  // 섹터 필터 (국내주식 탭 전용)
+  document.querySelectorAll('.filter-pill[data-holdings-sector]').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill[data-holdings-sector]').forEach((p) => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentHoldingsSector = pill.dataset.holdingsSector;
+      renderHoldings();
+    });
+  });
+
+  // 초기 렌더 (데이터 없을 때는 안내 표시)
   renderHoldings();
-  searchInput.addEventListener('input', (e) => renderHoldings(e.target.value));
 
   /* ========================================================
    * 섹터/업종 매핑 (하드코딩)
@@ -2570,6 +2867,113 @@
     document.getElementById('notif-close-btn').addEventListener('click', markSeen);
   }
 
+  // 섹터별 매매 현황 통계
+  function computeSectorStats() {
+    if (!disclosures || disclosures.length === 0) return [];
+
+    // 종목별로 최신 disclosure만 사용해 "보유 종목 수" 산출
+    const bySymbol = new Map();
+    const sorted = disclosures.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    for (const d of sorted) {
+      const key = d.stockCode || d.name;
+      if (!bySymbol.has(key)) bySymbol.set(key, d);
+    }
+
+    const stats = new Map(); // sector → aggregate
+    for (const sector of SECTOR_LIST) {
+      stats.set(sector, {
+        sector,
+        holdings: 0,
+        buyCount: 0,
+        sellCount: 0,
+        newCount: 0,
+        netValue: 0,
+      });
+    }
+
+    // 보유 종목 수 (unique)
+    for (const d of bySymbol.values()) {
+      const s = getSector(d.name);
+      const st = stats.get(s);
+      if (st && d.after != null && d.after > 0) st.holdings += 1;
+    }
+
+    // 모든 disclosure 건에서 매수/매도/신규/순매매액 집계
+    for (const d of disclosures) {
+      const s = getSector(d.name);
+      const st = stats.get(s);
+      if (!st) continue;
+      if (d.type === '증가') st.buyCount += 1;
+      if (d.type === '감소') st.sellCount += 1;
+      if ((d.before != null && d.before < 5 && d.after >= 5) ||
+          (d.reportResn && d.reportResn.includes('신규'))) {
+        st.newCount += 1;
+      }
+      if (d.valueChange != null) st.netValue += d.valueChange;
+    }
+
+    return Array.from(stats.values())
+      .filter((st) => st.holdings > 0 || st.buyCount > 0 || st.sellCount > 0)
+      .sort((a, b) => b.holdings - a.holdings || Math.abs(b.netValue) - Math.abs(a.netValue));
+  }
+
+  function fmtNet(val) {
+    if (val == null || isNaN(val)) return '–';
+    const abs = Math.abs(val);
+    const sign = val > 0 ? '+' : val < 0 ? '-' : '';
+    if (abs >= 1_0000_0000_0000) return `${sign}${(abs / 1_0000_0000_0000).toFixed(2)}조원`;
+    if (abs >= 1_0000_0000)      return `${sign}${(abs / 1_0000_0000).toFixed(1)}억원`;
+    if (abs >= 1_0000)           return `${sign}${Math.round(abs / 1_0000).toLocaleString('ko-KR')}만원`;
+    return `${sign}${Math.round(abs).toLocaleString('ko-KR')}원`;
+  }
+
+  function renderSectorStats() {
+    const box = document.getElementById('sector-stats');
+    const body = document.getElementById('sector-stats-body');
+    if (!box || !body) return;
+
+    const rows = computeSectorStats();
+    if (rows.length === 0) {
+      box.style.display = 'none';
+      return;
+    }
+    box.style.display = '';
+
+    body.innerHTML = rows.map((st) => {
+      const netCls = st.netValue > 0 ? 'pos' : st.netValue < 0 ? 'neg' : 'zero';
+      const buyStr  = st.buyCount  > 0 ? `${st.buyCount}건`  : '<span class="st-count-neutral">–</span>';
+      const sellStr = st.sellCount > 0 ? `${st.sellCount}건` : '<span class="st-count-neutral">–</span>';
+      const newStr  = st.newCount  > 0 ? `${st.newCount}건`  : '<span class="st-count-neutral">–</span>';
+      return `
+        <tr data-sector="${esc(st.sector)}">
+          <td class="left">
+            <span class="sector-badge ${esc(st.sector.replace(/[^가-힣A-Za-z]/g, ''))}">${esc(st.sector)}</span>
+          </td>
+          <td><b class="st-sector">${st.holdings}</b> 종목</td>
+          <td><span class="st-count-buy">${buyStr}</span></td>
+          <td><span class="st-count-sell">${sellStr}</span></td>
+          <td class="hide-mobile">${newStr}</td>
+          <td class="st-net ${netCls}">${fmtNet(st.netValue)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    // 행 클릭 시 해당 섹터 필터 적용
+    body.querySelectorAll('tr[data-sector]').forEach((tr) => {
+      tr.addEventListener('click', () => {
+        const sector = tr.dataset.sector;
+        const pill = document.querySelector(`.filter-pill[data-sector="${sector}"]`);
+        if (pill) pill.click();
+        else {
+          currentSector = sector;
+          renderDisclosures();
+        }
+        // 아래 리스트로 스크롤
+        setTimeout(() => disclosureGrid.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      });
+    });
+  }
+
   // 최근 매수/매도 TOP 5 랭킹 (valueChange 절댓값 큰 순)
   function renderRanking() {
     const grid = document.getElementById('ranking-grid');
@@ -2677,6 +3081,8 @@
       renderDisclosures();
       updateMonthlyKpi();
       renderRanking();
+      renderSectorStats();
+      renderHoldings();
       renderHomeNotifBanner();
     } catch (err) {
       // 폴백: 샘플 데이터
@@ -2688,6 +3094,8 @@
       renderDisclosures();
       updateMonthlyKpi();
       renderRanking();
+      renderSectorStats();
+      renderHoldings();
       renderHomeNotifBanner();
     }
   }
