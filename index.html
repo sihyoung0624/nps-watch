@@ -1175,6 +1175,174 @@
     .ranking-grid { grid-template-columns: 1fr; }
   }
 
+  /* ===== Home Landing Cards ===== */
+  .home-hero {
+    text-align: center;
+    padding: 32px 24px 24px;
+  }
+  .home-hero h1 {
+    font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.4px;
+    color: var(--ink);
+  }
+  .home-hero p {
+    margin-top: 12px;
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--ink-muted-80);
+    letter-spacing: -0.2px;
+    line-height: 1.4;
+  }
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .home-card {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 18px;
+    padding: 28px 26px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    min-height: 220px;
+  }
+  .home-card:hover {
+    border-color: var(--primary);
+    background: rgba(0, 102, 204, 0.02);
+  }
+  .home-card:active { transform: scale(0.99); }
+  .home-card .card-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+  .home-card .card-title {
+    font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.28px;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .home-card .card-desc {
+    font-size: 14px;
+    color: var(--ink-muted-48);
+    line-height: 1.45;
+    letter-spacing: -0.224px;
+  }
+  .home-card .card-sub {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--divider-soft);
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+  .home-card .card-sub .sub-item::before { content: '· '; opacity: 0.5; }
+  .home-card .card-sub .sub-item:first-child::before { content: ''; }
+  .home-card .card-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: -0.224px;
+  }
+
+  @media (max-width: 640px) {
+    .home-hero { padding: 20px 8px 12px; }
+    .home-hero h1 { font-size: 30px; }
+    .home-hero p  { font-size: 16px; margin-top: 8px; }
+    .home-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+    .home-card { padding: 20px 18px; min-height: 0; gap: 10px; }
+    .home-card .card-icon { font-size: 28px; }
+    .home-card .card-title { font-size: 19px; }
+  }
+
+  /* 전체 현황 - 다이제스트 카드 */
+  .digest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .digest-card {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .digest-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .digest-card h4 .link {
+    font-size: 12px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  .digest-chart-mini {
+    position: relative;
+    height: 200px;
+  }
+  .digest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .digest-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 12px;
+    background: var(--surface-pearl);
+    border-radius: 8px;
+    font-size: 13px;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .digest-item:hover { background: var(--parchment); }
+  .digest-item .d-name {
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.224px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .digest-item .d-meta {
+    font-size: 11px;
+    color: var(--ink-muted-48);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .digest-item .d-meta.up   { color: var(--up); }
+  .digest-item .d-meta.down { color: var(--down); }
+
+  @media (max-width: 640px) {
+    .digest-grid { grid-template-columns: 1fr; }
+    .digest-chart-mini { height: 220px; }
+  }
+
   @media (max-width: 640px) {
     .holding-row { grid-template-columns: 1fr; gap: 6px; padding: 8px; }
     .holding-row .del-btn { justify-self: flex-end; }
@@ -1200,19 +1368,12 @@
 </head>
 <body>
 
-<!-- Global Nav -->
+<!-- Global Nav (심플) -->
 <nav class="global-nav" aria-label="글로벌 내비게이션">
   <div class="inner">
-    <span class="brand">NPS · 포트폴리오 모니터</span>
-    <div class="links">
-      <span>대시보드</span>
-      <span>리포트</span>
-      <span>알림</span>
-      <span>설정</span>
-    </div>
+    <a href="#" class="brand" id="brand-home-link" style="color:inherit;text-decoration:none;cursor:pointer;">NPS · 포트폴리오 모니터</a>
     <div class="right">
-      <span>검색</span>
-      <span>로그인</span>
+      <a href="#" id="nav-home-link" style="color:inherit;text-decoration:none;cursor:pointer;opacity:0.88;">🏠 홈</a>
     </div>
   </div>
 </nav>
@@ -1222,42 +1383,123 @@
   <div class="inner">
     <div class="category">포트폴리오</div>
     <div class="tabs" role="tablist">
-      <button class="tab active" role="tab" data-tab="disclosures">5% 공시 알림 · 실시간</button>
-      <button class="tab" role="tab" data-tab="allocation">자산 배분</button>
-      <button class="tab" role="tab" data-tab="holdings">국내주식 종목</button>
-      <button class="tab" role="tab" data-tab="simulator">내 포트폴리오 시뮬레이션</button>
+      <button class="tab active" role="tab" data-tab="home">🏠 홈</button>
+      <button class="tab" role="tab" data-tab="overview">📈 전체 현황</button>
+      <button class="tab" role="tab" data-tab="disclosures">🏆 5% 공시</button>
+      <button class="tab" role="tab" data-tab="allocation">📊 자산 배분</button>
+      <button class="tab" role="tab" data-tab="holdings">📋 국내주식</button>
+      <button class="tab" role="tab" data-tab="simulator">🎯 따라 투자</button>
     </div>
   </div>
 </div>
 
 <main class="page">
-  <!-- Hero -->
-  <section class="hero">
-    <h1>국민연금 투자 포트폴리오</h1>
-    <p id="hero-sub">1,180조원 규모의 운용 자산을 한눈에.</p>
+  <!-- TAB: HOME (기본 활성) -->
+  <section class="panel active" id="panel-home" role="tabpanel">
+    <div class="home-hero">
+      <h1>국민연금 투자 포트폴리오 모니터</h1>
+      <p>실시간 5% 대량보유 공시 · 자산 배분 · 포트폴리오 시뮬레이션</p>
+    </div>
+
+    <div class="home-grid">
+      <button class="home-card" data-goto="allocation" type="button">
+        <div class="card-icon">📊</div>
+        <div class="card-title">국민연금 포트폴리오</div>
+        <div class="card-desc">자산군별 배분 · 연도별 비중 변화 · 총 운용자산</div>
+        <div class="card-sub">
+          <span class="sub-item">총괄</span>
+          <span class="sub-item">자산배분</span>
+          <span class="sub-item">연도별 자산변화</span>
+          <span class="sub-item" data-goto="holdings" style="color:var(--primary);cursor:pointer;">국내주식 →</span>
+        </div>
+        <div class="card-cta"><span>바로가기</span><span>→</span></div>
+      </button>
+
+      <button class="home-card" data-goto="disclosures" type="button">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">5% 대량보유 공시</div>
+        <div class="card-desc">국민연금이 5% 이상 보유한 종목의 매수·매도 현황을 실시간으로</div>
+        <div class="card-sub">
+          <span class="sub-item">매수 TOP</span>
+          <span class="sub-item">매도 TOP</span>
+          <span class="sub-item">최신 공시 리스트</span>
+          <span class="sub-item">검색·필터</span>
+        </div>
+        <div class="card-cta"><span>바로가기</span><span>→</span></div>
+      </button>
+
+      <button class="home-card" data-goto="overview" type="button">
+        <div class="card-icon">📈</div>
+        <div class="card-title">전체 현황</div>
+        <div class="card-desc">주요 지표 요약 · 자산배분 도넛 · 최근 공시 다이제스트를 한 화면에</div>
+        <div class="card-sub">
+          <span class="sub-item">KPI 4종</span>
+          <span class="sub-item">자산배분 요약</span>
+          <span class="sub-item">최근 공시 5건</span>
+        </div>
+        <div class="card-cta"><span>바로가기</span><span>→</span></div>
+      </button>
+
+      <button class="home-card" data-goto="simulator" type="button">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">국민연금 따라 투자하기</div>
+        <div class="card-desc">내 자금으로 국민연금 배분을 따라 하면 어떻게 배분될지 시뮬레이션</div>
+        <div class="card-sub">
+          <span class="sub-item">자산군 배분</span>
+          <span class="sub-item">종목별 배분</span>
+          <span class="sub-item">내 포트폴리오 비교</span>
+          <span class="sub-item">리밸런싱 액션</span>
+        </div>
+        <div class="card-cta"><span>바로가기</span><span>→</span></div>
+      </button>
+    </div>
   </section>
 
-  <!-- KPI Cards (항상 표시) -->
-  <section class="kpi-grid" aria-label="주요 지표">
-    <div class="kpi-card">
-      <div class="label">총 운용 자산</div>
-      <div class="value" id="kpi-total">1,180<span class="unit">조원</span></div>
-      <div class="delta">2026년 3월 말 기준</div>
-    </div>
-    <div class="kpi-card">
-      <div class="label">국내주식 비중</div>
-      <div class="value" id="kpi-domestic">13.0<span class="unit">%</span></div>
-      <div class="delta">전년 동월비 ▼ 1.2%p</div>
-    </div>
-    <div class="kpi-card">
-      <div class="label">해외주식 비중</div>
-      <div class="value" id="kpi-overseas">38.2<span class="unit">%</span></div>
-      <div class="delta">전년 동월비 ▲ 1.4%p</div>
-    </div>
-    <div class="kpi-card">
-      <div class="label">이달 5% 공시</div>
-      <div class="value" id="kpi-disclosures">2<span class="unit">건</span></div>
-      <div class="delta">2026년 5월 기준</div>
+  <!-- TAB: OVERVIEW (전체 현황) -->
+  <section class="panel" id="panel-overview" role="tabpanel">
+    <div class="section light">
+      <div class="section-header">
+        <h2>전체 현황</h2>
+        <div class="meta">국민연금 운용자산 요약 · 자산배분 · 최근 공시 다이제스트</div>
+      </div>
+
+      <!-- KPI Cards -->
+      <section class="kpi-grid" aria-label="주요 지표">
+        <div class="kpi-card">
+          <div class="label">총 운용 자산</div>
+          <div class="value" id="kpi-total">1,180<span class="unit">조원</span></div>
+          <div class="delta">2026년 3월 말 기준</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">국내주식 비중</div>
+          <div class="value" id="kpi-domestic">13.0<span class="unit">%</span></div>
+          <div class="delta">전년 동월비 ▼ 1.2%p</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">해외주식 비중</div>
+          <div class="value" id="kpi-overseas">38.2<span class="unit">%</span></div>
+          <div class="delta">전년 동월비 ▲ 1.4%p</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">이달 5% 공시</div>
+          <div class="value" id="kpi-disclosures">2<span class="unit">건</span></div>
+          <div class="delta">2026년 5월 기준</div>
+        </div>
+      </section>
+
+      <!-- 다이제스트: 자산배분 + 최근 공시 -->
+      <div class="digest-grid">
+        <div class="digest-card">
+          <h4>자산군 배분 요약 <a class="link" data-goto="allocation">상세 →</a></h4>
+          <div class="digest-chart-mini">
+            <canvas id="overview-donut"></canvas>
+          </div>
+        </div>
+        <div class="digest-card">
+          <h4>최근 5% 공시 <a class="link" data-goto="disclosures">전체 보기 →</a></h4>
+          <div class="digest-list" id="overview-recent"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1322,8 +1564,8 @@
     </div>
   </section>
 
-  <!-- TAB 3: Disclosures -->
-  <section class="panel active" id="panel-disclosures" role="tabpanel">
+  <!-- TAB: Disclosures -->
+  <section class="panel" id="panel-disclosures" role="tabpanel">
     <div class="section light">
       <div class="section-header">
         <h2>국민연금 5% 대량보유 공시</h2>
@@ -2890,6 +3132,141 @@
 
   // 페이지 로드 시 저장된 시뮬레이터 상태 복원
   restoreSimState();
+
+  /* ========================================================
+   * Home Navigation - 카드/링크 클릭 시 탭 이동
+   * ======================================================== */
+  function switchTab(tabKey) {
+    const tabBtn = document.querySelector(`.tab[data-tab="${tabKey}"]`);
+    if (tabBtn) tabBtn.click();
+    // 페이지 상단으로
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 홈 카드 클릭
+  document.querySelectorAll('.home-card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      // 카드 내부 서브 링크 클릭 시 (data-goto가 있는 span)는 카드 이동 대신 그 링크 이동
+      const subTarget = e.target.closest('[data-goto]');
+      if (subTarget && subTarget !== card) {
+        e.preventDefault();
+        e.stopPropagation();
+        switchTab(subTarget.dataset.goto);
+        return;
+      }
+      switchTab(card.dataset.goto);
+    });
+  });
+
+  // digest 카드 내 "상세 →" 링크
+  document.querySelectorAll('.digest-card [data-goto]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab(link.dataset.goto);
+    });
+  });
+
+  // 상단 브랜드 / 홈 링크
+  ['brand-home-link', 'nav-home-link'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', (e) => { e.preventDefault(); switchTab('home'); });
+  });
+
+  /* ========================================================
+   * Overview Tab - 미니 도넛 + 최근 공시 5건
+   * ======================================================== */
+  let overviewDonutChart = null;
+
+  function renderOverviewDonut() {
+    const canvas = document.getElementById('overview-donut');
+    if (!canvas) return;
+    if (overviewDonutChart) overviewDonutChart.destroy();
+    overviewDonutChart = new Chart(canvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: assetAllocation.items.map((i) => i.name),
+        datasets: [{
+          data: assetAllocation.items.map((i) => i.ratio),
+          backgroundColor: assetAllocation.items.map((i) => i.color),
+          borderColor: '#fff',
+          borderWidth: 2,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              color: '#1d1d1f',
+              font: { size: 11 },
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 8,
+              boxWidth: 8,
+            },
+          },
+          tooltip: {
+            backgroundColor: '#1d1d1f',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            padding: 10,
+            cornerRadius: 6,
+            callbacks: {
+              label: (ctx) => `${ctx.label}: ${ctx.parsed.toFixed(1)}%`,
+            },
+          },
+        },
+        cutout: '60%',
+      },
+    });
+  }
+
+  function renderOverviewRecent() {
+    const el = document.getElementById('overview-recent');
+    if (!el) return;
+    if (!disclosures || disclosures.length === 0) {
+      el.innerHTML = '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">공시 데이터를 불러오는 중…</div>';
+      return;
+    }
+    const latest = disclosures.slice(0, 5);
+    el.innerHTML = latest.map((d) => {
+      const isUp = d.type === '증가';
+      const arrow = isUp ? '▲' : '▼';
+      const delta = d.change != null ? `${arrow} ${Math.abs(d.change).toFixed(2)}%p` : '';
+      const cls = isUp ? 'up' : 'down';
+      return `
+        <div class="digest-item" data-search="${esc(d.name)}">
+          <span class="d-name">${esc(d.name)}</span>
+          <span class="d-meta ${cls}">${esc(delta)} · ${esc(d.date || '')}</span>
+        </div>
+      `;
+    }).join('');
+    // 클릭 시 5% 공시 탭으로 이동 + 검색어 설정
+    el.querySelectorAll('.digest-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const name = item.dataset.search;
+        if (searchInputDisc) {
+          searchInputDisc.value = name;
+          currentSearch = name;
+          renderDisclosures();
+        }
+        switchTab('disclosures');
+      });
+    });
+  }
+
+  // 전체 현황 탭 활성화 시점에 렌더 (탭 클릭 이벤트에 훅)
+  document.querySelectorAll('.tab[data-tab="overview"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      // 다음 tick에 렌더 (탭 활성화 후 canvas 사이즈 확정)
+      setTimeout(() => {
+        renderOverviewDonut();
+        renderOverviewRecent();
+      }, 50);
+    });
+  });
 </script>
 
 </body>
