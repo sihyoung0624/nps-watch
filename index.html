@@ -1861,6 +1861,7 @@
         <span class="dm-item"><span class="dm-label">포함 범위</span> <span class="dm-value"><b>국민연금 5% 이상 보유로 공시된 종목만</b> 표시 — 실제 국민연금 보유 종목(수백 개)의 일부입니다</span></span>
         <span class="dm-item"><span class="dm-label">출처</span> <a href="https://dart.fss.or.kr" target="_blank" rel="noopener noreferrer">DART ↗</a></span>
         <span class="dm-item"><span class="dm-label">추이 범위</span> <span class="dm-value">최근 89일 (OpenDART 검색 정책상 최대 3개월)</span></span>
+        <span class="dm-item"><span class="dm-label">섹터 분류</span> <span class="dm-value">공식 표준산업분류가 아닌 <b>자체 분류 기준</b> · 매핑에 없는 종목은 "기타"로 표시</span></span>
       </div>
 
       <!-- 섹터별 지분 변동 현황 (공시 기준) -->
@@ -2659,6 +2660,17 @@
     '풍산': '에너지화학', '고려아연': '에너지화학', '롯데렌탈': '운송물류',
     '동국제강': '에너지화학', '하이록코리아': '기계장비', '성광벤드': '기계장비',
     '솔루엠': '반도체',
+    // 2026-08 공시 반영 보완 (중소형주)
+    '비에이치': '반도체', 'RF머트리얼즈': '반도체', '해성디에스': '반도체',
+    '브이엠': '반도체', '삼화콘덴서공업': '반도체',
+    '대주전자재료': '배터리소재', '비나텍': '배터리소재', '제이에스링크': '배터리소재',
+    'NHN': 'IT플랫폼', '코나아이': 'IT플랫폼',
+    '한스바이오메드': '바이오제약',
+    '코스맥스': '유통소비재', '코스메카코리아': '유통소비재', '글로벌텍스프리': '유통소비재',
+    'HL홀딩스': '자동차부품',
+    'HJ중공업': '조선해운',
+    'SK이터닉스': '에너지화학', '코오롱인더': '에너지화학', '씨에스윈드': '에너지화학',
+    '엠앤씨솔루션': '기계장비', '태광': '기계장비', 'SNT에너지': '기계장비',
   };
 
   const SECTOR_LIST = [
@@ -2669,10 +2681,15 @@
 
   function getSector(name) {
     if (!name) return '기타';
+    // 1순위: 정확 일치
     if (SECTOR_MAP[name]) return SECTOR_MAP[name];
-    // 부분 매치 (예: "삼성바이오로직스(우)")
+    // 2순위: 우선주/괄호 표기 제거 후 재시도 (예: "삼성전자우", "카카오(우)")
+    const stripped = name.replace(/[(（].*?[)）]/g, '').replace(/우$/, '').trim();
+    if (SECTOR_MAP[stripped]) return SECTOR_MAP[stripped];
+    // 3순위: 4자 이상 키만 부분 매치 (짧은 키의 오매칭 방지)
+    //   예: 'SM'이 'SM Life Design'에 잘못 매칭되는 문제 차단
     for (const key in SECTOR_MAP) {
-      if (name.includes(key)) return SECTOR_MAP[key];
+      if (key.length >= 4 && name.includes(key)) return SECTOR_MAP[key];
     }
     return '기타';
   }
