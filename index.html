@@ -1017,6 +1017,164 @@
   }
   .compare-row.header .col { font-weight: 400; }
 
+  /* 리밸런싱 액션 */
+  .rebalance-section {
+    margin-top: 20px;
+    background: var(--surface-pearl);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .rebalance-section h4 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .rebalance-group {
+    margin-bottom: 14px;
+  }
+  .rebalance-group:last-child { margin-bottom: 0; }
+  .rebalance-group .group-title {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.224px;
+  }
+  .rebalance-group.buy .group-title  { color: var(--up); }
+  .rebalance-group.sell .group-title { color: var(--down); }
+  .rebalance-group .group-title .count {
+    color: var(--ink-muted-48);
+    font-weight: 400;
+    font-size: 12px;
+  }
+  .rebalance-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .rebalance-item:last-child { margin-bottom: 0; }
+  .rebalance-item .r-name {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .rebalance-item .r-amt {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .rebalance-item .r-amt .money {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .rebalance-item .r-amt .sub {
+    display: block;
+    font-size: 11px;
+    color: var(--ink-muted-48);
+    margin-top: 1px;
+  }
+  .rebalance-summary {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--divider-soft);
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* NPS 매매 랭킹 */
+  .ranking-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .ranking-card {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .ranking-card .r-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .ranking-card .r-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+  }
+  .ranking-card.buy .r-title  { color: var(--up); }
+  .ranking-card.sell .r-title { color: var(--down); }
+  .ranking-card .r-subtitle {
+    font-size: 11px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+  }
+  .ranking-item {
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 7px 0;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .ranking-item:not(:last-child) { border-bottom: 1px solid var(--divider-soft); }
+  .ranking-item:hover { opacity: 0.75; }
+  .ranking-item .rank-num {
+    font-size: 11px;
+    color: var(--ink-muted-48);
+    font-weight: 600;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .ranking-item .rank-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.224px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ranking-item .rank-amount {
+    text-align: right;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.224px;
+  }
+  .ranking-card.buy  .rank-amount { color: var(--up); }
+  .ranking-card.sell .rank-amount { color: var(--down); }
+  .ranking-item .rank-sub {
+    font-size: 11px;
+    color: var(--ink-muted-48);
+    font-weight: 400;
+    display: block;
+    margin-top: 1px;
+  }
+
+  @media (max-width: 640px) {
+    .ranking-grid { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 640px) {
     .holding-row { grid-template-columns: 1fr; gap: 6px; padding: 8px; }
     .holding-row .del-btn { justify-self: flex-end; }
@@ -1176,6 +1334,24 @@
         </div>
       </div>
 
+      <!-- NPS 매매 랭킹 -->
+      <div class="ranking-grid" id="ranking-grid" style="display:none;">
+        <div class="ranking-card buy">
+          <div class="r-header">
+            <span class="r-title">🏆 최근 매수 TOP</span>
+            <span class="r-subtitle">클릭 시 검색</span>
+          </div>
+          <div id="ranking-buy"></div>
+        </div>
+        <div class="ranking-card sell">
+          <div class="r-header">
+            <span class="r-title">📉 최근 매도 TOP</span>
+            <span class="r-subtitle">클릭 시 검색</span>
+          </div>
+          <div id="ranking-sell"></div>
+        </div>
+      </div>
+
       <div class="filter-row" style="margin-bottom: 10px;">
         <button class="filter-pill active" data-filter="all">전체</button>
         <button class="filter-pill" data-filter="up">▲ 증가</button>
@@ -1293,6 +1469,7 @@
           <span class="title">📥 내 실제 포트폴리오 (선택)</span>
           <span class="hint">입력 시 시뮬레이션 결과와 자동 비교 · 모드 C에서만 종목별 비교 지원</span>
         </div>
+        <div id="sim-restored-badge" style="display:none; font-size:12px; color:var(--ink-muted-48); background:var(--surface-pearl); border:1px solid var(--hairline); border-radius:8px; padding:8px 12px; margin-bottom:10px;"></div>
         <div class="my-holdings" id="my-holdings"></div>
         <button class="add-holding-btn" id="add-holding-btn">+ 종목 추가</button>
       </div>
@@ -1321,6 +1498,10 @@
           <div class="compare-summary" id="compare-summary"></div>
           <div class="compare-list" id="compare-list"></div>
           <div id="compare-hint" style="margin-top: 10px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;"></div>
+          <div class="rebalance-section" id="rebalance-section" style="display:none;">
+            <h4>🔄 리밸런싱 액션</h4>
+            <div id="rebalance-content"></div>
+          </div>
         </div>
 
         <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--divider-soft); font-size: 12px; color: var(--ink-muted-48); line-height: 1.6;">
@@ -1776,6 +1957,84 @@
     });
   }
 
+  // 최근 매수/매도 TOP 5 랭킹 (valueChange 절댓값 큰 순)
+  function renderRanking() {
+    const grid = document.getElementById('ranking-grid');
+    const buyEl = document.getElementById('ranking-buy');
+    const sellEl = document.getElementById('ranking-sell');
+    if (!disclosures || disclosures.length === 0) {
+      grid.style.display = 'none';
+      return;
+    }
+
+    // 종목별 dedup (같은 회사 여러 건 → 최신)
+    const bySymbol = new Map();
+    const sorted = disclosures.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    for (const d of sorted) {
+      const key = d.stockCode || d.name;
+      if (!bySymbol.has(key)) bySymbol.set(key, d);
+    }
+    const unique = Array.from(bySymbol.values());
+
+    const buys = unique
+      .filter((d) => d.valueChange != null && d.valueChange > 0)
+      .sort((a, b) => b.valueChange - a.valueChange)
+      .slice(0, 5);
+
+    const sells = unique
+      .filter((d) => d.valueChange != null && d.valueChange < 0)
+      .sort((a, b) => a.valueChange - b.valueChange)  // 음수 작은 순 = 절대값 큰 순
+      .slice(0, 5);
+
+    if (buys.length === 0 && sells.length === 0) {
+      grid.style.display = 'none';
+      return;
+    }
+
+    function itemHtml(d, rank) {
+      const abs = Math.abs(d.valueChange);
+      const amtStr = abs >= 1_0000_0000
+        ? `${(abs / 1_0000_0000).toFixed(1)}억원`
+        : `${Math.round(abs / 1_0000).toLocaleString('ko-KR')}만원`;
+      const delta = d.change != null ? `${d.change > 0 ? '+' : ''}${d.change.toFixed(2)}%p` : '';
+      const arrow = d.type === '증가' ? '▲' : '▼';
+      return `
+        <div class="ranking-item" data-search="${esc(d.name)}">
+          <div class="rank-num">${rank}</div>
+          <div>
+            <div class="rank-name">${esc(d.name)}</div>
+            <div class="rank-sub">${esc(d.date)} · ${arrow} ${esc(delta)}</div>
+          </div>
+          <div class="rank-amount">${esc(amtStr)}</div>
+        </div>
+      `;
+    }
+
+    buyEl.innerHTML = buys.length > 0
+      ? buys.map((d, i) => itemHtml(d, i + 1)).join('')
+      : '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">매수 공시가 없습니다.</div>';
+
+    sellEl.innerHTML = sells.length > 0
+      ? sells.map((d, i) => itemHtml(d, i + 1)).join('')
+      : '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">매도 공시가 없습니다.</div>';
+
+    // 클릭 시 검색창에 종목명 입력 → 자동 필터
+    grid.querySelectorAll('.ranking-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const name = item.dataset.search;
+        searchInputDisc.value = name;
+        currentSearch = name;
+        renderDisclosures();
+        // 리스트 영역으로 부드럽게 스크롤
+        setTimeout(() => {
+          disclosureGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      });
+    });
+
+    grid.style.display = '';
+  }
+
   // KPI 카드 "이달 5% 공시" 갱신
   function updateMonthlyKpi() {
     const ym = new Date().toISOString().slice(0, 7); // YYYY-MM
@@ -1804,6 +2063,7 @@
       );
       renderDisclosures();
       updateMonthlyKpi();
+      renderRanking();
     } catch (err) {
       // 폴백: 샘플 데이터
       disclosures = fallbackDisclosures.map(d => ({
@@ -1813,6 +2073,7 @@
       setStatus('API 연결 실패 · 샘플 데이터로 표시 중 (' + (err.message || '오류') + ')', true);
       renderDisclosures();
       updateMonthlyKpi();
+      renderRanking();
     }
   }
 
@@ -1959,6 +2220,118 @@
     });
   });
 
+  /* ---------- localStorage 자동 저장 / 복원 ---------- */
+  const SIM_STORAGE_KEY = 'nps-watch-sim-v1';
+  let simRestoring = false; // 복원 중엔 저장 트리거 억제
+
+  function saveSimState() {
+    if (simRestoring) return;
+    try {
+      const state = {
+        amount: parseWon(simAmount.value),
+        mode: currentSimMode,
+        weight: currentSimWeight,
+        filter: currentSimFilter,
+        assetsChecked: Array.from(assetChecksEl.querySelectorAll('input[type="checkbox"]:checked'))
+          .map((cb) => cb.dataset.asset),
+        myPortfolio: readMyHoldings(),
+        updatedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(SIM_STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+      // Quota exceeded 등은 조용히 무시
+    }
+  }
+
+  function loadSimState() {
+    try {
+      const raw = localStorage.getItem(SIM_STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function clearSimState() {
+    try { localStorage.removeItem(SIM_STORAGE_KEY); } catch (e) {}
+  }
+
+  function restoreSimState() {
+    const s = loadSimState();
+    if (!s) return;
+    simRestoring = true;
+    try {
+      if (s.amount) simAmount.value = fmtWon(s.amount);
+
+      // 모드
+      if (s.mode) {
+        const modeR = document.querySelector(`input[name="sim-mode"][value="${s.mode}"]`);
+        if (modeR) { modeR.checked = true; modeR.dispatchEvent(new Event('change')); }
+      }
+      // 가중치
+      if (s.weight) {
+        const wR = document.querySelector(`input[name="sim-weight"][value="${s.weight}"]`);
+        if (wR) { wR.checked = true; wR.dispatchEvent(new Event('change')); }
+      }
+      // 필터
+      if (s.filter) {
+        const fR = document.querySelector(`input[name="sim-filter"][value="${s.filter}"]`);
+        if (fR) { fR.checked = true; fR.dispatchEvent(new Event('change')); }
+      }
+      // 자산군 체크
+      if (Array.isArray(s.assetsChecked)) {
+        assetChecksEl.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+          const shouldCheck = s.assetsChecked.includes(cb.dataset.asset);
+          cb.checked = shouldCheck;
+          const label = cb.closest('.checkbox-chip');
+          if (label) label.classList.toggle('checked', shouldCheck);
+        });
+      }
+      // 내 포트폴리오
+      if (Array.isArray(s.myPortfolio)) {
+        myHoldingsEl.innerHTML = '';
+        s.myPortfolio.forEach((h) => addHoldingRow(h.name, h.amount));
+      }
+
+      // 복원 힌트 표시
+      if (s.updatedAt) {
+        const badge = document.getElementById('sim-restored-badge');
+        if (badge) {
+          const d = new Date(s.updatedAt);
+          badge.innerHTML = `💾 이전 값 복원됨 · ${d.toLocaleString('ko-KR', { hour12: false })} <a href="#" id="clear-sim-state" style="color:var(--primary);text-decoration:none;margin-left:6px;">지우기</a>`;
+          badge.style.display = 'inline-block';
+          const clearLink = document.getElementById('clear-sim-state');
+          if (clearLink) {
+            clearLink.addEventListener('click', (e) => {
+              e.preventDefault();
+              if (confirm('저장된 시뮬레이터 값을 모두 지울까요?\n(이 브라우저에만 저장된 값입니다)')) {
+                clearSimState();
+                location.reload();
+              }
+            });
+          }
+        }
+      }
+    } finally {
+      simRestoring = false;
+    }
+  }
+
+  // 저장 트리거를 각 입력에 부착 (지연 저장으로 keystroke 마다 안 하도록)
+  let saveTimer = null;
+  function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveSimState, 300);
+  }
+
+  simAmount.addEventListener('input', scheduleSave);
+  document.querySelectorAll('input[name="sim-mode"]').forEach((r) => r.addEventListener('change', scheduleSave));
+  document.querySelectorAll('input[name="sim-weight"]').forEach((r) => r.addEventListener('change', scheduleSave));
+  document.querySelectorAll('input[name="sim-filter"]').forEach((r) => r.addEventListener('change', scheduleSave));
+  // 자산군 체크박스 (동적)와 내 포트폴리오 행은 이벤트 위임
+  assetChecksEl.addEventListener('change', scheduleSave);
+
   /* ---------- 내 포트폴리오 입력 관리 ---------- */
   const myHoldingsEl = document.getElementById('my-holdings');
   const addHoldingBtn = document.getElementById('add-holding-btn');
@@ -1975,16 +2348,20 @@
       <button class="del-btn" title="삭제" aria-label="이 종목 삭제">×</button>
     `;
     const amtInput = row.querySelector('.amount-input');
+    const nameInput = row.querySelector('.name-input');
     amtInput.addEventListener('input', (e) => {
       const v = parseWon(e.target.value);
       e.target.value = v ? fmtWon(v) : '';
+      scheduleSave();
     });
+    nameInput.addEventListener('input', () => scheduleSave());
     row.querySelector('.del-btn').addEventListener('click', () => {
       row.remove();
+      scheduleSave();
     });
     myHoldingsEl.appendChild(row);
   }
-  addHoldingBtn.addEventListener('click', () => addHoldingRow());
+  addHoldingBtn.addEventListener('click', () => { addHoldingRow(); scheduleSave(); });
 
   function readMyHoldings() {
     const rows = myHoldingsEl.querySelectorAll('.holding-row');
@@ -2263,6 +2640,103 @@
     } else {
       hintEl.innerHTML = '※ 종목명은 완전 일치가 아니어도 공백/괄호 무시 후 매칭됩니다. 매칭 안 되면 "시뮬 배분에 없음" 또는 "내 보유에 없음"으로 표시됩니다.';
     }
+
+    // 리밸런싱 액션
+    renderRebalance(cmp);
+  }
+
+  /**
+   * 리밸런싱 액션: 비교 결과의 차이를 매수/매도 지침으로 변환
+   * 모드 C의 경우 disclosures의 종가로 주식 수까지 계산
+   */
+  function renderRebalance(cmp) {
+    const section = document.getElementById('rebalance-section');
+    const content = document.getElementById('rebalance-content');
+    if (!cmp || !cmp.rows || cmp.rows.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    // 종목명 → 종가 매핑 (모드 C인 경우만)
+    const priceByName = new Map();
+    if (cmp.mode === 'C' && Array.isArray(disclosures)) {
+      disclosures.forEach((d) => {
+        if (d.closePrice) priceByName.set(normName(d.name), d.closePrice);
+      });
+    }
+
+    // 절댓값 500원 이상 차이만 액션으로 (반올림 오차 제외)
+    const actions = cmp.rows
+      .map((r) => ({ ...r, diff: r.myAmount - r.simAmount }))
+      .filter((r) => Math.abs(r.diff) >= 500);
+
+    if (actions.length === 0) {
+      content.innerHTML = '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">✨ 배분이 시뮬 추천과 거의 일치합니다. 리밸런싱할 항목이 없어요.</div>';
+      section.style.display = 'block';
+      return;
+    }
+
+    const buys  = actions.filter((r) => r.diff < 0).sort((a, b) => a.diff - b.diff);   // diff 음수 큰 순 = 부족 큰 순
+    const sells = actions.filter((r) => r.diff > 0).sort((a, b) => b.diff - a.diff);   // diff 양수 큰 순 = 초과 큰 순
+
+    function itemHtml(r, isBuy) {
+      const absDiff = Math.abs(r.diff);
+      const price = priceByName.get(normName(r.name));
+      let subLine = '';
+      if (cmp.mode === 'C' && price) {
+        const shares = Math.floor(absDiff / price);
+        if (shares > 0) {
+          subLine = `<span class="sub">약 ${shares.toLocaleString('ko-KR')}주 · 종가 ${Math.round(price).toLocaleString('ko-KR')}원 기준</span>`;
+        } else {
+          subLine = `<span class="sub">1주 미만 (종가 ${Math.round(price).toLocaleString('ko-KR')}원)</span>`;
+        }
+      } else if (cmp.mode !== 'C') {
+        subLine = `<span class="sub">자산군 배분 조정 필요</span>`;
+      } else {
+        subLine = `<span class="sub">종가 데이터 없음</span>`;
+      }
+      return `
+        <div class="rebalance-item">
+          <div class="r-name">${esc(r.name)}</div>
+          <div class="r-amt">
+            <div class="money">${isBuy ? '+' : '-'} ${fmtWon(absDiff)}원</div>
+            ${subLine}
+          </div>
+        </div>
+      `;
+    }
+
+    let html = '';
+    if (buys.length > 0) {
+      const totalBuy = buys.reduce((s, r) => s + Math.abs(r.diff), 0);
+      html += `
+        <div class="rebalance-group buy">
+          <div class="group-title">📈 매수 <span class="count">(${buys.length}종목 · 총 ${fmtWon(totalBuy)}원)</span></div>
+          ${buys.map((r) => itemHtml(r, true)).join('')}
+        </div>
+      `;
+    }
+    if (sells.length > 0) {
+      const totalSell = sells.reduce((s, r) => s + Math.abs(r.diff), 0);
+      html += `
+        <div class="rebalance-group sell">
+          <div class="group-title">📉 매도 <span class="count">(${sells.length}종목 · 총 ${fmtWon(totalSell)}원)</span></div>
+          ${sells.map((r) => itemHtml(r, false)).join('')}
+        </div>
+      `;
+    }
+
+    // 요약
+    const netFlow = buys.reduce((s, r) => s + Math.abs(r.diff), 0) - sells.reduce((s, r) => s + Math.abs(r.diff), 0);
+    html += `
+      <div class="rebalance-summary">
+        <span>필요 조정 총액: <b style="color:var(--ink);">${fmtWon(buys.reduce((s, r) => s + Math.abs(r.diff), 0) + sells.reduce((s, r) => s + Math.abs(r.diff), 0))}원</b></span>
+        <span>${netFlow > 0 ? `추가 자금 필요 ${fmtWon(netFlow)}원` : netFlow < 0 ? `여유 자금 ${fmtWon(-netFlow)}원 발생` : '자금 순증감 0원'}</span>
+      </div>
+    `;
+
+    content.innerHTML = html;
+    section.style.display = 'block';
   }
 
   /* ---------- 렌더링 ---------- */
@@ -2413,6 +2887,9 @@
       if (section) section.style.display = 'none';
     }
   });
+
+  // 페이지 로드 시 저장된 시뮬레이터 상태 복원
+  restoreSimState();
 </script>
 
 </body>
