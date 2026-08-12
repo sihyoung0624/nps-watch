@@ -1659,6 +1659,146 @@
   .chart-alt-text .alt-item .av { font-weight: 600; color: var(--ink); }
   .chart-alt-text .alt-item .aa { color: var(--ink-muted-48); font-size: 11px; }
 
+  /* ===== 종목 공시 이력 모달 ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-sheet {
+    background: var(--canvas);
+    width: 100%;
+    max-width: 640px;
+    max-height: 82vh;
+    border-radius: 18px 18px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  @media (min-width: 641px) {
+    .modal-overlay { align-items: center; padding: 24px; }
+    .modal-sheet { border-radius: 18px; max-height: 80vh; }
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--divider-soft);
+    flex-wrap: wrap;
+  }
+  .modal-header .m-name {
+    font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.28px;
+    color: var(--ink);
+  }
+  .modal-header .m-sub {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+  }
+  .modal-close {
+    margin-left: auto;
+    min-width: 44px;
+    min-height: 44px;
+    border: 0;
+    background: var(--surface-pearl);
+    border-radius: 9999px;
+    font-size: 18px;
+    color: var(--ink-muted-80);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--parchment); }
+  .modal-body {
+    overflow-y: auto;
+    padding: 12px 18px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hist-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 4px 12px;
+    align-items: baseline;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--divider-soft);
+    font-size: 14px;
+    letter-spacing: -0.224px;
+  }
+  .hist-row:last-child { border-bottom: 0; }
+  .hist-row .h-date {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .hist-row .h-main {
+    min-width: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .hist-row .h-main .stake { color: var(--ink); font-weight: 600; }
+  .hist-row .h-main .from  { color: var(--ink-muted-48); }
+  .hist-row .h-sub {
+    grid-column: 2;
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    font-variant-numeric: tabular-nums;
+  }
+  .hist-row .h-delta {
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .hist-row .h-delta.up   { color: var(--up); }
+  .hist-row .h-delta.down { color: var(--down); }
+  .hist-row .h-link {
+    grid-column: 3;
+    text-align: right;
+    font-size: 12px;
+  }
+  .hist-row .h-link a { color: var(--primary); text-decoration: none; }
+  .hist-row .h-link a:hover { text-decoration: underline; }
+  .modal-foot {
+    padding: 12px 18px 16px;
+    border-top: 1px solid var(--divider-soft);
+    font-size: 11px;
+    color: var(--ink-muted-48);
+    line-height: 1.55;
+    letter-spacing: -0.12px;
+  }
+  /* 클릭 가능한 종목명 힌트 */
+  .disclosure-card .name.clickable,
+  .holdings-table tbody tr { cursor: pointer; }
+  .disclosure-card .name.clickable:hover { color: var(--primary); text-decoration: underline; }
+
+  /* ===== 핵심/상세 보기 토글 ===== */
+  .view-toggle {
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 7px 14px;
+    font-size: 13px;
+    letter-spacing: -0.224px;
+    color: var(--primary);
+    background: transparent;
+    border: 1px solid var(--primary);
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .view-toggle:hover { background: rgba(0, 102, 204, 0.06); }
+  .view-toggle:active { transform: scale(0.95); }
+  /* 핵심 모드에서 상세 요소 숨김 (신뢰성 고지 data-meta는 절대 숨기지 않음) */
+  body.simple-mode .adv-only { display: none !important; }
+
   /* 시뮬레이터 카드 강조 뱃지 */
   .highlight-badge {
     display: inline-block;
@@ -1717,6 +1857,8 @@
       <button class="tab" role="tab" data-tab="disclosures">🏆 5% 공시</button>
       <button class="tab" role="tab" data-tab="holdings">📋 국내주식</button>
       <button class="tab" role="tab" data-tab="simulator">📐 내 자산과 비교</button>
+      <button id="view-toggle" class="view-toggle" type="button" aria-pressed="false"
+        title="핵심만 보기: 상세 필터·정렬·고급 옵션을 숨기고 꼭 필요한 정보만 표시합니다">🔰 핵심만 보기</button>
     </div>
   </div>
 </div>
@@ -1927,7 +2069,7 @@
           placeholder="종목명으로 검색"
           aria-label="종목명 검색"
         />
-        <div class="filter-row" style="margin: 0; flex: 1;">
+        <div class="filter-row adv-only" style="margin: 0; flex: 1;">
           <span class="filter-label" style="margin-right:4px;">섹터</span>
           <button class="filter-pill active" data-holdings-sector="all">전체</button>
           <button class="filter-pill" data-holdings-sector="반도체">반도체</button>
@@ -2016,7 +2158,7 @@
         <button class="filter-pill" data-filter="down">▼ 감소</button>
         <button class="filter-pill" data-filter="new">신규 5%↑</button>
         <button class="filter-pill" data-filter="fav">★ 관심 <span id="fav-count-badge" style="opacity:0.7;font-size:11px;"></span></button>
-        <select id="disclosure-sort" class="filter-pill" style="appearance: none; -webkit-appearance: none; padding-right: 24px; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%2210%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%237a7a7a%22 stroke-width=%223%22><polyline points=%226 9 12 15 18 9%22/></svg>'); background-repeat: no-repeat; background-position: right 10px center; min-width: 110px;">
+        <select id="disclosure-sort" class="filter-pill adv-only" style="appearance: none; -webkit-appearance: none; padding-right: 24px; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%2210%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%237a7a7a%22 stroke-width=%223%22><polyline points=%226 9 12 15 18 9%22/></svg>'); background-repeat: no-repeat; background-position: right 10px center; min-width: 110px;">
           <option value="value-desc" selected>변동 금액순 ↓</option>
           <option value="hold-desc">보유 금액순 ↓</option>
           <option value="date-desc">최신순</option>
@@ -2026,7 +2168,7 @@
         </select>
       </div>
 
-      <div class="filter-row" style="margin-bottom: 10px;">
+      <div class="filter-row adv-only" style="margin-bottom: 10px;">
         <span class="filter-label" style="margin-right:4px;">섹터</span>
         <button class="filter-pill active" data-sector="all">전체</button>
         <button class="filter-pill" data-sector="반도체">반도체</button>
@@ -2137,7 +2279,7 @@
             <div class="m-desc" id="mode-b-desc">체크한 자산군만 골라 그 비율의 합을 100%로 다시 맞춰(재정규화) 배분합니다.</div>
           </div>
         </label>
-        <label class="mode-card" data-mode-card="C">
+        <label class="mode-card adv-only" data-mode-card="C">
           <input type="radio" name="sim-mode" value="C" />
           <div>
             <div class="m-title">C. 국내주식 종목 예시 배분 (시가총액 가중)</div>
@@ -2151,7 +2293,7 @@
         <div class="subtitle">포함할 자산군 (체크 해제 시 재정규화됨)</div>
         <div class="checkbox-group" id="asset-checks"></div>
       </div>
-      <div class="mode-options" id="options-C">
+      <div class="mode-options adv-only" id="options-C">
         <div style="background: rgba(226, 75, 74, 0.05); border: 1px solid rgba(226, 75, 74, 0.18); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; color: var(--ink-muted-80); line-height: 1.55;">
           <b style="color: var(--down);">⚠️ 이 목록은 국민연금의 포트폴리오 구성이 아닙니다.</b><br />
           5% 대량보유 공시의 지분율은 "국민연금이 그 회사 주식의 몇 %를 보유"하는지를 뜻하며,
@@ -2227,6 +2369,24 @@
 <footer class="page-footer">
   ※ 출처: 국민연금기금운용본부(fund.nps.or.kr) 자산배분 · 금융감독원 전자공시시스템(dart.fss.or.kr) 5% 공시
 </footer>
+
+<!-- 종목 공시 이력 모달 -->
+<div class="modal-overlay" id="hist-modal" role="dialog" aria-modal="true" aria-labelledby="hist-modal-name">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <span class="m-name" id="hist-modal-name">–</span>
+      <span id="hist-modal-sector"></span>
+      <span class="m-sub" id="hist-modal-count"></span>
+      <button class="modal-close" id="hist-modal-close" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body" id="hist-modal-body"></div>
+    <div class="modal-foot">
+      ※ 공시일은 보고서 접수일이며 실제 거래일과 다를 수 있습니다 (변동일 +5영업일 이내 보고).<br />
+      ※ 평가액은 <b>보고일 종가 × 주식수</b>로 산출한 추정치 · 종가 출처: Yahoo Finance · 원문 출처: 금융감독원 DART.<br />
+      ※ 표시 범위는 최근 89일 공시입니다 (OpenDART 검색 정책상 최대 3개월).
+    </div>
+  </div>
+</div>
 
 <script>
   /* =========================================================
@@ -2697,6 +2857,7 @@
       tr.addEventListener('click', () => {
         document.querySelectorAll('#stock-tbody tr').forEach((r) => r.classList.remove('selected'));
         tr.classList.add('selected');
+        openStockHistory(s.stockCode || s.name); // 공시 이력 모달
       });
       tbody.appendChild(tr);
     });
@@ -3065,7 +3226,7 @@
         <div class="left">
           <div class="name-row">
             ${favHtml}
-            <span class="name">${esc(d.name)}</span>
+            <span class="name clickable" title="공시 이력 보기" role="button" tabindex="0">${esc(d.name)}</span>
             ${sectorHtml}
             <span class="date">${esc(shortDate(d.date))}</span>
           </div>
@@ -3094,6 +3255,18 @@
           updateFavCountBadge();
           // 관심 필터가 활성화 상태였다면 리렌더
           if (currentFilter === 'fav') renderDisclosures();
+        });
+      }
+      // 종목명 클릭/엔터 → 공시 이력 모달
+      const nameEl = item.querySelector('.name.clickable');
+      if (nameEl) {
+        const key = d.stockCode || d.name;
+        nameEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openStockHistory(key);
+        });
+        nameEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openStockHistory(key); }
         });
       }
       disclosureGrid.appendChild(item);
@@ -4304,8 +4477,122 @@
     }
   });
 
+  /* ========================================================
+   * 종목 공시 이력 모달 (P2-2)
+   * disclosures에 이미 있는 데이터만 사용 — 추가 API 호출 없음
+   * ======================================================== */
+  const histModal = document.getElementById('hist-modal');
+  const histModalBody = document.getElementById('hist-modal-body');
+  let histLastFocus = null;
+
+  function openStockHistory(key) {
+    if (!disclosures || disclosures.length === 0) return;
+    const records = disclosures
+      .filter((d) => (d.stockCode || d.name) === key)
+      .sort((a, b) => (b.date || '').localeCompare(a.date || '')); // 최신 위
+    if (records.length === 0) return;
+
+    const name = records[0].name;
+    const sector = getSector(name);
+    document.getElementById('hist-modal-name').textContent = name;
+    document.getElementById('hist-modal-sector').innerHTML =
+      `<span class="sector-badge ${esc(sector.replace(/[^가-힣A-Za-z]/g, ''))}">${esc(sector)}</span>`;
+    document.getElementById('hist-modal-count').textContent =
+      `최근 89일 공시 ${records.length}건`;
+
+    histModalBody.innerHTML = records.map((d) => {
+      const isUp = d.type === '증가';
+      const arrow = isUp ? '▲' : d.type === '감소' ? '▼' : '—';
+      const cls = isUp ? 'up' : d.type === '감소' ? 'down' : '';
+      const before = d.before != null ? d.before.toFixed(2) : '–';
+      const after  = d.after  != null ? d.after.toFixed(2)  : '–';
+      const delta  = d.change != null ? Math.abs(d.change).toFixed(2) : '–';
+      const subs = [];
+      if (d.stockQtyChange != null) subs.push(`주식수 ${fmtShares(d.stockQtyChange)}`);
+      if (d.valueChange != null)    subs.push(`평가액(추정) ${fmtKrw(d.valueChange)}`);
+      if (d.reportResn)             subs.push(esc(d.reportResn));
+      const linkHtml = d.dartUrl
+        ? `<a href="${esc(d.dartUrl)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`
+        : '';
+      return `
+        <div class="hist-row">
+          <span class="h-date">${esc(d.date || '')}</span>
+          <span class="h-main"><span class="from">${before}%</span> → <span class="stake">${after}%</span></span>
+          <span class="h-delta ${cls}">${arrow} ${delta}%p</span>
+          ${subs.length ? `<span class="h-sub">${subs.join(' · ')}</span>` : ''}
+          <span class="h-link">${linkHtml}</span>
+        </div>
+      `;
+    }).join('');
+
+    histLastFocus = document.activeElement;
+    histModal.classList.add('open');
+    document.getElementById('hist-modal-close').focus();
+  }
+
+  function closeStockHistory() {
+    histModal.classList.remove('open');
+    if (histLastFocus && histLastFocus.focus) histLastFocus.focus();
+  }
+
+  document.getElementById('hist-modal-close').addEventListener('click', closeStockHistory);
+  histModal.addEventListener('click', (e) => {
+    if (e.target === histModal) closeStockHistory(); // 시트 밖(오버레이) 클릭
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && histModal.classList.contains('open')) closeStockHistory();
+  });
+
+  /* ========================================================
+   * 핵심만 보기 / 상세 보기 토글 (P2-5)
+   * 신뢰성 고지(data-meta·면책 문구)는 어떤 모드에서도 숨기지 않음
+   * ======================================================== */
+  const VIEW_KEY = 'nps-watch-viewmode-v1';
+  const viewToggleBtn = document.getElementById('view-toggle');
+
+  function applyViewMode(mode) {
+    const simple = mode === 'simple';
+    document.body.classList.toggle('simple-mode', simple);
+    if (viewToggleBtn) {
+      viewToggleBtn.textContent = simple ? '🔬 상세 보기' : '🔰 핵심만 보기';
+      viewToggleBtn.setAttribute('aria-pressed', String(simple));
+    }
+    // 핵심 모드에서 상세 전용 필터가 걸려 있으면 기본값으로 복귀 (숨은 필터가 결과를 좁히는 혼란 방지)
+    if (simple) {
+      if (currentSector !== 'all') {
+        const pill = document.querySelector('.filter-pill[data-sector="all"]');
+        if (pill) pill.click(); else { currentSector = 'all'; renderDisclosures(); }
+      }
+      if (currentHoldingsSector !== 'all') {
+        const pill = document.querySelector('.filter-pill[data-holdings-sector="all"]');
+        if (pill) pill.click(); else { currentHoldingsSector = 'all'; renderHoldings(); }
+      }
+      if (currentSimMode === 'C') {
+        const a = document.querySelector('input[name="sim-mode"][value="A"]');
+        if (a) { a.checked = true; a.dispatchEvent(new Event('change')); }
+      }
+    }
+    try { localStorage.setItem(VIEW_KEY, mode); } catch (e) {}
+  }
+
+  if (viewToggleBtn) {
+    viewToggleBtn.addEventListener('click', () => {
+      applyViewMode(document.body.classList.contains('simple-mode') ? 'detail' : 'simple');
+    });
+  }
+  // 저장된 보기 모드 복원 (기본: 상세)
+  try {
+    const saved = localStorage.getItem(VIEW_KEY);
+    if (saved === 'simple') applyViewMode('simple');
+  } catch (e) {}
+
   // 페이지 로드 시 저장된 시뮬레이터 상태 복원
   restoreSimState();
+  // 복원된 시뮬 모드가 C인데 핵심 모드면 A로 되돌림 (숨은 옵션이 선택된 상태 방지)
+  if (document.body.classList.contains('simple-mode') && currentSimMode === 'C') {
+    const a = document.querySelector('input[name="sim-mode"][value="A"]');
+    if (a) { a.checked = true; a.dispatchEvent(new Event('change')); }
+  }
 
   /* ========================================================
    * Home Navigation - 카드/링크 클릭 시 탭 이동
