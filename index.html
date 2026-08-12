@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<meta name="description" content="국민연금공단 5% 대량보유 공시 실시간 모니터" />
-<meta property="og:title" content="NPS Watch · 국민연금 5% 공시 모니터" />
-<meta property="og:description" content="국민연금의 5% 이상 보유 종목 변동을 실시간으로 확인하세요." />
+<meta name="description" content="국민연금 자산배분과 5% 대량보유 공시를 확인하고 내 자산 구성을 점검하는 참고 도구" />
+<meta property="og:title" content="NPS Watch · 국민연금 포트폴리오 모니터" />
+<meta property="og:description" content="국민연금의 공개 자산배분·5% 공시 변동을 확인하고 내 자산과 비교해보세요. (투자 권유 아님)" />
 <meta property="og:type" content="website" />
 <title>국민연금 포트폴리오 모니터</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -569,9 +569,24 @@
     }
     .sub-nav .tabs::-webkit-scrollbar { display: none; }
     .sub-nav .tab {
-      padding: 7px 14px;
+      padding: 12px 16px;
       font-size: 13px;
       flex-shrink: 0;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .filter-pill {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .fav-btn {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .global-nav .links { display: none; }
@@ -1017,7 +1032,7 @@
   }
   .compare-row.header .col { font-weight: 400; }
 
-  /* 리밸런싱 액션 */
+  /* 목표 비중 차이 계산 */
   .rebalance-section {
     margin-top: 20px;
     background: var(--surface-pearl);
@@ -1223,6 +1238,18 @@
   .home-card .card-icon {
     font-size: 32px;
     line-height: 1;
+  }
+  .home-card .card-q {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.12px;
+    background: rgba(0, 102, 204, 0.07);
+    border-radius: 9999px;
+    padding: 3px 12px;
+    margin-bottom: 2px;
+    align-self: flex-start;
   }
   .home-card .card-title {
     font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
@@ -1559,6 +1586,53 @@
     font-size: 14px;
     letter-spacing: -0.224px;
   }
+  /* 모바일: 핵심 열(종목명·지분율·추이)만 표시 */
+  @media (max-width: 640px) {
+    .holdings-table { min-width: 0; width: 100%; }
+    .holdings-table th:nth-child(3),
+    .holdings-table td:nth-child(3),
+    .holdings-table th:nth-child(5),
+    .holdings-table td:nth-child(5) { display: none; }
+    .holdings-table th, .holdings-table td { padding: 12px 8px; font-size: 13px; }
+    .holdings-table td .name-cell .n { font-size: 14px; }
+    .holdings-table td .spark-cell { gap: 4px; }
+    .holdings-table .spark { max-width: 56px; }
+  }
+
+  /* ===== 데이터 메타 배지 (기준일·갱신·출처·상태) ===== */
+  .data-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+    background: var(--surface-pearl);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 8px 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .data-meta .dm-item { display: inline; }
+  .data-meta .dm-label { margin-right: 4px; }
+  .data-meta .dm-label { color: var(--ink-muted-48); }
+  .data-meta .dm-value { color: var(--ink-muted-80); font-weight: 500; }
+  .data-meta a { color: var(--primary); text-decoration: none; }
+  .data-meta a:hover { text-decoration: underline; }
+  .data-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 9999px;
+    letter-spacing: -0.12px;
+    vertical-align: middle;
+  }
+  .data-badge.sample { background: rgba(249, 168, 37, 0.14); color: #9A6C00; border: 1px solid rgba(249, 168, 37, 0.35); }
+  .data-badge.live   { background: rgba(29, 158, 117, 0.1); color: #147a5a; border: 1px solid rgba(29, 158, 117, 0.3); }
+  .data-badge.stale  { background: rgba(198, 40, 40, 0.08); color: #C62828; border: 1px solid rgba(198, 40, 40, 0.25); }
 
   /* 시뮬레이터 카드 강조 뱃지 */
   .highlight-badge {
@@ -1617,7 +1691,7 @@
       <button class="tab" role="tab" data-tab="overview">📊 국민연금 포트폴리오</button>
       <button class="tab" role="tab" data-tab="disclosures">🏆 5% 공시</button>
       <button class="tab" role="tab" data-tab="holdings">📋 국내주식</button>
-      <button class="tab" role="tab" data-tab="simulator">🎯 따라 투자</button>
+      <button class="tab" role="tab" data-tab="simulator">📐 내 자산과 비교</button>
     </div>
   </div>
 </div>
@@ -1628,11 +1702,12 @@
     <div class="notif-banner" id="home-notif-banner" style="display:none;"></div>
     <div class="home-hero">
       <h1>국민연금 투자 포트폴리오 모니터</h1>
-      <p>실시간 5% 대량보유 공시 · 자산 배분 · 포트폴리오 시뮬레이션</p>
+      <p>공시 기준 5% 대량보유 현황 · 자산 배분 · 내 자산 구성 점검</p>
     </div>
 
     <div class="home-grid">
       <button class="home-card" data-goto="overview" type="button">
+        <span class="card-q">Q1. 국민연금은 어디에 투자하고 있나?</span>
         <div class="card-icon">📊</div>
         <div class="card-title">국민연금 포트폴리오</div>
         <div class="card-desc">총 운용자산 · 자산군별 배분 · 연도별 비중 변화 · 최근 공시 다이제스트를 한 화면에</div>
@@ -1646,42 +1721,44 @@
       </button>
 
       <button class="home-card" data-goto="disclosures" type="button">
+        <span class="card-q">Q2. 최근 무엇을 늘리고 줄였나?</span>
         <div class="card-icon">🏆</div>
         <div class="card-title">5% 대량보유 공시</div>
-        <div class="card-desc">국민연금이 5% 이상 보유한 종목의 매수·매도 현황을 실시간으로 확인</div>
+        <div class="card-desc">국민연금이 5% 이상 보유한 종목의 지분 변동을 공시 기준으로 확인 (공시일과 실제 거래일은 다를 수 있음)</div>
         <div class="card-sub">
-          <span class="sub-item">매수 TOP</span>
-          <span class="sub-item">매도 TOP</span>
+          <span class="sub-item">지분 증가 TOP</span>
+          <span class="sub-item">지분 감소 TOP</span>
           <span class="sub-item">최신 공시 리스트</span>
           <span class="sub-item">검색·필터</span>
         </div>
-        <div class="card-cta"><span>바로가기</span><span>→</span></div>
+        <div class="card-cta"><span id="home-preview-disclosures">데이터 불러오는 중…</span><span>→</span></div>
       </button>
 
       <button class="home-card" data-goto="holdings" type="button">
+        <span class="card-q">Q2. 종목·섹터별로 자세히 보면?</span>
         <div class="card-icon">📋</div>
         <div class="card-title">국내주식</div>
-        <div class="card-desc">섹터별 매매 현황 요약과 국민연금 5% 보유 종목별 지분 · 최근 89일 변동 추이</div>
+        <div class="card-desc">섹터별 지분 변동 요약과 국민연금 5% 공시 종목별 지분 · 최근 89일 변동 추이</div>
         <div class="card-sub">
-          <span class="sub-item">섹터별 매매</span>
+          <span class="sub-item">섹터별 지분 변동</span>
           <span class="sub-item">종목별 지분율</span>
           <span class="sub-item">89일 스파크라인</span>
           <span class="sub-item">섹터 필터</span>
         </div>
-        <div class="card-cta"><span>바로가기</span><span>→</span></div>
+        <div class="card-cta"><span id="home-preview-holdings">데이터 불러오는 중…</span><span>→</span></div>
       </button>
 
       <button class="home-card" data-goto="simulator" type="button">
-        <div class="card-icon">🎯</div>
-        <div class="card-title">국민연금 따라 투자하기 <span class="highlight-badge">🔄 리밸런싱 액션</span></div>
-        <div class="card-desc">내 자금으로 국민연금 배분을 따라 하면 어떻게 배분될지 시뮬레이션 · <b style="color:var(--primary);">내 포트폴리오 입력 시 매수/매도 지침 자동 산출</b></div>
+        <span class="card-q">Q3. 내 자산과 비교하면 어떤 차이가 있나?</span>
+        <div class="card-icon">📐</div>
+        <div class="card-title">내 자산과 비교 <span class="highlight-badge">참고용 계산</span></div>
+        <div class="card-desc">국민연금의 공개 배분 비율을 참고 기준으로 삼아 내 자산 구성과의 차이를 계산해보는 <b style="color:var(--primary);">참고용 도구</b> (투자 권유 아님)</div>
         <div class="card-sub">
-          <span class="sub-item">자산군 배분</span>
-          <span class="sub-item">종목별 배분</span>
-          <span class="sub-item">내 포트폴리오 비교</span>
-          <span class="sub-item" style="color:var(--up);font-weight:600;">🔄 리밸런싱 액션</span>
+          <span class="sub-item">자산군 배분 참고</span>
+          <span class="sub-item">내 포트폴리오 입력</span>
+          <span class="sub-item">목표 비중과의 차이 계산 예시</span>
         </div>
-        <div class="card-cta"><span>바로가기</span><span>→</span></div>
+        <div class="card-cta"><span id="home-preview-sim">바로가기</span><span>→</span></div>
       </button>
     </div>
   </section>
@@ -1694,40 +1771,47 @@
         <div class="meta">운용자산 요약 · 자산군별 배분 · 연도별 비중 변화 · 최근 공시</div>
       </div>
 
+      <div class="data-meta">
+        <span class="data-badge sample">샘플 데이터</span>
+        <span class="dm-item"><span class="dm-label">기준일</span> <span class="dm-value">2026년 3월 말 (예시 수치)</span></span>
+        <span class="dm-item"><span class="dm-label">출처(실데이터 연동 예정)</span> <a href="https://fund.nps.or.kr" target="_blank" rel="noopener noreferrer">기금운용본부 fund.nps.or.kr ↗</a></span>
+        <span class="dm-item"><span class="dm-label">비고</span> <span class="dm-value">아래 자산배분·연도별 수치는 화면 구성용 샘플이며 실제 공시 수치가 아닙니다</span></span>
+      </div>
+
       <!-- KPI Cards -->
       <section class="kpi-grid" aria-label="주요 지표">
         <div class="kpi-card">
-          <div class="label">총 운용 자산</div>
+          <div class="label">총 운용 자산 <span class="data-badge sample">샘플</span></div>
           <div class="value" id="kpi-total">1,180<span class="unit">조원</span></div>
-          <div class="delta">2026년 3월 말 기준</div>
+          <div class="delta">예시 수치 · 실제 아님</div>
         </div>
         <div class="kpi-card">
-          <div class="label">국내주식 비중</div>
+          <div class="label">국내주식 비중 <span class="data-badge sample">샘플</span></div>
           <div class="value" id="kpi-domestic">13.0<span class="unit">%</span></div>
-          <div class="delta">전년 동월비 ▼ 1.2%p</div>
+          <div class="delta">예시 수치 · 실제 아님</div>
         </div>
         <div class="kpi-card">
-          <div class="label">해외주식 비중</div>
+          <div class="label">해외주식 비중 <span class="data-badge sample">샘플</span></div>
           <div class="value" id="kpi-overseas">38.2<span class="unit">%</span></div>
-          <div class="delta">전년 동월비 ▲ 1.4%p</div>
+          <div class="delta">예시 수치 · 실제 아님</div>
         </div>
         <div class="kpi-card">
-          <div class="label">이달 5% 공시</div>
-          <div class="value" id="kpi-disclosures">2<span class="unit">건</span></div>
-          <div class="delta">2026년 5월 기준</div>
+          <div class="label">이달 5% 공시 <span class="data-badge live">공시 기준</span></div>
+          <div class="value" id="kpi-disclosures">–<span class="unit">건</span></div>
+          <div class="delta" id="kpi-disclosures-delta">데이터 불러오는 중…</div>
         </div>
       </section>
 
       <!-- 다이제스트: 자산배분 mini + 최근 공시 -->
       <div class="digest-grid">
         <div class="digest-card">
-          <h4>자산군 배분 요약 <a class="link" href="#allocation-detail">상세 ↓</a></h4>
+          <h4>자산군 배분 요약 <span class="data-badge sample">샘플</span> <a class="link" href="#allocation-detail">상세 ↓</a></h4>
           <div class="digest-chart-mini">
             <canvas id="overview-donut"></canvas>
           </div>
         </div>
         <div class="digest-card">
-          <h4>최근 5% 공시 <a class="link" data-goto="disclosures">전체 보기 →</a></h4>
+          <h4>최근 5% 공시 <span class="data-badge live">공시 기준</span> <a class="link" data-goto="disclosures">전체 보기 →</a></h4>
           <div class="digest-list" id="overview-recent"></div>
         </div>
       </div>
@@ -1736,21 +1820,27 @@
     <!-- 자산 배분 상세 (자산배분 탭에서 이동) -->
     <div class="section light" id="allocation-detail">
       <div class="section-header">
-        <h2>자산군별 배분</h2>
-        <div class="meta">기준일 · <span id="base-date-1">2026년 3월 말</span></div>
+        <h2>자산군별 배분 <span class="data-badge sample">샘플</span></h2>
+        <div class="meta">예시 기준일 · <span id="base-date-1">2026년 3월 말</span> (실제 공시 수치 아님)</div>
       </div>
       <div class="chart-wrap tall">
         <canvas id="chart-allocation"></canvas>
+      </div>
+      <div style="margin-top: 12px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;">
+        ※ 화면 구성용 샘플입니다. 실데이터 연동 시 출처: 국민연금기금운용본부(fund.nps.or.kr) 월간 운용현황.
       </div>
     </div>
 
     <div class="section light">
       <div class="section-header">
-        <h2>연도별 자산 비중 변화</h2>
-        <div class="meta">최근 5년 · 국내주식 vs 해외주식</div>
+        <h2>연도별 자산 비중 변화 <span class="data-badge sample">샘플</span></h2>
+        <div class="meta">예시 · 국내주식 vs 해외주식 (실제 공시 수치 아님)</div>
       </div>
       <div class="chart-wrap">
         <canvas id="chart-trend"></canvas>
+      </div>
+      <div style="margin-top: 12px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;">
+        ※ 화면 구성용 샘플입니다. 실데이터 연동 시 출처: 국민연금기금운용본부(fund.nps.or.kr) 연차보고서.
       </div>
     </div>
   </section>
@@ -1763,24 +1853,31 @@
     <div class="section light">
       <div class="section-header">
         <h2>국내주식</h2>
-        <div class="meta">섹터별 매매 현황 · 종목별 지분 · 최근 89일 변동 추이</div>
+        <div class="meta">섹터별 지분 변동 · 종목별 지분 · 최근 89일 추이 (5% 공시 종목 기준)</div>
       </div>
 
-      <!-- 섹터별 매매 현황 (5% 공시에서 이동) -->
+      <div class="data-meta">
+        <span class="data-badge live">공시 기준</span>
+        <span class="dm-item"><span class="dm-label">포함 범위</span> <span class="dm-value"><b>국민연금 5% 이상 보유로 공시된 종목만</b> 표시 — 실제 국민연금 보유 종목(수백 개)의 일부입니다</span></span>
+        <span class="dm-item"><span class="dm-label">출처</span> <a href="https://dart.fss.or.kr" target="_blank" rel="noopener noreferrer">DART ↗</a></span>
+        <span class="dm-item"><span class="dm-label">추이 범위</span> <span class="dm-value">최근 89일 (OpenDART 검색 정책상 최대 3개월)</span></span>
+      </div>
+
+      <!-- 섹터별 지분 변동 현황 (공시 기준) -->
       <div class="sector-stats" id="sector-stats" style="display:none;">
         <div class="sector-stats-header">
-          <span class="st-title">🏷 섹터별 매매 현황</span>
+          <span class="st-title">🏷 섹터별 지분 변동 현황 (공시 기준)</span>
           <span class="st-sub">최근 89일 · 행 클릭 시 아래 종목 리스트가 해당 섹터로 필터</span>
         </div>
         <table>
           <thead>
             <tr>
               <th class="left">섹터</th>
-              <th>보유 종목</th>
-              <th>▲ 매수</th>
-              <th>▼ 매도</th>
+              <th>공시 종목</th>
+              <th>▲ 지분 증가</th>
+              <th>▼ 지분 감소</th>
               <th class="hide-mobile">신규 5%↑</th>
-              <th>순 매매액</th>
+              <th>순 변동 평가액</th>
             </tr>
           </thead>
           <tbody id="sector-stats-body"></tbody>
@@ -1812,7 +1909,10 @@
           <button class="filter-pill" data-holdings-sector="조선해운">조선·해운</button>
           <button class="filter-pill" data-holdings-sector="운송물류">운송·물류</button>
           <button class="filter-pill" data-holdings-sector="에너지화학">에너지·화학</button>
+          <button class="filter-pill" data-holdings-sector="건설부동산">건설·부동산</button>
           <button class="filter-pill" data-holdings-sector="기계장비">기계·장비</button>
+          <button class="filter-pill" data-holdings-sector="통신">통신</button>
+          <button class="filter-pill" data-holdings-sector="미디어엔터">미디어·엔터</button>
           <button class="filter-pill" data-holdings-sector="기타">기타</button>
         </div>
       </div>
@@ -1848,25 +1948,32 @@
       <div class="section-header">
         <h2>국민연금 5% 대량보유 공시</h2>
         <div class="meta">
-          <span id="disclosure-status">실시간 데이터 불러오는 중…</span>
+          <span id="disclosure-status">최신 공시 불러오는 중…</span>
           ·
           <a href="#" id="refresh-link" style="color: var(--primary); text-decoration: none;">새로고침</a>
         </div>
+      </div>
+
+      <div class="data-meta">
+        <span class="data-badge live" id="disclosure-data-badge">공시 기준</span>
+        <span class="dm-item"><span class="dm-label">범위</span> <span class="dm-value" id="disclosure-range">최근 89일</span></span>
+        <span class="dm-item"><span class="dm-label">출처</span> <a href="https://dart.fss.or.kr" target="_blank" rel="noopener noreferrer">금융감독원 DART ↗</a> · 평가액 종가 <a href="https://finance.yahoo.com" target="_blank" rel="noopener noreferrer">Yahoo Finance ↗</a></span>
+        <span class="dm-item"><span class="dm-label">주의</span> <span class="dm-value">5% 보고는 변동일 +5영업일 이내 접수 — 공시일과 실제 거래일이 다를 수 있습니다</span></span>
       </div>
 
       <!-- NPS 매매 랭킹 -->
       <div class="ranking-grid" id="ranking-grid" style="display:none;">
         <div class="ranking-card buy">
           <div class="r-header">
-            <span class="r-title">🏆 최근 매수 TOP</span>
-            <span class="r-subtitle">클릭 시 검색</span>
+            <span class="r-title">📈 지분 늘어난 종목 TOP</span>
+            <span class="r-subtitle">공시 기준 · 클릭 시 검색</span>
           </div>
           <div id="ranking-buy"></div>
         </div>
         <div class="ranking-card sell">
           <div class="r-header">
-            <span class="r-title">📉 최근 매도 TOP</span>
-            <span class="r-subtitle">클릭 시 검색</span>
+            <span class="r-title">📉 지분 줄어든 종목 TOP</span>
+            <span class="r-subtitle">공시 기준 · 클릭 시 검색</span>
           </div>
           <div id="ranking-sell"></div>
         </div>
@@ -1927,8 +2034,20 @@
       <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--divider-soft); font-size: 12px; color: var(--ink-muted-48); line-height: 1.6;">
         ※ 본 정보는 금융감독원 전자공시시스템(DART) 공시 자료를 가공한 것이며, 투자 권유가 아닙니다.<br />
         ※ 5% 대량보유 보고는 변동일 +5영업일 이내 보고 의무가 있어 실제 거래와 시점이 다를 수 있습니다.<br />
-        ※ 평가액은 <b>보고일 종가 × 주식수</b>로 산출한 <b>추정치</b>이며 실제 평균거래단가와 다를 수 있습니다. 종가 출처: Yahoo Finance.
+        ※ 평가액은 <b>보고일 종가 × 주식수</b>로 산출한 <b>추정치</b>이며 실제 평균거래단가와 다를 수 있습니다. 종가 출처: Yahoo Finance.<br />
+        ※ ★ 관심 종목은 <b>이 브라우저에만</b> 저장됩니다 (서버 전송 없음 · 다른 기기와 동기화되지 않음).
       </div>
+
+      <details style="margin-top: 16px; font-size: 13px; color: var(--ink-muted-80); letter-spacing: -0.224px;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--ink); padding: 8px 0; min-height: 44px; display: flex; align-items: center;">📖 용어 도움말 (5% 공시 · %p · 지분율이란?)</summary>
+        <div style="padding: 8px 4px 4px; line-height: 1.7; background: var(--surface-pearl); border-radius: 10px; padding: 14px 16px; margin-top: 6px;">
+          <b>5% 대량보유 공시</b> — 상장회사 주식을 5% 이상 보유하게 되거나, 이후 1%p 이상 변동이 생기면 금융당국에 보고해야 하는 제도입니다 (자본시장법 제147조).<br /><br />
+          <b>지분율</b> — 국민연금이 <b>그 회사 전체 주식에서 보유한 비율</b>입니다. 국민연금 자산에서 그 종목이 차지하는 비중(포트폴리오 비중)과는 다른 개념입니다.<br /><br />
+          <b>%p (퍼센트포인트)</b> — 비율끼리의 차이. 예: 지분율이 6%에서 8%로 오르면 "+2%p"입니다.<br /><br />
+          <b>변동 평가액</b> — 변동 주식 수 × 보고일 종가로 계산한 추정 금액입니다. 실제 매매 단가·시점과는 다를 수 있습니다.<br /><br />
+          <b>대체투자</b> — 주식·채권 이외의 자산(부동산, 인프라, 사모펀드 등)에 대한 투자를 말합니다.
+        </div>
+      </details>
     </div>
   </section>
 
@@ -1936,21 +2055,21 @@
   <section class="panel" id="panel-simulator" role="tabpanel">
     <div class="section light">
       <div class="section-header">
-        <h2>내 포트폴리오 시뮬레이션</h2>
-        <div class="meta">국민연금의 배분 비율을 참고해 내 자산을 배분해봅니다</div>
+        <h2>내 자산과 비교</h2>
+        <div class="meta">국민연금의 공개 배분 비율을 참고 기준으로 내 자산 구성을 점검합니다</div>
       </div>
 
-      <!-- 리밸런싱 기능 안내 -->
-      <div style="background: linear-gradient(135deg, rgba(29, 158, 117, 0.06), rgba(255, 111, 0, 0.06)); border: 1px solid rgba(29, 158, 117, 0.2); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
-        <div style="font-size: 22px;">💡</div>
+      <!-- 계산 전 고지 (상시 노출) -->
+      <div style="background: rgba(0, 102, 204, 0.05); border: 1px solid rgba(0, 102, 204, 0.18); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
+        <div style="font-size: 22px;">ℹ️</div>
         <div style="flex: 1;">
           <div style="font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -0.374px; margin-bottom: 4px;">
-            🔄 리밸런싱 액션 자동 산출 기능이 있습니다
+            이 도구는 참고용 계산 예시이며, 투자 자문·권유가 아닙니다
           </div>
           <div style="font-size: 12px; color: var(--ink-muted-80); line-height: 1.5; letter-spacing: -0.224px;">
-            아래에서 <b>총액 입력 → 내 실제 포트폴리오 종목 입력 → 계산</b>을 실행하면,
-            결과 하단에 <b style="color: var(--up);">매수해야 할 종목</b>과 <b style="color: var(--down);">매도해야 할 종목</b>이
-            수량·금액과 함께 자동으로 계산됩니다.
+            국민연금은 초장기·초대형 기관 투자자로 개인 투자자와 <b>운용 목적·기간·제약이 다릅니다</b>.
+            아래에서 총액과 내 보유 종목을 입력하면 참고 배분과의 <b>차이가 금액으로 계산</b>되지만,
+            이는 수익률 전망이나 매매 추천이 아닌 <b>단순 산술 비교</b>입니다.
           </div>
         </div>
       </div>
@@ -1984,14 +2103,14 @@
           <input type="radio" name="sim-mode" value="B" />
           <div>
             <div class="m-title">B. 자산군 일부만 선택</div>
-            <div class="m-desc">체크한 자산군만 비율을 100%로 재정규화해 배분 (예: 국내주식+국내채권만 선택 시 두 개로 100%)</div>
+            <div class="m-desc">체크한 자산군만 골라 그 비율의 합을 100%로 다시 맞춰(재정규화) 배분 — 예: 국내주식 13%+국내채권 28%만 선택하면 두 비율을 합쳐 100%가 되도록 각각 32% : 68%로 환산</div>
           </div>
         </label>
         <label class="mode-card" data-mode-card="C">
           <input type="radio" name="sim-mode" value="C" />
           <div>
-            <div class="m-title">C. 국내주식 종목별 배분</div>
-            <div class="m-desc">5% 공시된 종목들의 <b>국민연금 지분율(%)을 가중치</b>로 종목에 배분 · 실 종가 기반 매수 수량과 잔여 현금까지 계산</div>
+            <div class="m-title">C. 국내주식 종목 예시 배분 (시가총액 가중)</div>
+            <div class="m-desc">국민연금 5% 공시에 등장한 종목들을 <b>시가총액(근사) 비중</b>으로 배분해보는 예시 · <b>국민연금의 실제 포트폴리오 종목 비중이 아닙니다</b></div>
           </div>
         </label>
       </div>
@@ -2002,10 +2121,11 @@
         <div class="checkbox-group" id="asset-checks"></div>
       </div>
       <div class="mode-options" id="options-C">
-        <div class="subtitle">가중치 방식</div>
-        <div class="checkbox-group" style="margin-bottom: 14px;">
-          <label class="checkbox-chip checked" data-weight-chip="stake"><input type="radio" name="sim-weight" value="stake" checked /> 국민연금 지분율 기준</label>
-          <label class="checkbox-chip" data-weight-chip="marketcap"><input type="radio" name="sim-weight" value="marketcap" /> 시가총액 기준 (근사)</label>
+        <div style="background: rgba(226, 75, 74, 0.05); border: 1px solid rgba(226, 75, 74, 0.18); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; color: var(--ink-muted-80); line-height: 1.55;">
+          <b style="color: var(--down);">⚠️ 이 목록은 국민연금의 포트폴리오 구성이 아닙니다.</b><br />
+          5% 대량보유 공시의 지분율은 "국민연금이 그 회사 주식의 몇 %를 보유"하는지를 뜻하며,
+          국민연금 자산에서 그 종목이 차지하는 비중과는 다른 개념입니다.
+          따라서 여기서는 각 종목의 <b>시가총액(근사) 비중</b>으로 배분 예시를 계산합니다.
         </div>
         <div class="subtitle">종목 필터</div>
         <div class="checkbox-group">
@@ -2015,7 +2135,7 @@
           <label class="checkbox-chip" data-filter-chip="new"><input type="radio" name="sim-filter" value="new" /> 신규 5%↑</label>
         </div>
         <div style="margin-top: 10px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;">
-          ※ 시가총액은 <b>NPS 보유 평가액 ÷ NPS 지분율</b>로 계산한 <b>근사치</b>입니다 (별도 시세 API 미사용).
+          ※ 시가총액은 <b>공시 보유주식수 × 보고일 종가 ÷ 지분율</b>로 계산한 <b>근사치</b>입니다 (별도 시세 API 미사용).
         </div>
       </div>
 
@@ -2023,7 +2143,7 @@
       <div class="my-portfolio">
         <div class="my-portfolio-header">
           <span class="title">📥 내 실제 포트폴리오 (선택)</span>
-          <span class="hint">입력 시 시뮬레이션 결과와 자동 비교 · 모드 C에서만 종목별 비교 지원</span>
+          <span class="hint">입력 시 참고 배분과 자동 비교 · 이 브라우저에만 저장 (서버 전송 없음)</span>
         </div>
         <div id="sim-restored-badge" style="display:none; font-size:12px; color:var(--ink-muted-48); background:var(--surface-pearl); border:1px solid var(--hairline); border-radius:8px; padding:8px 12px; margin-bottom:10px;"></div>
         <div class="my-holdings" id="my-holdings"></div>
@@ -2031,12 +2151,15 @@
       </div>
 
       <!-- 계산 버튼 -->
-      <button class="sim-calc-btn" id="sim-calc-btn">포트폴리오 계산</button>
+      <button class="sim-calc-btn" id="sim-calc-btn">참고 배분 계산해보기</button>
+      <div style="text-align:center; margin-top:8px; font-size:11px; color:var(--ink-muted-48);">
+        계산 결과는 참고용 산술 비교이며 투자 추천·수익률 전망이 아닙니다
+      </div>
 
       <!-- 결과 -->
       <div class="sim-result" id="sim-result">
         <div class="sim-result-header">
-          <h3 id="sim-result-title">배분 결과</h3>
+          <h3 id="sim-result-title">참고 배분 결과 (투자 추천 아님)</h3>
           <div class="sim-result-summary">
             총 배분 <span id="sim-total-alloc">-</span> · 잔여 현금 <span class="cash" id="sim-cash">-</span>
           </div>
@@ -2055,7 +2178,7 @@
           <div class="compare-list" id="compare-list"></div>
           <div id="compare-hint" style="margin-top: 10px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;"></div>
           <div class="rebalance-section" id="rebalance-section" style="display:none;">
-            <h4>🔄 리밸런싱 액션</h4>
+            <h4>📐 목표 비중과의 차이 계산 (참고 예시 · 매매 추천 아님)</h4>
             <div id="rebalance-content"></div>
           </div>
         </div>
@@ -2120,7 +2243,7 @@
     { name: "하이브",           stake: 5.1,  weight: 0.2, change: -1.1,  changeDate: "2026-04-15" }
   ];
 
-  /* 5% 공시 데이터는 서버리스 함수 /api/disclosures 에서 실시간으로 받아옵니다.
+  /* 5% 공시 데이터는 서버리스 함수 /api/disclosures 에서 조회 시점 기준으로 받아옵니다.
    * 출처: 금융감독원 전자공시시스템(DART) OpenAPI
    * API 실패 시 아래 샘플로 폴백 (오프라인 모드) */
   const fallbackDisclosures = [
@@ -2164,8 +2287,12 @@
   Chart.defaults.color = '#7a7a7a';
   Chart.defaults.borderColor = '#e0e0e0';
 
-  /* ========== Chart 1: Allocation (Horizontal Bar) ========== */
+  /* ========== Chart 1: Allocation (Horizontal Bar) ==========
+   * 홈 탭이 기본 활성이라 이 캔버스는 숨김 상태로 시작 →
+   * 숨김 상태에서 Chart 생성 시 높이 0으로 고정되는 문제가 있어 lazy 초기화 */
   let allocationChart = null;
+  function initAllocationChart() {
+  if (allocationChart) return;
   const allocCtx = document.getElementById('chart-allocation').getContext('2d');
   allocationChart = new Chart(allocCtx, {
     type: 'bar',
@@ -2210,9 +2337,12 @@
       }
     }
   });
+  }
 
-  /* ========== Chart 2: Yearly Trend ========== */
+  /* ========== Chart 2: Yearly Trend (lazy 초기화) ========== */
   let trendChart = null;
+  function initTrendChart() {
+  if (trendChart) return;
   const trendCtx = document.getElementById('chart-trend').getContext('2d');
   trendChart = new Chart(trendCtx, {
     type: 'line',
@@ -2285,6 +2415,7 @@
       }
     }
   });
+  }
 
   /* ========== Holdings Table ========== */
   const tbody = document.getElementById('stock-tbody');
@@ -2591,7 +2722,7 @@
     try { localStorage.setItem(FAV_SEEN_KEY, JSON.stringify(Array.from(set))); } catch (e) {}
   }
 
-  /* ========== Disclosures (실시간 OpenDART 연동) ========== */
+  /* ========== Disclosures (OpenDART 연동 · 공시 기준) ========== */
   const disclosureGrid = document.getElementById('disclosure-grid');
   const disclosureEmpty = document.getElementById('disclosure-empty');
   const disclosureStatus = document.getElementById('disclosure-status');
@@ -2849,7 +2980,7 @@
       <div class="icon">🔔</div>
       <div class="body">
         <div class="b-title">관심 종목에 새 국민연금 공시 ${news.length}건</div>
-        <div class="b-desc">${preview}${more}</div>
+        <div class="b-desc">${preview}${more} <span style="color:var(--ink-muted-48);font-size:11px;">· 공시일 기준 (실제 거래일과 다를 수 있음)</span></div>
         <div class="b-actions">
           <button class="b-btn" id="notif-view-btn">공시 보기</button>
           <button class="b-btn ghost" id="notif-close-btn">확인 (알림 끄기)</button>
@@ -2985,7 +3116,7 @@
     });
   }
 
-  // 최근 매수/매도 TOP 5 랭킹 (valueChange 절댓값 큰 순)
+  // 최근 지분 증가/감소 TOP 5 랭킹 (valueChange 절댓값 큰 순 · 공시 기준)
   function renderRanking() {
     const grid = document.getElementById('ranking-grid');
     const buyEl = document.getElementById('ranking-buy');
@@ -3040,11 +3171,11 @@
 
     buyEl.innerHTML = buys.length > 0
       ? buys.map((d, i) => itemHtml(d, i + 1)).join('')
-      : '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">매수 공시가 없습니다.</div>';
+      : '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">지분 증가 공시가 없습니다.</div>';
 
     sellEl.innerHTML = sells.length > 0
       ? sells.map((d, i) => itemHtml(d, i + 1)).join('')
-      : '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">매도 공시가 없습니다.</div>';
+      : '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">지분 감소 공시가 없습니다.</div>';
 
     // 클릭 시 검색창에 종목명 입력 → 자동 필터
     grid.querySelectorAll('.ranking-item').forEach((item) => {
@@ -3065,16 +3196,92 @@
 
   // KPI 카드 "이달 5% 공시" 갱신
   function updateMonthlyKpi() {
-    const ym = new Date().toISOString().slice(0, 7); // YYYY-MM
+    const now = new Date();
+    const ym = now.toISOString().slice(0, 7); // YYYY-MM
     const count = disclosures.filter(d => (d.date || '').startsWith(ym)).length;
     const el = document.getElementById('kpi-disclosures');
     if (el) {
       el.innerHTML = `${count}<span class="unit">건</span>`;
     }
+    const deltaEl = document.getElementById('kpi-disclosures-delta');
+    if (deltaEl) {
+      deltaEl.textContent = `${now.getFullYear()}년 ${now.getMonth() + 1}월 공시 접수 기준 · 출처 DART`;
+    }
+  }
+
+  /* 마지막 성공 응답 캐시 (로딩 실패 시 이전 데이터로 표시) */
+  const DATA_CACHE_KEY = 'nps-watch-data-cache-v1';
+
+  function saveDataCache(data) {
+    try {
+      localStorage.setItem(DATA_CACHE_KEY, JSON.stringify({
+        savedAt: new Date().toISOString(),
+        data,
+      }));
+    } catch (e) { /* quota 초과 등 무시 */ }
+  }
+  function loadDataCache() {
+    try {
+      const raw = localStorage.getItem(DATA_CACHE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+  function hoursAgoLabel(iso) {
+    const diffMs = Date.now() - new Date(iso).getTime();
+    const mins = Math.round(diffMs / 60000);
+    if (mins < 60) return `${mins}분 전`;
+    const hrs = Math.round(mins / 60);
+    if (hrs < 24) return `${hrs}시간 전`;
+    return `${Math.round(hrs / 24)}일 전`;
+  }
+
+  // 홈 카드 요약 미리보기
+  function renderHomePreviews() {
+    const dEl = document.getElementById('home-preview-disclosures');
+    const hEl = document.getElementById('home-preview-holdings');
+    const sEl = document.getElementById('home-preview-sim');
+
+    if (dEl) {
+      if (disclosures && disclosures.length > 0) {
+        const ups = disclosures.filter((x) => x.type === '증가').length;
+        const downs = disclosures.filter((x) => x.type === '감소').length;
+        dEl.textContent = `최근 ${disclosures.length}건 · ▲${ups} ▼${downs}`;
+      } else {
+        dEl.textContent = '바로가기';
+      }
+    }
+    if (hEl) {
+      if (disclosures && disclosures.length > 0) {
+        const uniq = new Set(disclosures.map((x) => x.stockCode || x.name)).size;
+        hEl.textContent = `공시 종목 ${uniq}개`;
+      } else {
+        hEl.textContent = '바로가기';
+      }
+    }
+    if (sEl) {
+      try {
+        const s = loadSimState();
+        if (s && Array.isArray(s.myPortfolio) && s.myPortfolio.length > 0) {
+          sEl.textContent = `저장된 내 종목 ${s.myPortfolio.length}개`;
+        } else {
+          sEl.textContent = '바로가기';
+        }
+      } catch (e) { sEl.textContent = '바로가기'; }
+    }
+  }
+
+  function renderAllFromData() {
+    renderDisclosures();
+    updateMonthlyKpi();
+    renderRanking();
+    renderSectorStats();
+    renderHoldings();
+    renderHomeNotifBanner();
+    renderHomePreviews();
   }
 
   async function loadDisclosures() {
-    setStatus('실시간 데이터 불러오는 중…');
+    setStatus('최신 공시 불러오는 중…');
     showSkeleton();
     try {
       // OpenDART 제약상 corp_code 없이는 최대 3개월까지만 검색 가능
@@ -3087,27 +3294,41 @@
       disclosures = Array.isArray(data.disclosures) ? data.disclosures : [];
       const updated = data.updatedAt ? new Date(data.updatedAt) : new Date();
       setStatus(
-        `최근 ${data.count}건 · 업데이트 ${updated.toLocaleString('ko-KR', { hour12: false })}`
+        `최근 ${data.count}건 · 갱신 ${updated.toLocaleString('ko-KR', { hour12: false })}`
       );
-      renderDisclosures();
-      updateMonthlyKpi();
-      renderRanking();
-      renderSectorStats();
-      renderHoldings();
-      renderHomeNotifBanner();
+      const rangeEl = document.getElementById('disclosure-range');
+      if (rangeEl && data.range) {
+        rangeEl.textContent = `${data.range.from} ~ ${data.range.to} (${data.range.days}일)`;
+      }
+      const badgeEl = document.getElementById('disclosure-data-badge');
+      if (badgeEl) { badgeEl.textContent = '공시 기준'; badgeEl.className = 'data-badge live'; }
+      saveDataCache(data);
+      renderAllFromData();
     } catch (err) {
-      // 폴백: 샘플 데이터
+      // 1순위 폴백: 마지막 성공 캐시
+      const cached = loadDataCache();
+      if (cached && cached.data && Array.isArray(cached.data.disclosures) && cached.data.disclosures.length > 0) {
+        disclosures = cached.data.disclosures;
+        const ago = hoursAgoLabel(cached.savedAt);
+        setStatus(`⚠️ 갱신 실패 — ${ago} 성공한 데이터로 표시 중`, true);
+        const badgeEl = document.getElementById('disclosure-data-badge');
+        if (badgeEl) { badgeEl.textContent = `이전 데이터 (${ago})`; badgeEl.className = 'data-badge stale'; }
+        const rangeEl = document.getElementById('disclosure-range');
+        if (rangeEl && cached.data.range) {
+          rangeEl.textContent = `${cached.data.range.from} ~ ${cached.data.range.to} · 마지막 성공 ${new Date(cached.savedAt).toLocaleString('ko-KR', { hour12: false })}`;
+        }
+        renderAllFromData();
+        return;
+      }
+      // 2순위 폴백: 코드 내 샘플
       disclosures = fallbackDisclosures.map(d => ({
         ...d,
         change: +(d.after - d.before).toFixed(2)
       }));
-      setStatus('API 연결 실패 · 샘플 데이터로 표시 중 (' + (err.message || '오류') + ')', true);
-      renderDisclosures();
-      updateMonthlyKpi();
-      renderRanking();
-      renderSectorStats();
-      renderHoldings();
-      renderHomeNotifBanner();
+      setStatus('⚠️ 갱신 실패 · 화면 구성용 샘플로 표시 중 — "새로고침"으로 재시도하세요', true);
+      const badgeEl = document.getElementById('disclosure-data-badge');
+      if (badgeEl) { badgeEl.textContent = '샘플 (연결 실패)'; badgeEl.className = 'data-badge stale'; }
+      renderAllFromData();
     }
   }
 
@@ -3177,7 +3398,9 @@
   let simDonutChart  = null;
   let currentSimMode   = 'A';
   let currentSimFilter = 'all';
-  let currentSimWeight = 'stake'; // 'stake' | 'marketcap'
+  // 가중치는 시가총액(근사) 고정 — 5% 공시 지분율은 NPS 포트폴리오 내 비중이 아니므로
+  // 배분 가중치로 사용하지 않음 (2026-08 개념 오류 수정)
+  const currentSimWeight = 'marketcap';
   let lastSimAllocations = [];    // 최근 시뮬 결과 (비교에 사용)
   let lastSimMode = null;
   let lastSimTotal = 0;
@@ -3258,16 +3481,6 @@
     });
   });
 
-  // 가중치 라디오 (지분율 vs 시총)
-  document.querySelectorAll('input[name="sim-weight"]').forEach((r) => {
-    r.addEventListener('change', () => {
-      currentSimWeight = r.value;
-      document.querySelectorAll('[data-weight-chip]').forEach((c) => c.classList.remove('checked'));
-      const chip = document.querySelector(`[data-weight-chip="${currentSimWeight}"]`);
-      if (chip) chip.classList.add('checked');
-    });
-  });
-
   /* ---------- localStorage 자동 저장 / 복원 ---------- */
   const SIM_STORAGE_KEY = 'nps-watch-sim-v1';
   let simRestoring = false; // 복원 중엔 저장 트리거 억제
@@ -3317,11 +3530,7 @@
         const modeR = document.querySelector(`input[name="sim-mode"][value="${s.mode}"]`);
         if (modeR) { modeR.checked = true; modeR.dispatchEvent(new Event('change')); }
       }
-      // 가중치
-      if (s.weight) {
-        const wR = document.querySelector(`input[name="sim-weight"][value="${s.weight}"]`);
-        if (wR) { wR.checked = true; wR.dispatchEvent(new Event('change')); }
-      }
+      // (가중치 옵션은 v10에서 제거됨 — 저장된 s.weight는 무시, 시가총액 고정)
       // 필터
       if (s.filter) {
         const fR = document.querySelector(`input[name="sim-filter"][value="${s.filter}"]`);
@@ -3483,17 +3692,15 @@
     const unique = Array.from(bySymbol.values()).filter((d) => d.after != null && d.after > 0);
     if (unique.length === 0) return [];
 
-    // 가중치 기반값 결정
-    const useMarketCap = (currentSimWeight === 'marketcap');
+    // 가중치: 시가총액(근사) 고정.
+    // 주의: d.after(5% 공시 지분율)는 "NPS가 그 회사의 몇 %를 보유"이며
+    // NPS 포트폴리오 내 종목 비중이 아니므로 가중치로 사용하지 않는다.
     const weightOf = (d) => {
-      if (useMarketCap) {
-        const mc = approxMarketCap(d);
-        return mc != null ? mc : 0;
-      }
-      return d.after;
+      const mc = approxMarketCap(d);
+      return mc != null ? mc : 0;
     };
 
-    // 시총 옵션인데 marketCap 계산 불가한 종목 제외
+    // marketCap 계산 불가한 종목 제외
     const withWeight = unique.map((d) => ({ d, w: weightOf(d) })).filter((x) => x.w > 0);
     if (withWeight.length === 0) return [];
 
@@ -3509,22 +3716,15 @@
         ? `${Math.round(price).toLocaleString('ko-KR')}원`
         : '종가조회실패';
 
-      let detail;
-      if (useMarketCap) {
-        const mc = approxMarketCap(d);
-        const mcStr = mc >= 1e12
-          ? `${(mc / 1e12).toFixed(2)}조원`
-          : mc >= 1e8
-          ? `${Math.round(mc / 1e8).toLocaleString('ko-KR')}억원`
-          : `${Math.round(mc).toLocaleString('ko-KR')}원`;
-        detail = price
-          ? `${shares.toLocaleString('ko-KR')}주 × ${priceStr} · 시총 ≈ ${mcStr}`
-          : `시총 ≈ ${mcStr} · 종가 조회 실패`;
-      } else {
-        detail = price
-          ? `${shares.toLocaleString('ko-KR')}주 × ${priceStr} · 지분율 ${d.after.toFixed(2)}%`
-          : `지분율 ${d.after.toFixed(2)}% · 종가 조회 실패`;
-      }
+      const mc = approxMarketCap(d);
+      const mcStr = mc >= 1e12
+        ? `${(mc / 1e12).toFixed(2)}조원`
+        : mc >= 1e8
+        ? `${Math.round(mc / 1e8).toLocaleString('ko-KR')}억원`
+        : `${Math.round(mc).toLocaleString('ko-KR')}원`;
+      const detail = price
+        ? `환산 ${shares.toLocaleString('ko-KR')}주 × ${priceStr} · 시총(근사) ${mcStr}`
+        : `시총(근사) ${mcStr} · 종가 조회 실패`;
 
       return {
         label: d.name,
@@ -3689,13 +3889,13 @@
       hintEl.innerHTML = '※ 종목명은 완전 일치가 아니어도 공백/괄호 무시 후 매칭됩니다. 매칭 안 되면 "시뮬 배분에 없음" 또는 "내 보유에 없음"으로 표시됩니다.';
     }
 
-    // 리밸런싱 액션
+    // 목표 비중 차이 계산 (참고 예시)
     renderRebalance(cmp);
   }
 
   /**
-   * 리밸런싱 액션: 비교 결과의 차이를 매수/매도 지침으로 변환
-   * 모드 C의 경우 disclosures의 종가로 주식 수까지 계산
+   * 목표 비중 차이 계산 (참고 예시): 참고 배분과 내 보유의 차이를 금액으로 표시
+   * 매매 추천이 아닌 단순 산술 비교. 모드 C의 경우 종가 기준 환산 수량도 참고 표시
    */
   function renderRebalance(cmp) {
     const section = document.getElementById('rebalance-section');
@@ -3719,7 +3919,7 @@
       .filter((r) => Math.abs(r.diff) >= 500);
 
     if (actions.length === 0) {
-      content.innerHTML = '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">✨ 배분이 시뮬 추천과 거의 일치합니다. 리밸런싱할 항목이 없어요.</div>';
+      content.innerHTML = '<div style="font-size:13px;color:var(--ink-muted-48);padding:8px 0;">✨ 내 배분이 참고 배분과 거의 일치합니다. 큰 차이가 없어요.</div>';
       section.style.display = 'block';
       return;
     }
@@ -3734,12 +3934,12 @@
       if (cmp.mode === 'C' && price) {
         const shares = Math.floor(absDiff / price);
         if (shares > 0) {
-          subLine = `<span class="sub">약 ${shares.toLocaleString('ko-KR')}주 · 종가 ${Math.round(price).toLocaleString('ko-KR')}원 기준</span>`;
+          subLine = `<span class="sub">환산 시 약 ${shares.toLocaleString('ko-KR')}주 (보고일 종가 ${Math.round(price).toLocaleString('ko-KR')}원 기준 · 참고)</span>`;
         } else {
-          subLine = `<span class="sub">1주 미만 (종가 ${Math.round(price).toLocaleString('ko-KR')}원)</span>`;
+          subLine = `<span class="sub">1주 미만 차이 (보고일 종가 ${Math.round(price).toLocaleString('ko-KR')}원)</span>`;
         }
       } else if (cmp.mode !== 'C') {
-        subLine = `<span class="sub">자산군 배분 조정 필요</span>`;
+        subLine = `<span class="sub">자산군 단위 차이 (참고)</span>`;
       } else {
         subLine = `<span class="sub">종가 데이터 없음</span>`;
       }
@@ -3759,7 +3959,7 @@
       const totalBuy = buys.reduce((s, r) => s + Math.abs(r.diff), 0);
       html += `
         <div class="rebalance-group buy">
-          <div class="group-title">📈 매수 <span class="count">(${buys.length}종목 · 총 ${fmtWon(totalBuy)}원)</span></div>
+          <div class="group-title">📈 참고 배분보다 부족 <span class="count">(${buys.length}종목 · 차이 합계 ${fmtWon(totalBuy)}원)</span></div>
           ${buys.map((r) => itemHtml(r, true)).join('')}
         </div>
       `;
@@ -3768,7 +3968,7 @@
       const totalSell = sells.reduce((s, r) => s + Math.abs(r.diff), 0);
       html += `
         <div class="rebalance-group sell">
-          <div class="group-title">📉 매도 <span class="count">(${sells.length}종목 · 총 ${fmtWon(totalSell)}원)</span></div>
+          <div class="group-title">📉 참고 배분보다 초과 <span class="count">(${sells.length}종목 · 차이 합계 ${fmtWon(totalSell)}원)</span></div>
           ${sells.map((r) => itemHtml(r, false)).join('')}
         </div>
       `;
@@ -3778,8 +3978,11 @@
     const netFlow = buys.reduce((s, r) => s + Math.abs(r.diff), 0) - sells.reduce((s, r) => s + Math.abs(r.diff), 0);
     html += `
       <div class="rebalance-summary">
-        <span>필요 조정 총액: <b style="color:var(--ink);">${fmtWon(buys.reduce((s, r) => s + Math.abs(r.diff), 0) + sells.reduce((s, r) => s + Math.abs(r.diff), 0))}원</b></span>
-        <span>${netFlow > 0 ? `추가 자금 필요 ${fmtWon(netFlow)}원` : netFlow < 0 ? `여유 자금 ${fmtWon(-netFlow)}원 발생` : '자금 순증감 0원'}</span>
+        <span>차이 합계: <b style="color:var(--ink);">${fmtWon(buys.reduce((s, r) => s + Math.abs(r.diff), 0) + sells.reduce((s, r) => s + Math.abs(r.diff), 0))}원</b></span>
+        <span>${netFlow > 0 ? `참고 배분 대비 ${fmtWon(netFlow)}원 부족` : netFlow < 0 ? `참고 배분 대비 ${fmtWon(-netFlow)}원 초과` : '순차이 0원'}</span>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--ink-muted-48);line-height:1.5;">
+        ※ 위 차이는 참고 배분과의 산술적 차이일 뿐, 매매 실행을 권하는 지침이 아닙니다. 공시일과 실제 거래일이 다를 수 있으며, 세금·수수료·시장 상황은 반영되지 않았습니다.
       </div>
     `;
 
@@ -3908,15 +4111,14 @@
     let title = '';
     if (currentSimMode === 'A') {
       allocations = calcModeA(total);
-      title = 'A. 국민연금 자산군 전체 배분';
+      title = 'A. 국민연금 자산군 배분 참고 (샘플 비율 기준)';
     } else if (currentSimMode === 'B') {
       allocations = calcModeB(total);
-      title = 'B. 자산군 일부 재정규화 배분';
+      title = 'B. 자산군 일부 재정규화 참고 (샘플 비율 기준)';
       if (allocations.length === 0) { alert('하나 이상의 자산군을 선택해주세요.'); return; }
     } else {
       allocations = calcModeC(total);
-      const weightLabel = currentSimWeight === 'marketcap' ? '시가총액 가중' : '국민연금 지분율 가중';
-      title = `C. 국내주식 종목별 배분 (${weightLabel})`;
+      title = 'C. 국내주식 종목 예시 배분 (시가총액 가중 · 참고)';
       if (allocations.length === 0) { alert('선택한 조건에 맞는 종목이 없습니다. 필터를 완화해보세요.'); return; }
     }
 
@@ -4063,16 +4265,17 @@
     });
   }
 
-  // 전체 현황(국민연금 포트폴리오) 탭 활성화 시점에 렌더/리사이즈
+  // 전체 현황(국민연금 포트폴리오) 탭 활성화 시점에 lazy 렌더
   document.querySelectorAll('.tab[data-tab="overview"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       // 다음 tick에 렌더 (탭 활성화 후 canvas 사이즈 확정)
       setTimeout(() => {
         renderOverviewDonut();
         renderOverviewRecent();
-        // 자산배분·연도별 큰 차트는 hidden 상태에서 생성되므로 resize
-        if (allocationChart) allocationChart.resize();
-        if (trendChart)      trendChart.resize();
+        initAllocationChart();
+        initTrendChart();
+        allocationChart.resize();
+        trendChart.resize();
       }, 60);
     });
   });
