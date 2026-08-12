@@ -1614,9 +1614,8 @@
     <div class="category">포트폴리오</div>
     <div class="tabs" role="tablist">
       <button class="tab active" role="tab" data-tab="home">🏠 홈</button>
-      <button class="tab" role="tab" data-tab="overview">📈 전체 현황</button>
+      <button class="tab" role="tab" data-tab="overview">📊 국민연금 포트폴리오</button>
       <button class="tab" role="tab" data-tab="disclosures">🏆 5% 공시</button>
-      <button class="tab" role="tab" data-tab="allocation">📊 자산 배분</button>
       <button class="tab" role="tab" data-tab="holdings">📋 국내주식</button>
       <button class="tab" role="tab" data-tab="simulator">🎯 따라 투자</button>
     </div>
@@ -1633,15 +1632,15 @@
     </div>
 
     <div class="home-grid">
-      <button class="home-card" data-goto="allocation" type="button">
+      <button class="home-card" data-goto="overview" type="button">
         <div class="card-icon">📊</div>
         <div class="card-title">국민연금 포트폴리오</div>
-        <div class="card-desc">자산군별 배분 · 연도별 비중 변화 · 총 운용자산</div>
+        <div class="card-desc">총 운용자산 · 자산군별 배분 · 연도별 비중 변화 · 최근 공시 다이제스트를 한 화면에</div>
         <div class="card-sub">
-          <span class="sub-item">총괄</span>
-          <span class="sub-item">자산배분</span>
-          <span class="sub-item">연도별 자산변화</span>
-          <span class="sub-item" data-goto="holdings" style="color:var(--primary);cursor:pointer;">국내주식 →</span>
+          <span class="sub-item">KPI 4종</span>
+          <span class="sub-item">자산배분 도넛·막대</span>
+          <span class="sub-item">연도별 추이</span>
+          <span class="sub-item">최근 공시 5건</span>
         </div>
         <div class="card-cta"><span>바로가기</span><span>→</span></div>
       </button>
@@ -1649,7 +1648,7 @@
       <button class="home-card" data-goto="disclosures" type="button">
         <div class="card-icon">🏆</div>
         <div class="card-title">5% 대량보유 공시</div>
-        <div class="card-desc">국민연금이 5% 이상 보유한 종목의 매수·매도 현황을 실시간으로</div>
+        <div class="card-desc">국민연금이 5% 이상 보유한 종목의 매수·매도 현황을 실시간으로 확인</div>
         <div class="card-sub">
           <span class="sub-item">매수 TOP</span>
           <span class="sub-item">매도 TOP</span>
@@ -1659,14 +1658,15 @@
         <div class="card-cta"><span>바로가기</span><span>→</span></div>
       </button>
 
-      <button class="home-card" data-goto="overview" type="button">
-        <div class="card-icon">📈</div>
-        <div class="card-title">전체 현황</div>
-        <div class="card-desc">주요 지표 요약 · 자산배분 도넛 · 최근 공시 다이제스트를 한 화면에</div>
+      <button class="home-card" data-goto="holdings" type="button">
+        <div class="card-icon">📋</div>
+        <div class="card-title">국내주식</div>
+        <div class="card-desc">섹터별 매매 현황 요약과 국민연금 5% 보유 종목별 지분 · 최근 89일 변동 추이</div>
         <div class="card-sub">
-          <span class="sub-item">KPI 4종</span>
-          <span class="sub-item">자산배분 요약</span>
-          <span class="sub-item">최근 공시 5건</span>
+          <span class="sub-item">섹터별 매매</span>
+          <span class="sub-item">종목별 지분율</span>
+          <span class="sub-item">89일 스파크라인</span>
+          <span class="sub-item">섹터 필터</span>
         </div>
         <div class="card-cta"><span>바로가기</span><span>→</span></div>
       </button>
@@ -1690,8 +1690,8 @@
   <section class="panel" id="panel-overview" role="tabpanel">
     <div class="section light">
       <div class="section-header">
-        <h2>전체 현황</h2>
-        <div class="meta">국민연금 운용자산 요약 · 자산배분 · 최근 공시 다이제스트</div>
+        <h2>국민연금 포트폴리오</h2>
+        <div class="meta">운용자산 요약 · 자산군별 배분 · 연도별 비중 변화 · 최근 공시</div>
       </div>
 
       <!-- KPI Cards -->
@@ -1718,10 +1718,10 @@
         </div>
       </section>
 
-      <!-- 다이제스트: 자산배분 + 최근 공시 -->
+      <!-- 다이제스트: 자산배분 mini + 최근 공시 -->
       <div class="digest-grid">
         <div class="digest-card">
-          <h4>자산군 배분 요약 <a class="link" data-goto="allocation">상세 →</a></h4>
+          <h4>자산군 배분 요약 <a class="link" href="#allocation-detail">상세 ↓</a></h4>
           <div class="digest-chart-mini">
             <canvas id="overview-donut"></canvas>
           </div>
@@ -1732,11 +1732,9 @@
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- TAB 1: Allocation -->
-  <section class="panel" id="panel-allocation" role="tabpanel">
-    <div class="section light">
+    <!-- 자산 배분 상세 (자산배분 탭에서 이동) -->
+    <div class="section light" id="allocation-detail">
       <div class="section-header">
         <h2>자산군별 배분</h2>
         <div class="meta">기준일 · <span id="base-date-1">2026년 3월 말</span></div>
@@ -1757,12 +1755,40 @@
     </div>
   </section>
 
-  <!-- TAB 2: Holdings -->
+  <!-- TAB 1: Allocation -->
+  <!-- (자산 배분 탭은 전체 현황과 통합됨) -->
+
+  <!-- TAB: Holdings -->
   <section class="panel" id="panel-holdings" role="tabpanel">
     <div class="section light">
       <div class="section-header">
-        <h2>국내주식 종목별 지분</h2>
-        <div class="meta">국민연금 5% 공시 등록 종목 · 최근 89일 변동 추이 반영</div>
+        <h2>국내주식</h2>
+        <div class="meta">섹터별 매매 현황 · 종목별 지분 · 최근 89일 변동 추이</div>
+      </div>
+
+      <!-- 섹터별 매매 현황 (5% 공시에서 이동) -->
+      <div class="sector-stats" id="sector-stats" style="display:none;">
+        <div class="sector-stats-header">
+          <span class="st-title">🏷 섹터별 매매 현황</span>
+          <span class="st-sub">최근 89일 · 행 클릭 시 아래 종목 리스트가 해당 섹터로 필터</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th class="left">섹터</th>
+              <th>보유 종목</th>
+              <th>▲ 매수</th>
+              <th>▼ 매도</th>
+              <th class="hide-mobile">신규 5%↑</th>
+              <th>순 매매액</th>
+            </tr>
+          </thead>
+          <tbody id="sector-stats-body"></tbody>
+        </table>
+      </div>
+
+      <div style="margin: 20px 0 12px; font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.374px;">
+        📋 종목별 지분 현황
       </div>
 
       <div class="holdings-toolbar">
@@ -1844,27 +1870,6 @@
           </div>
           <div id="ranking-sell"></div>
         </div>
-      </div>
-
-      <!-- 섹터별 매매 현황 -->
-      <div class="sector-stats" id="sector-stats" style="display:none;">
-        <div class="sector-stats-header">
-          <span class="st-title">🏷 섹터별 매매 현황</span>
-          <span class="st-sub">최근 89일 · 클릭 시 해당 섹터로 필터</span>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th class="left">섹터</th>
-              <th>보유 종목</th>
-              <th>▲ 매수</th>
-              <th>▼ 매도</th>
-              <th class="hide-mobile">신규 5%↑</th>
-              <th>순 매매액</th>
-            </tr>
-          </thead>
-          <tbody id="sector-stats-body"></tbody>
-        </table>
       </div>
 
       <div class="filter-row" style="margin-bottom: 10px;">
@@ -2160,8 +2165,9 @@
   Chart.defaults.borderColor = '#e0e0e0';
 
   /* ========== Chart 1: Allocation (Horizontal Bar) ========== */
+  let allocationChart = null;
   const allocCtx = document.getElementById('chart-allocation').getContext('2d');
-  new Chart(allocCtx, {
+  allocationChart = new Chart(allocCtx, {
     type: 'bar',
     data: {
       labels: assetAllocation.items.map(i => i.name),
@@ -2206,8 +2212,9 @@
   });
 
   /* ========== Chart 2: Yearly Trend ========== */
+  let trendChart = null;
   const trendCtx = document.getElementById('chart-trend').getContext('2d');
-  new Chart(trendCtx, {
+  trendChart = new Chart(trendCtx, {
     type: 'line',
     data: {
       labels: yearlyTrend.map(t => t.year),
@@ -2958,18 +2965,22 @@
       `;
     }).join('');
 
-    // 행 클릭 시 해당 섹터 필터 적용
+    // 행 클릭 시 국내주식 탭 안의 해당 섹터 필터 적용 (같은 탭 내이므로 스크롤만)
     body.querySelectorAll('tr[data-sector]').forEach((tr) => {
       tr.addEventListener('click', () => {
         const sector = tr.dataset.sector;
-        const pill = document.querySelector(`.filter-pill[data-sector="${sector}"]`);
-        if (pill) pill.click();
-        else {
-          currentSector = sector;
-          renderDisclosures();
+        const pill = document.querySelector(`.filter-pill[data-holdings-sector="${sector}"]`);
+        if (pill) {
+          pill.click();
+        } else {
+          currentHoldingsSector = sector;
+          renderHoldings();
         }
-        // 아래 리스트로 스크롤
-        setTimeout(() => disclosureGrid.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+        // 종목 리스트 영역으로 스크롤
+        setTimeout(() => {
+          const table = document.querySelector('.holdings-table-wrap');
+          if (table) table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
       });
     });
   }
@@ -4052,14 +4063,17 @@
     });
   }
 
-  // 전체 현황 탭 활성화 시점에 렌더 (탭 클릭 이벤트에 훅)
+  // 전체 현황(국민연금 포트폴리오) 탭 활성화 시점에 렌더/리사이즈
   document.querySelectorAll('.tab[data-tab="overview"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       // 다음 tick에 렌더 (탭 활성화 후 canvas 사이즈 확정)
       setTimeout(() => {
         renderOverviewDonut();
         renderOverviewRecent();
-      }, 50);
+        // 자산배분·연도별 큰 차트는 hidden 상태에서 생성되므로 resize
+        if (allocationChart) allocationChart.resize();
+        if (trendChart)      trendChart.resize();
+      }, 60);
     });
   });
 </script>
