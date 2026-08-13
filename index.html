@@ -2003,16 +2003,17 @@
 
     <div class="section light">
       <div class="section-header">
-        <h2>연도별 자산 비중 변화 <span class="data-badge sample">샘플</span></h2>
-        <div class="meta">예시 · 국내주식 vs 해외주식 (실제 공시 수치 아님)</div>
+        <h2>연도별 자산 비중 변화 <span class="data-badge official">공식 발표</span></h2>
+        <div class="meta">2021~2025 연말 기준 · 국내주식 vs 해외주식 · 마지막 점은 2026년 5월 말 (잠정치)</div>
       </div>
       <div class="chart-wrap">
         <canvas id="chart-trend"></canvas>
       </div>
+      <div id="trend-table-text" class="chart-alt-text"></div>
       <div style="margin-top: 12px; font-size: 12px; color: var(--ink-muted-48); line-height: 1.5;">
-        ※ 이 그래프는 <b>화면 구성용 샘플</b>이며 위의 공식 자산배분 수치와 <b>다릅니다</b>.
-        기금운용본부가 연도별 자산군 비중 추이를 표 형태 데이터로 제공하지 않아 실데이터 미연동 상태입니다.
-        연도별 확정 수치는 <a href="https://fund.nps.or.kr" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">기금운용본부 연차보고서 ↗</a>에서 확인할 수 있습니다.
+        ※ 출처: <a href="https://www.data.go.kr/data/15106894/fileData.do" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">공공데이터포털 — 국민연금공단 기금 포트폴리오 현황 ↗</a> (2021~2025 연말)
+        · <a href="https://fund.nps.or.kr/oprtprcn/otln/getOHED0013M0.do" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">기금운용본부 운용현황 개요 ↗</a> (2026년 5월 말, 잠정치)<br />
+        ※ 비중 = 자산군 시가평가액 ÷ 전체 자산(시장가). 서로 기준일이 다른 시점(연말 vs 5월 말)을 한 선으로 이었으므로 마지막 구간은 참고용입니다.
       </div>
     </div>
   </section>
@@ -2423,16 +2424,21 @@
     ]
   };
 
-  /* ⚠️ 연도별 추이 — 화면 구성용 샘플 (실데이터 아님)
-   * 기금운용본부가 연도별 자산군 비중 추이를 표 데이터로 제공하지 않아 미연동.
-   * 위 assetAllocation(공식)과 수치가 다르며, UI에도 "샘플" 뱃지로 구분 표시됨.
-   * 실데이터 확보 경로: 기금운용본부 연차보고서(연 1회 발간) 수치를 수동 입력 */
+  /* 연도별 자산 비중 추이 — 실데이터
+   * 출처(2021~2025 연말): 공공데이터포털 "국민연금공단_기금 포트폴리오 현황"
+   *   https://www.data.go.kr/data/15106894/fileData.do (월간 갱신 CSV)
+   *   비중 = 자산군 시가평가액 ÷ 전체 자산(시장가) — 기금운용본부 발표 방식과 동일
+   *   원본 시장가(십억원): 전체 948,719(2021) 890,466(2022) 1,035,795(2023)
+   *                        1,212,851(2024) 1,457,996(2025)
+   * 출처(2026년 5월): 기금운용본부 운용현황 개요 — assetAllocation과 동일 (잠정치)
+   * 갱신 방법: 위 CSV의 새 연도 컬럼 확인 → 비중 계산해 행 추가 */
   const yearlyTrend = [
-    { year: "2022 (예시)", domestic: 18.2, overseas: 29.1 },
-    { year: "2023 (예시)", domestic: 16.8, overseas: 32.4 },
-    { year: "2024 (예시)", domestic: 15.1, overseas: 34.9 },
-    { year: "2025 (예시)", domestic: 14.2, overseas: 36.8 },
-    { year: "2026 (예시)", domestic: 13.0, overseas: 38.2 }
+    { year: "2021",       domestic: 17.5, overseas: 27.0 },
+    { year: "2022",       domestic: 14.1, overseas: 27.1 },
+    { year: "2023",       domestic: 14.3, overseas: 30.9 },
+    { year: "2024",       domestic: 11.5, overseas: 35.5 },
+    { year: "2025",       domestic: 18.1, overseas: 37.8 },
+    { year: "2026 (5월)", domestic: 29.4, overseas: 35.2 }
   ];
 
   /* [실데이터 연동 시] 교체 대상
@@ -2550,6 +2556,16 @@
         `<span class="alt-item"><span class="an">${esc(i.name)}</span>` +
         `<span class="av">${i.ratio.toFixed(1)}%</span>` +
         `<span class="aa">${i.amount.toLocaleString('ko-KR')}조원</span></span>`
+      ).join('');
+    }
+
+    // 연도별 추이 대체 텍스트 (그래프를 못 보는 환경 대비)
+    const trendAlt = document.getElementById('trend-table-text');
+    if (trendAlt) {
+      trendAlt.innerHTML = yearlyTrend.map((t) =>
+        `<span class="alt-item"><span class="an">${esc(t.year)}</span>` +
+        `<span class="av">국내 ${t.domestic.toFixed(1)}%</span>` +
+        `<span class="aa">해외 ${t.overseas.toFixed(1)}%</span></span>`
       ).join('');
     }
 
